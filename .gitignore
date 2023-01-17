@@ -13,3 +13,6 @@
 
 node_modules/
 .env
+
+# rough works for testing is ignored
+rough-testings/
