@@ -12,7 +12,7 @@ router.get("/:id", (req, res) => {
   const { id } = req.params;
 
   if (!id) {
-    res.json({ success: false, msg: NO_UID });
+    return res.json({ success: false, msg: NO_UID });
   }
 
   Admin.findOne({ _id: id })

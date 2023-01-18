@@ -5,6 +5,7 @@ const app = express();
 const session = require("express-session");
 const StudentRoute = require("./routes/student/student.route");
 const AdminRoute = require("./routes/admin/admin.route");
+const AuthRoute = require("./routes/auth/auth.route");
 const mongoose = require("mongoose");
 const MongoStore = require("connect-mongo");
 
@@ -20,12 +21,12 @@ app.use(cors());
 app.use(
   session({
     secret: process.env.SESSION_SECRETS,
-    store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }),
     resave: false,
     saveUninitialized: true,
+    store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }),
     cookie: {
       httpOnly: true,
-      maxAge: 1000 * 30, // keeping cookies for 30 seconds only
+      maxAge: 1000 * 60 * 5, // keeping cookies for 5 minutes alive
     },
   })
 );
@@ -38,6 +39,7 @@ app.get("/api", (req, res) => {
 // routes
 app.use("/api/student", StudentRoute);
 app.use("/api/admin", AdminRoute);
+app.use("/api/auth", AuthRoute);
 
 // db connections
 mongoose
