@@ -22,10 +22,14 @@ router.post("/login", (req, res) => {
         return res.json({ success: false, msg: WRONG_CREDENTIALS });
 
       // store the email of the logged in admin into session
-      console.log("foundAdmin >> ", foundAdmin);
+      // console.log("foundAdmin >> ", foundAdmin);
       req.session.email = foundAdmin.email;
-
-      return res.json({ success: true });
+      const user = {
+        firstName: foundAdmin.firstName,
+        middleName: foundAdmin.middleName,
+        lastName: foundAdmin.lastName,
+      };
+      return res.json({ success: true, data: user });
     })
     .catch((error) => {
       return res.json({ success: false, error: error });

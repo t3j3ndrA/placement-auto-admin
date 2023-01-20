@@ -15,7 +15,7 @@ env.config();
 // middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors());
+app.use(cors({ origin: "http://localhost:3000", credentials: true }));
 
 // express session with mongodb as storage
 app.use(
@@ -26,6 +26,7 @@ app.use(
     store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }),
     cookie: {
       httpOnly: true,
+      secure: false,
       maxAge: 1000 * 60 * 5, // keeping cookies for 5 minutes alive
     },
   })
