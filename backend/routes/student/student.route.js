@@ -7,14 +7,74 @@ const {
   DUPLICATE_STUDENT,
 } = require("../../constants/constantsMessages");
 
-router.get("/:id", (req, res) => {
-  const { id } = req.params;
+router.get("/", (req, res) => {
+  const {
+    id,
+    email,
+    firstName,
+    lastName,
+    middleName,
+    minCPI,
+    maxCPI,
+    rollNumber,
+    gender,
+    city,
+  } = req.query;
 
-  if (!id) {
-    res.json({ success: false, msg: NO_UID });
-  }
-
-  Student.findOne({ _id: id })
+  // regex documentations -> https://www.mongodb.com/docs/manual/reference/operator/query/regex/
+  // i - case insensitivity
+  Student.find({
+    $and: [
+      {
+        firstName: {
+          $regex: firstName ? ".*" + firstName + "*." : ".*.",
+          $options: "i",
+        },
+      },
+      {
+        middleName: {
+          $regex: middleName ? ".*" + middleName + "*." : ".*.",
+          $options: "i",
+        },
+      },
+      {
+        lastName: {
+          $regex: lastName ? ".*" + lastName + "*." : ".*.",
+          $options: "i",
+        },
+      },
+      {
+        email: {
+          $regex: email ? ".*" + email + "*." : ".*.",
+          $options: "i",
+        },
+      },
+      {
+        rollNumber: {
+          $regex: rollNumber ? ".*" + rollNumber + ".*" : ".*.",
+          $options: "i",
+        },
+      },
+      {
+        gender: {
+          $regex: gender ? gender : ".*.",
+          $options: "i",
+        },
+      },
+      {
+        city: {
+          $regex: city ? ".*" + city + "*." : ".*.",
+          $options: "i",
+        },
+      },
+      {
+        averageCPI: {
+          $gte: minCPI ? minCPI : 0,
+          $lte: maxCPI ? maxCPI : 10,
+        },
+      },
+    ],
+  })
     .then((foundStudent) => {
       return res.json({ success: true, data: foundStudent });
     })
