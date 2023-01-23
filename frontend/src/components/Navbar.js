@@ -11,7 +11,7 @@ const Navbar = () => {
   // w-2/12 is equivalent to col-start-1, col-end-3
   // h-screen is equivalent to row-start-1 row-end-3 with fixed position
   const [cookies, setCookie, removeCookie] = useCookies();
-  console.log(cookies);
+  // console.log(cookies);
   return (
     <div className=" bg-section h-screen fixed w-2/12 text-white px-3 py-8 rounded-xl">
       {/* Top section */}
