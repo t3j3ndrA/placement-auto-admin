@@ -40,6 +40,11 @@ const Students = () => {
   }
   if (status === "error") {
     console.log("error >> ", error);
+    return <p>Error</p>;
+  }
+
+  if (status === "success") {
+    console.log(data);
   }
 
   const handleFilterChange = (e) => {
@@ -78,14 +83,14 @@ const Students = () => {
               <div className="flex flex-col">
                 <p>Placement Status</p>
                 <select
-                  name="status"
+                  name="placementStatus"
                   onChange={handleFilterChange}
                   className="outline-none px-4 py-1 w-45 rounded-md bg-subSection "
                 >
                   <option value="">All</option>
                   <option value="done">Done</option>
                   <option value="pending">Pending</option>
-                  <option value="remaining">Remaining</option>
+                  <option value="not-done">Remaining</option>
                 </select>
 
                 <p>Branch</p>
@@ -130,7 +135,7 @@ const Students = () => {
                 />
                 <p>College Id</p>
                 <input
-                  name="collegeId"
+                  name="studentId"
                   className="col-start-1 col-end-3 outline-none px-4 py-1 w-45 rounded-md bg-subSection"
                   onChange={handleFilterChange}
                 />
@@ -168,7 +173,7 @@ const Students = () => {
 
         {/* Students table view based on fileter applied  */}
         <div className="bg-section mt-10">
-          <table class=" leading-normal w-full mt-2">
+          <table className=" leading-normal w-full mt-2">
             {/* table head */}
             <thead>
               <tr className="border-b bg-tableHead border-placeholder uppercase font-normal text-left  text-sm ">
@@ -200,7 +205,7 @@ const Students = () => {
             </thead>
             {/* table body */}
             <tbody>
-              {data.data.map((stu, index) => {
+              {data?.data.map((stu, index) => {
                 return (
                   <tr className="border-b bg-subSection border-placeholder uppercase font-normal text-left  text-sm hover:bg-lightHover">
                     <th scope="col" class="px-5 py-3">
@@ -223,7 +228,7 @@ const Students = () => {
                       {stu.email}
                     </th>
                     <th scope="col" class="px-5 py-3  ">
-                      Branch
+                      {stu.branch}
                     </th>
                     <th scope="col" class="px-5 py-3  ">
                       {stu.status}
