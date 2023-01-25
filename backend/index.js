@@ -6,6 +6,7 @@ const session = require("express-session");
 const StudentRoute = require("./routes/student/student.route");
 const AdminRoute = require("./routes/admin/admin.route");
 const AuthRoute = require("./routes/auth/auth.route");
+const CompanyRoute = require("./routes/company/company.route");
 const mongoose = require("mongoose");
 const MongoStore = require("connect-mongo");
 
@@ -41,6 +42,7 @@ app.get("/api", (req, res) => {
 app.use("/api/student", StudentRoute);
 app.use("/api/admin", AdminRoute);
 app.use("/api/auth", AuthRoute);
+app.use("/api/company", CompanyRoute);
 
 // db connections
 mongoose

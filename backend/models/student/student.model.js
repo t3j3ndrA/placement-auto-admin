@@ -24,8 +24,15 @@ const StudentSchema = mongoose.Schema({
   sem7SPI: { type: Number, default: 0.0 },
   sem8SPI: { type: Number, default: 0.0 },
   averageSPI: { type: Number, default: 0.0 },
-  averageCPI: { type: Number, default: 0.0 },
+  CPI: { type: Number, default: 0.0 },
   dateOfBirth: { type: Date, default: new Date() },
+  branch: { type: String, enum: ["it", "ce", "ch", "me", "ec", "ic"] },
+  placementStatus: {
+    type: String,
+    default: "not-done",
+    enum: ["done", "pending", "not-done"],
+  },
+  passingYear: { type: String },
   email: { type: String, unique: true, required: true },
   studentPhoneNumber: { type: Number, default: 0 },
   parentPhoneNumber: { type: Number, default: 0 },
@@ -34,7 +41,7 @@ const StudentSchema = mongoose.Schema({
   address3: { type: String, default: "" },
   city: { type: String, default: "" },
   pincode: { type: Number, default: 0 },
-  registrationStatus: { type: Boolean, default: false },
+  isRegistrationPending: { type: Boolean, default: false },
 });
 
 module.exports = mongoose.model("students", StudentSchema);

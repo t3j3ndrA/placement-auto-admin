@@ -11,15 +11,21 @@ router.get("/", (req, res) => {
   const {
     id,
     email,
+    studentId,
     firstName,
     lastName,
     middleName,
     minCPI,
     maxCPI,
-    rollNumber,
     gender,
+    rollNumber,
+    placementStatus,
+    passingYear,
+    branch,
     city,
   } = req.query;
+
+  console.log("passing year : " + passingYear);
 
   // regex documentations -> https://www.mongodb.com/docs/manual/reference/operator/query/regex/
   // i - case insensitivity
@@ -50,6 +56,12 @@ router.get("/", (req, res) => {
         },
       },
       {
+        studentId: {
+          $regex: studentId ? ".*" + studentId + "*." : ".*.",
+          $options: "i",
+        },
+      },
+      {
         rollNumber: {
           $regex: rollNumber ? ".*" + rollNumber + ".*" : ".*.",
           $options: "i",
@@ -57,7 +69,7 @@ router.get("/", (req, res) => {
       },
       {
         gender: {
-          $regex: gender ? gender : ".*.",
+          $regex: gender ? "^" + gender + "$" : ".*.",
           $options: "i",
         },
       },
@@ -68,9 +80,26 @@ router.get("/", (req, res) => {
         },
       },
       {
-        averageCPI: {
+        CPI: {
           $gte: minCPI ? minCPI : 0,
           $lte: maxCPI ? maxCPI : 10,
+        },
+      },
+      {
+        branch: {
+          $regex: branch ? branch : ".*.",
+          $options: "i",
+        },
+      },
+      {
+        passingYear: {
+          $regex: passingYear ? passingYear.toString() : ".*.",
+        },
+      },
+      {
+        placementStatus: {
+          $regex: placementStatus ? ".*" + placementStatus + "*." : ".*.",
+          $options: "i",
         },
       },
     ],
@@ -105,6 +134,7 @@ router.post("/", async (req, res) => {
   });
 
   const tempStudent = new Student({ email, password });
+
   if (email) {
     tempStudent
       .save()
@@ -138,7 +168,10 @@ router.put("/", (req, res) => {
     sem7SPI,
     sem8SPI,
     averageSPI,
-    averageCPI,
+    CPI,
+    branch,
+    placementStatus,
+    passingYear,
     dateOfBirth,
     email,
     studentPhoneNumber,
@@ -148,7 +181,7 @@ router.put("/", (req, res) => {
     address3,
     city,
     pincode,
-    registrationStatus,
+    isRegistrationPending,
   } = req.body;
 
   if (!email) return res.json({ success: false, msg: NO_EMAIL });
@@ -178,7 +211,9 @@ router.put("/", (req, res) => {
       sem7SPI,
       sem8SPI,
       averageSPI,
-      averageCPI,
+      CPI,
+      branch,
+      placementStatus,
       dateOfBirth,
       studentPhoneNumber,
       parentPhoneNumber,
@@ -187,9 +222,10 @@ router.put("/", (req, res) => {
       address3,
       city,
       pincode,
-      registrationStatus,
+      isRegistrationPending,
+      passingYear,
     },
-    { new: true }
+    { new: true, upsert: true }
   )
     .then((updatedStudent) => res.json({ success: true, data: updatedStudent }))
     .catch((error) => res.json({ success: false, error }));
