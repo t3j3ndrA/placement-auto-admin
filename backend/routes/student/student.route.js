@@ -10,8 +10,8 @@ const {
 router.get("/", (req, res) => {
   const {
     id,
-    email,
-    studentId,
+    collegeEmail,
+    collegeID,
     firstName,
     lastName,
     middleName,
@@ -19,13 +19,24 @@ router.get("/", (req, res) => {
     maxCPI,
     gender,
     rollNumber,
-    placementStatus,
     passingYear,
-    branch,
     city,
+    cpPlatforms,
+    cpStars,
+    cpRatings,
   } = req.query;
 
-  console.log("passing year : " + passingYear);
+  if (id) {
+    console.log("id found");
+    Student.findOne({ _id: id })
+      .then((foundStudent) => {
+        return res.json({ success: true, data: foundStudent });
+      })
+      .catch((error) => {
+        return res.json({ success: false, error });
+      });
+    return;
+  }
 
   // regex documentations -> https://www.mongodb.com/docs/manual/reference/operator/query/regex/
   // i - case insensitivity
@@ -33,37 +44,37 @@ router.get("/", (req, res) => {
     $and: [
       {
         firstName: {
-          $regex: firstName ? ".*" + firstName + "*." : ".*.",
+          $regex: firstName ? firstName : ".*.",
           $options: "i",
         },
       },
       {
         middleName: {
-          $regex: middleName ? ".*" + middleName + "*." : ".*.",
+          $regex: middleName ? middleName : ".*.",
           $options: "i",
         },
       },
       {
         lastName: {
-          $regex: lastName ? ".*" + lastName + "*." : ".*.",
+          $regex: lastName ? lastName : ".*.",
           $options: "i",
         },
       },
       {
-        email: {
-          $regex: email ? ".*" + email + "*." : ".*.",
+        collegeEmail: {
+          $regex: collegeEmail ? collegeEmail : ".*.",
           $options: "i",
         },
       },
       {
-        studentId: {
-          $regex: studentId ? ".*" + studentId + "*." : ".*.",
+        collegeID: {
+          $regex: collegeID ? collegeID : ".*.",
           $options: "i",
         },
       },
       {
         rollNumber: {
-          $regex: rollNumber ? ".*" + rollNumber + ".*" : ".*.",
+          $regex: rollNumber ? rollNumber : ".*.",
           $options: "i",
         },
       },
@@ -74,38 +85,30 @@ router.get("/", (req, res) => {
         },
       },
       {
-        city: {
-          $regex: city ? ".*" + city + "*." : ".*.",
+        "address.city": {
+          $regex: city ? city : ".*.",
           $options: "i",
         },
       },
       {
-        CPI: {
+        "result.cpi": {
           $gte: minCPI ? minCPI : 0,
           $lte: maxCPI ? maxCPI : 10,
         },
       },
-      {
-        branch: {
-          $regex: branch ? branch : ".*.",
-          $options: "i",
-        },
-      },
-      {
-        passingYear: {
-          $regex: passingYear ? passingYear.toString() : ".*.",
-        },
-      },
-      {
-        placementStatus: {
-          $regex: placementStatus ? ".*" + placementStatus + "*." : ".*.",
-          $options: "i",
-        },
-      },
+      // {
+      //   competitiveCoding: { $in: { platforms: cpPlatforms } },
+      // },
+      // {
+      //   "competitiveCoding.stars": { $gte: cpStars },
+      // },
+      // {
+      //   "competitiveCoding.ratings": { $gte: cpRatings },
+      // },
     ],
   })
-    .then((foundStudent) => {
-      return res.json({ success: true, data: foundStudent });
+    .then((foundStudents) => {
+      return res.json({ success: true, data: foundStudents });
     })
     .catch((error) => {
       return res.json({ success: false, error });
@@ -113,117 +116,77 @@ router.get("/", (req, res) => {
 });
 
 // register new student with email
-router.post("/", async (req, res) => {
-  const { email } = req.body;
+router.post("/new", async (req, res) => {
+  const { collegeEmail } = req.body;
 
-  if (!email) return res.json({ success: false, msg: NO_EMAIL });
+  if (!collegeEmail) return res.json({ success: false, msg: NO_EMAIL });
 
-  const studentFound = await Student.findOne({ email: email });
+  const studentFound = await Student.findOne({ collegeEmail: collegeEmail });
 
   if (studentFound) {
     return res.json({ success: false, msg: DUPLICATE_STUDENT });
   }
 
   const password = generator.generate({
-    length: 10,
-    lowercase: true,
-    uppercase: true,
-    symbols: true,
-    numbers: true,
-    strict: true,
+    length: 8,
   });
 
-  const tempStudent = new Student({ email, password });
-
-  if (email) {
-    tempStudent
-      .save()
-      .then((savedStudent) => res.json({ success: true, data: savedStudent }))
-      .catch((error) => res.json({ success: false, error: error }));
-  }
+  const tempStudent = new Student({ collegeEmail, password });
+  tempStudent
+    .save()
+    .then((savedStudent) => res.json({ success: true, data: savedStudent }))
+    .catch((error) => res.json({ success: false, error: error }));
 });
 
 // update the existing user
-router.put("/", (req, res) => {
+router.put("/update", (req, res) => {
   const {
-    rollNumber,
-    studentId,
     firstName,
     middleName,
     lastName,
     gender,
-    trainingCompanyStatus,
-    salary,
-    SSCInPercentage,
-    SSCBoard,
-    HSCInPercentage,
-    HSCBoard,
-    diplomaInPercentage,
-    sem1SPI,
-    sem2SPI,
-    sem3SPI,
-    sem4SPI,
-    sem5SPI,
-    sem6SP,
-    sem7SPI,
-    sem8SPI,
-    averageSPI,
-    CPI,
-    branch,
-    placementStatus,
-    passingYear,
     dateOfBirth,
-    email,
-    studentPhoneNumber,
-    parentPhoneNumber,
-    address1,
-    address2,
-    address3,
-    city,
-    pincode,
-    isRegistrationPending,
+    collegeID,
+    rollNumber,
+    branch,
+    passingYear,
+    collegeEmail,
+    personalEmail,
+    personalPhoneNumber,
+    parentsPhoneNumber,
+    password,
+    result,
+    competitiveCoding,
+    address,
+    placementStatus,
+    internshipStatus,
+    appliedTo,
   } = req.body;
 
-  if (!email) return res.json({ success: false, msg: NO_EMAIL });
+  if (!collegeEmail) return res.json({ success: false, msg: NO_EMAIL });
 
   Student.findOneAndUpdate(
-    { email },
+    { collegeEmail },
     {
-      rollNumber,
-      studentId,
       firstName,
       middleName,
       lastName,
       gender,
-      trainingCompanyStatus,
-      salary,
-      SSCInPercentage,
-      SSCBoard,
-      HSCInPercentage,
-      HSCBoard,
-      diplomaInPercentage,
-      sem1SPI,
-      sem2SPI,
-      sem3SPI,
-      sem4SPI,
-      sem5SPI,
-      sem6SP,
-      sem7SPI,
-      sem8SPI,
-      averageSPI,
-      CPI,
-      branch,
-      placementStatus,
       dateOfBirth,
-      studentPhoneNumber,
-      parentPhoneNumber,
-      address1,
-      address2,
-      address3,
-      city,
-      pincode,
-      isRegistrationPending,
+      collegeID,
+      rollNumber,
+      branch,
       passingYear,
+      personalEmail,
+      personalPhoneNumber,
+      parentsPhoneNumber,
+      password,
+      result,
+      competitiveCoding,
+      address,
+      placementStatus,
+      internshipStatus,
+      appliedTo,
     },
     { new: true, upsert: true }
   )

@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const Company = require("../../models/company/company.model");
+const Student = require("../../models/student/student.model");
 
 const {
   NO_EMAIL,
@@ -75,46 +76,61 @@ router.get("/", (req, res) => {
     });
 });
 
-// register new student with email
-router.post("/", async (req, res) => {
-  const {
-    name,
-    description,
-    website,
-    email,
-    packageInLPA,
-    openPositions,
-    expectedSkills,
-    minCPIReq,
-    minAvgSPIReq,
-    jobLocation,
-    jobMode,
-    bondInYears,
-    forBranch,
-    forBatches,
-    tentetiveInterviewDate,
-    officeAddress,
-    city,
-  } = req.body;
+const setStudentsElligibility = async (roles, forBatch) => {
+  let allStudents = await Student.find({ passingYear: { $eq: forBatch } });
+  roles?.forEach((role, index) => {
+    let students = new Map();
+    allStudents?.forEach((student) => {
+      if (
+        student.result.cpi >= (role.requirements?.cpi || 0) &&
+        ((student.result.twelfthPerc != 0 &&
+          student.result.twelfthPerc >=
+            (role.requirements?.twelfthPerc || 0)) ||
+          (student.result.diplomaPerc != 0 &&
+            student.result.diplomaPerc >=
+              (role.requirements?.diplomaPerc || 0))) &&
+        student.result.tenthPerc >= (role.requirements?.tenthPerc || 0)
+      ) {
+        let isSatisfies = true;
+        role.requirements?.competitiveCoding?.forEach((reqItem, index) => {
+          let isSubSatisfies = false;
+          student?.competitiveCoding?.forEach((stuItem) => {
+            if (
+              reqItem.platform === stuItem.platform &&
+              (stuItem.stars >= reqItem.stars ||
+                stuItem.ratings >= reqItem.ratings)
+            ) {
+              isSubSatisfies = true;
+            }
+          });
+          isSatisfies = isSatisfies && isSubSatisfies;
+        });
+        if (isSatisfies) students.set(student._id, { isElligible: true });
+        else students.set(student._id, { isElligible: false });
+      } else {
+        students.set(student._id, { isElligible: false });
+      }
+    });
+
+    roles[index].students = students;
+  });
+};
+
+// register new Company
+router.post("/new", async (req, res) => {
+  const { name, website, email, forBatch, description, roles, address } =
+    req.body;
+
+  await setStudentsElligibility(roles, forBatch);
 
   const tempCompany = new Company({
     name,
-    description,
     website,
     email,
-    packageInLPA,
-    openPositions,
-    expectedSkills,
-    minCPIReq,
-    minAvgSPIReq,
-    jobLocation,
-    jobMode,
-    bondInYears,
-    forBranch,
-    forBatches,
-    tentetiveInterviewDate,
-    officeAddress,
-    city,
+    forBatch,
+    description,
+    address,
+    roles,
   });
 
   tempCompany
@@ -128,53 +144,39 @@ router.post("/", async (req, res) => {
 });
 
 // update the existing company
-router.put("/:id", (req, res) => {
-  const { id } = req.params;
+router.put("/update", async (req, res) => {
+  const { id } = req.body;
 
   if (!id) {
-    return res.json({ success: false, msg: "Company Id param is empty" });
+    return res.json({ success: false, msg: "Company Id is required" });
   }
 
-  const {
-    name,
-    description,
-    website,
-    email,
-    packageInLPA,
-    openPositions,
-    expectedSkills,
-    minCPIReq,
-    minAvgSPIReq,
-    jobLocation,
-    jobMode,
-    bondInYears,
-    forBranch,
-    forBatches,
-    tentetiveInterviewDate,
-    officeAddress,
-    city,
-  } = req.body;
+  const { name, website, email, forBatch, description, address, roles } =
+    req.body;
+
+  // if there is update in role then also update the corresponding elligibile students in a document
+  if (forBatch && roles) {
+    await setStudentsElligibility(roles, forBatch);
+  } else if (forBatch) {
+    const foundCompany = await Company.findOne({ _id: id });
+    await setStudentsElligibility(foundCompany.roles, forBatch);
+  } else if (roles) {
+    const foundCompany = await Company.findOne({ _id: id });
+    console.log("for-batch", foundCompany.forBatch);
+    if (foundCompany.forBatch)
+      await setStudentsElligibility(roles, foundCompany.forBatch);
+  }
 
   Company.findOneAndUpdate(
     { _id: id },
     {
       name,
-      description,
       website,
       email,
-      packageInLPA,
-      openPositions,
-      expectedSkills,
-      minCPIReq,
-      minAvgSPIReq,
-      jobLocation,
-      jobMode,
-      bondInYears,
-      forBranch,
-      forBatches,
-      tentetiveInterviewDate,
-      officeAddress,
-      city,
+      forBatch,
+      description,
+      address,
+      roles,
     },
     { new: true }
   )

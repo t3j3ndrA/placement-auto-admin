@@ -6,7 +6,9 @@ import App from "./App";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Login from "./pages/Login";
 import Students from "./pages/Students";
+import Company from "./pages/Company";
 import { QueryClient, QueryClientProvider } from "react-query";
+import NewCompany from "./pages/NewCompany";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 const router = createBrowserRouter([
   {
@@ -20,6 +22,14 @@ const router = createBrowserRouter([
   {
     path: "/students",
     element: <Students />,
+  },
+  {
+    path: "/company",
+    element: <Company />,
+  },
+  {
+    path: "/new-company",
+    element: <NewCompany />,
   },
 ]);
 
