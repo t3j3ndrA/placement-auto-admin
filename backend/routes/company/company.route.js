@@ -19,11 +19,17 @@ router.get("/", (req, res) => {
     jobMode,
     forBranch,
     city,
+    id,
   } = req.query;
-  console.log(req.query);
+
+  if (id) {
+    return Company.findOne({ _id: id })
+      .then((result) => res.json({ success: true, data: result }))
+      .catch((err) => res.json({ success: false, err }));
+  }
+
   // regex documentations -> https://www.mongodb.com/docs/manual/reference/operator/query/regex/
   // i - case insensitivity
-
   Company.find({
     $and: [
       {

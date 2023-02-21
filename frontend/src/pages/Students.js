@@ -58,8 +58,8 @@ const Students = () => {
   };
 
   return (
-    <div className="bg-backg grid grid-cols-12 min-h-screen">
-      <Navbar />
+    <div className="bg-backg min-h-screen">
+      <Navbar focusOn="students" />
 
       <div className="col-start-3 col-end-13 px-10 py-10 text-white">
         <h1 className="text-4xl font-bold">Student</h1>

@@ -6,14 +6,20 @@ import App from "./App";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Login from "./pages/Login";
 import Students from "./pages/Students";
-import Company from "./pages/Company";
+
 import { QueryClient, QueryClientProvider } from "react-query";
-import NewCompany from "./pages/NewCompany";
+import Reports from "./pages/Reports";
+import PageNotFound from "./pages/PageNotFound";
+import Companies from "./pages/Companies";
+import CompanyView from "./pages/CompanyView";
+import CreateCompany from "./pages/CreateCompany";
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
+
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
+    element: <Companies />,
   },
   {
     path: "/login",
@@ -24,12 +30,24 @@ const router = createBrowserRouter([
     element: <Students />,
   },
   {
-    path: "/company",
-    element: <Company />,
+    path: "/companies",
+    element: <Companies />,
   },
   {
-    path: "/new-company",
-    element: <NewCompany />,
+    path: "/companies/company-view/:id",
+    element: <CompanyView />,
+  },
+  {
+    path: "/companies/create-post",
+    element: <CreateCompany />,
+  },
+  {
+    path: "/reports",
+    element: <Reports />,
+  },
+  {
+    path: "/*",
+    element: <PageNotFound />,
   },
 ]);
 

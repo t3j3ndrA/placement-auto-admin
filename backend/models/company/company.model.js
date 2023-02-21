@@ -13,7 +13,7 @@ const CompanySchema = mongoose.Schema({
         // in LPA
         avgPackage: { type: Number },
         type: { type: String, enum: ["full-time", "internship"] },
-        mode: { type: String, enum: ["remote", "on-site"] },
+        mode: { type: String, enum: ["remote", "on-site", "hybrid"] },
         // in months
         bonds: { type: Number, required: true, default: 0 },
         deadline: { type: Date, required: true },
@@ -32,7 +32,6 @@ const CompanySchema = mongoose.Schema({
                   platform: { type: String, required: true },
                   stars: { type: Number, default: 0 },
                   ratings: { type: Number, default: 0 },
-                  profile: { type: String, default: "" },
                 }),
               ],
             },

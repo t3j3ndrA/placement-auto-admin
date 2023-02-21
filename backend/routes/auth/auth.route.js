@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const Admin = require("../../models/admin/admin.model");
+const Student = require("../../models/student/student.model");
 
 const {
   NO_EMAIL,
@@ -11,7 +12,7 @@ router.get("/get-session", (req, res) => {
   return res.json({ session: req.session });
 });
 
-router.post("/login", (req, res) => {
+router.post("/admin/login", (req, res) => {
   const { email, password } = req.body;
   if (!email) return res.json({ success: false, msg: NO_EMAIL });
   if (!password) return res.json({ success: false, msg: NO_PASSWORD });
@@ -20,18 +21,48 @@ router.post("/login", (req, res) => {
     .then((foundAdmin) => {
       if (!foundAdmin)
         return res.json({ success: false, msg: WRONG_CREDENTIALS });
-
-      // store the email of the logged in admin into session
-      // console.log("foundAdmin >> ", foundAdmin);
+      req.session.studentId = null;
       req.session.email = foundAdmin.email;
+      req.session.isAdmin = true;
+      req.session.isStudent = false;
+      req.session.adminId = foundAdmin._id;
       const user = {
-        firstName: foundAdmin.firstName,
-        middleName: foundAdmin.middleName,
-        lastName: foundAdmin.lastName,
+        adminId: foundAdmin._id,
       };
       return res.json({ success: true, data: user });
     })
     .catch((error) => {
+      return res.json({ success: false, error: error });
+    });
+});
+
+router.post("/student/login", async (req, res) => {
+  const { email, password } = req.body;
+  if (!email) return res.json({ success: false, msg: NO_EMAIL });
+  if (!password) return res.json({ success: false, msg: NO_PASSWORD });
+
+  Student.findOne({ collegeEmail: email, password: password })
+    .then((foundStudent) => {
+      if (!foundStudent)
+        return res.json({ success: false, msg: WRONG_CREDENTIALS });
+      // destroy the prev session
+      console.log("foundStudent >> ", foundStudent.collegeEmail);
+      // req.session.destroy();
+      // req.session = null;
+      req.session.email = foundStudent.collegeEmail;
+      req.session.isAdmin = false;
+      req.session.isStudent = true;
+      req.session.studentId = foundStudent._id;
+      req.session.adminId = null;
+
+      const user = {
+        studentId: foundStudent._id,
+      };
+
+      return res.json({ success: true, data: user });
+    })
+    .catch((error) => {
+      console.log(error);
       return res.json({ success: false, error: error });
     });
 });
