@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const env = require("dotenv");
 const app = express();
+var router = express.Router();
 const session = require("express-session");
 const StudentRoute = require("./routes/student/student.route");
 const AdminRoute = require("./routes/admin/admin.route");
@@ -10,9 +11,13 @@ const CompanyRoute = require("./routes/company/company.route");
 const TrashRoute = require("./routes/trash/trash.route");
 const mongoose = require("mongoose");
 const MongoStore = require("connect-mongo");
+const verifyStudent = require("./middleware/verifyStudent");
+const verifyAdmin = require("./middleware/verifyAdmin");
 
 // enviorment varibale configuration before using them in the code
 env.config();
+
+// server health check route
 
 // middlewares
 app.use(express.json());
@@ -29,32 +34,24 @@ app.use(
     cookie: {
       httpOnly: true,
       secure: false,
-      maxAge: 1000 * 60 * 5, // keeping cookies for 5 minutes alive
+      maxAge: 1000 * 60 * 60 * 5, // keeping cookies for 5 hours alive
     },
   })
 );
 
-// server health check route
 app.get("/api", (req, res) => {
   res.json({ msg: "server is up and running!" });
 });
 
-// routes
-app.use("/api/student", StudentRoute);
-app.use("/api/admin", AdminRoute);
 app.use("/api/auth", AuthRoute);
-app.use("/api/company", CompanyRoute);
+app.use("/api/student", verifyStudent, StudentRoute);
+app.use("/api/admin", verifyAdmin, AdminRoute);
+app.use("/api/company", verifyAdmin, CompanyRoute);
 
 // trash routes only under developments
 
 app.use("/api/trash", TrashRoute);
 ///////////////////////////////////////
-
-app.get("/set-session", (req, res) => {
-  req.session.isAuth = true;
-  res.json(req.session);
-});
-
 app.get("/get-session", (req, res) => {
   res.json(req.session.isAuth);
 });

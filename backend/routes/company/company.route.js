@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const Company = require("../../models/company/company.model");
 const Student = require("../../models/student/student.model");
+const verifyAdmin = require("../../middleware/verifyAdmin");
 
 const {
   NO_EMAIL,
@@ -8,7 +9,7 @@ const {
   DUPLICATE_STUDENT,
 } = require("../../constants/constantsMessages");
 
-router.get("/", (req, res) => {
+router.get("/", verifyAdmin, (req, res) => {
   const {
     name,
     email,
