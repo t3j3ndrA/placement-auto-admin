@@ -60,7 +60,7 @@ const StudentSchema = mongoose.Schema({
       district: { type: String, default: "" },
       subDistrict: { type: String, default: "" },
       state: { type: String, default: "" },
-      postalCode: { type: Number, default: 0 },
+      postalCode: { type: String, default: 0 },
       completeAddress: { type: String, default: "" },
     }),
   },

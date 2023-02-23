@@ -6,26 +6,44 @@ const {
   NO_UID,
   DUPLICATE_STUDENT,
 } = require("../../constants/constantsMessages");
+const verifyAdmin = require("../../middleware/verifyAdmin");
 
 router.get("/", (req, res) => {
   const {
+    // personal details filter
     id,
-    collegeEmail,
-    collegeID,
     firstName,
-    lastName,
     middleName,
-    minCPI,
-    maxCPI,
+    lastName,
     gender,
+    // college details filter
+    collegeID,
     rollNumber,
     passingYear,
+    collegeEmail,
+    personalPhoneNumber,
+    // result filter
+    minCPI,
+    maxCPI,
+    minTwelfthPerc,
+    maxTwelfthPerc,
+    minTenthPerc,
+    maxTenthPerc,
+    minDiplomaPerc,
+    maxDiplomaPerc,
+    // cp filters
+    cpPlatforms, // of [{platform, minStars, maxStars, minRatings, maxRatings}]
+    // address filtring
     city,
-    cpPlatforms,
-    cpStars,
-    cpRatings,
+    state,
+    postalCode,
   } = req.query;
 
+  console.log(
+    "personalPhoneNumber",
+    personalPhoneNumber,
+    typeof personalPhoneNumber
+  );
   if (id) {
     console.log("id found");
     Student.findOne({ _id: id })
@@ -42,6 +60,7 @@ router.get("/", (req, res) => {
   // i - case insensitivity
   Student.find({
     $and: [
+      // name
       {
         firstName: {
           $regex: firstName ? firstName : ".*.",
@@ -60,30 +79,44 @@ router.get("/", (req, res) => {
           $options: "i",
         },
       },
+      // // collegeEmail
       {
         collegeEmail: {
           $regex: collegeEmail ? collegeEmail : ".*.",
           $options: "i",
         },
       },
+      // // collegeId
       {
         collegeID: {
           $regex: collegeID ? collegeID : ".*.",
           $options: "i",
         },
       },
+      // // roll Number
       {
         rollNumber: {
           $regex: rollNumber ? rollNumber : ".*.",
           $options: "i",
         },
       },
+      // gender
       {
         gender: {
           $regex: gender ? "^" + gender + "$" : ".*.",
           $options: "i",
         },
       },
+      // {
+      //   passingYear: passingYear,
+      // },
+      {
+        personalPhoneNumber: {
+          $regex: personalPhoneNumber ? personalPhoneNumber.toString() : ".*.",
+          $options: "i",
+        },
+      },
+      // address
       {
         "address.city": {
           $regex: city ? city : ".*.",
@@ -91,20 +124,36 @@ router.get("/", (req, res) => {
         },
       },
       {
+        "address.state": {
+          $regex: state ? state : ".*.",
+          $options: "i",
+        },
+      },
+      // results
+      {
         "result.cpi": {
           $gte: minCPI ? minCPI : 0,
           $lte: maxCPI ? maxCPI : 10,
         },
       },
-      // {
-      //   competitiveCoding: { $in: { platforms: cpPlatforms } },
-      // },
-      // {
-      //   "competitiveCoding.stars": { $gte: cpStars },
-      // },
-      // {
-      //   "competitiveCoding.ratings": { $gte: cpRatings },
-      // },
+      {
+        "result.twelfthPerc": {
+          $gte: minTwelfthPerc ? minTwelfthPerc : 0,
+          $lte: maxTwelfthPerc ? maxTwelfthPerc : 100,
+        },
+      },
+      {
+        "result.tenthPerc": {
+          $gte: minTenthPerc ? minTenthPerc : 0,
+          $lte: maxTenthPerc ? maxTenthPerc : 100,
+        },
+      },
+      {
+        "result.diplomaPerc": {
+          $gte: minDiplomaPerc ? minDiplomaPerc : 0,
+          $lte: maxDiplomaPerc ? maxDiplomaPerc : 100,
+        },
+      },
     ],
   })
     .then((foundStudents) => {
@@ -116,7 +165,7 @@ router.get("/", (req, res) => {
 });
 
 // register new student with email
-router.post("/new", async (req, res) => {
+router.post("/new", verifyAdmin, async (req, res) => {
   const { collegeEmail } = req.body;
 
   if (!collegeEmail) return res.json({ success: false, msg: NO_EMAIL });

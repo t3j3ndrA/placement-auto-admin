@@ -9,7 +9,7 @@ const {
   DUPLICATE_STUDENT,
 } = require("../../constants/constantsMessages");
 
-router.get("/", verifyAdmin, (req, res) => {
+router.get("/", (req, res) => {
   const {
     name,
     email,
