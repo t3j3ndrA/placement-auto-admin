@@ -13,6 +13,7 @@ import PageNotFound from "./pages/PageNotFound";
 import Companies from "./pages/Companies";
 import CompanyView from "./pages/CompanyView";
 import CreateCompany from "./pages/CreateCompany";
+import StudentView from "./pages/StudentView";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -36,6 +37,10 @@ const router = createBrowserRouter([
   {
     path: "/companies/company-view/:id",
     element: <CompanyView />,
+  },
+  {
+    path: "/students/student-view/:id",
+    element: <StudentView />,
   },
   {
     path: "/companies/create-post",

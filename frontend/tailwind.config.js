@@ -20,6 +20,7 @@ module.exports = {
       white: "white",
       red: "red",
       black: "black",
+      alternate: "#54566A",
     },
     // to extend the default valaue set by tailwinds
     extend: {},

@@ -68,8 +68,8 @@ const StudentSchema = mongoose.Schema({
   // placement details
   placementStatus: {
     type: mongoose.Schema({
-      selected: { type: String, enum: ["yes", "no"] },
-      companyName: { type: String },
+      selected: { type: String, enum: ["yes", "no"], default: "no" },
+      companyName: { type: String, default: "" },
       duration: { type: Number, defualt: 0 },
       package: { type: Number, default: 0 },
       joiningDate: { type: Date },
@@ -80,8 +80,8 @@ const StudentSchema = mongoose.Schema({
   // internship details
   internshipStatus: {
     type: mongoose.Schema({
-      selected: { type: String, enum: ["yes", "no"] },
-      companyName: { type: String },
+      selected: { type: String, enum: ["yes", "no"], default: "no" },
+      companyName: { type: String, default: "" },
       duration: { type: Number, defualt: 0 },
       stipend: { type: Number, default: 0 },
       joiningDate: { type: Date },
