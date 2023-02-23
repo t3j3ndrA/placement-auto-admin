@@ -3,17 +3,28 @@ import Navbar from "../components/Navbar";
 import { Link, redirect, useNavigate } from "react-router-dom";
 import { useQuery } from "react-query";
 import { HashLoader } from "react-spinners";
+import { useForm } from "react-hook-form";
 import axios from "axios";
+import {
+  AiOutlineClear,
+  AiOutlineDelete,
+  AiOutlineFilter,
+} from "react-icons/ai";
+import FilterInput from "../components/FilterInput";
+
 const Students = () => {
   const [filter, setFilter] = useState({});
+  const [showFilter, setShowFilter] = useState(true);
   const navigate = useNavigate();
+
   const fetchCompanies = async () => {
     let filterURL = "";
-    // for (const query in filter) {
-    //   filterURL += `${query}=${filter[query]}&`;
-    // }
+    for (const query in filter) {
+      filterURL += `${query}=${filter[query]}&`;
+    }
 
-    // console.log(filterURL);
+    console.log(filterURL);
+
     return axios
       .get(`http://localhost:5000/api/student?${filterURL}`, {
         withCredentials: true,
@@ -26,7 +37,28 @@ const Students = () => {
   };
 
   const handleFilterChange = (e) => {
+    if (e.target.value) {
+      e.target.style.border = "2px dotted green";
+    } else {
+      e.target.style.border = "";
+    }
     setFilter({ ...filter, [e.target.name]: e.target.value });
+  };
+
+  const handleFilterReset = () => {
+    setFilter("");
+    const allInputs = document.body.getElementsByTagName("input");
+    const allSelects = document.body.getElementsByTagName("select");
+    console.log(allSelects);
+    for (let i = 0; i < allInputs.length; ++i) {
+      allInputs.item(i).style.border = "";
+    }
+
+    for (let i = 0; i < allSelects.length; ++i) {
+      allSelects.item(i).style.border = "";
+    }
+
+    document.getElementById("filter-form").reset();
   };
 
   const { data, isLoading, isError } = useQuery(
@@ -37,34 +69,187 @@ const Students = () => {
     }
   );
 
-  console.log("data", data);
+  // console.log("data", data);
   return (
     <div className="bg-backg min-h-screen text-white">
       {/* Navbar */}
-      <Navbar focusOn="companies" />
+      <Navbar focusOn="students" />
       {/* Wrapper */}
       <div className="px-2 py-5 flex flex-col gap-8 md:px-8 lg:px-12">
-        {/* Create Post */}
-        <div className="flex justify-between  items-center">
-          <h1 className="text-2xl">New Company Announcement</h1>
-          <Link to="/companies/create-post">
-            <button className="text-section font-semibold bg-white rounded-md text-lg px-4 py-2">
-              Create Post
-            </button>
-          </Link>
-        </div>
-
         {/* Companies */}
 
         <h1 className="text-2xl">Students</h1>
 
         {/*  Filters*/}
-        <form className="flex flex-row gap-2 flex-wrap justify-center">
-          <input className="outline-none px-4 py-1 rounded-md bg-subSection" />
-          <input className="outline-none px-4 py-1 rounded-md bg-subSection" />
-          <input className="outline-none px-4 py-1 rounded-md bg-subSection" />
-          <input className="outline-none px-4 py-1 rounded-md bg-subSection" />
-        </form>
+        <div className="bg-subSection px-2 py-3 rounded-lg">
+          <div className="flex flex-row justify-between items-center  ">
+            <h2 className="text-xl">Filters</h2>
+            <div className="flex flex-row gap-4 items-center">
+              <input
+                type="reset"
+                className={`bg-hover py-2 px-3 rounded-xl hover:cursor-pointer `}
+                value={"Clear"}
+                onClick={handleFilterReset}
+              />
+              <span
+                className="bg-hover rounded-full p-2 hover:cursor-pointer"
+                onClick={() => {
+                  setShowFilter(!showFilter);
+                }}
+              >
+                <AiOutlineFilter size={24} />
+              </span>
+            </div>
+          </div>
+          <form
+            id="filter-form"
+            className={`mt-0 flex flex-row justify-around gap-1 flex-wrap bg-subSection  ${
+              showFilter ? "" : "hidden"
+            }`}
+          >
+            {/* First Name */}
+            <FilterInput
+              name="firstName"
+              title="First Name"
+              onChangeFun={handleFilterChange}
+            />
+
+            {/* Middle Name */}
+            <FilterInput
+              name="middleName"
+              title="Middle Name"
+              onChangeFun={handleFilterChange}
+            />
+
+            {/* Last Name */}
+            <FilterInput
+              name="lastName"
+              title="Last Name"
+              onChangeFun={handleFilterChange}
+            />
+            {/* Gender */}
+            <div className="flex  flex-col gap-1 w-full md:w-1/6">
+              <span className="text-placeholder">Gender</span>
+              <select
+                name="gender"
+                className="outline-none px-4 py-1 rounded-md bg-alternate"
+                onChange={(e) => {
+                  handleFilterChange(e);
+                }}
+              >
+                <option value="">All</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+              </select>
+            </div>
+
+            {/* College Email */}
+            <FilterInput
+              name="collegeEmail"
+              title="College Email"
+              onChangeFun={handleFilterChange}
+            />
+
+            {/* College ID */}
+            <FilterInput
+              name="collegeID"
+              title="College ID"
+              onChangeFun={handleFilterChange}
+            />
+
+            {/* Roll No. */}
+            <FilterInput
+              name="rollNumber"
+              title="Roll No."
+              onChangeFun={handleFilterChange}
+            />
+
+            {/* Personal Email */}
+            <FilterInput
+              name="personalEmail"
+              title="Personal Email"
+              onChangeFun={handleFilterChange}
+            />
+
+            {/* Phone Number */}
+            <FilterInput
+              name="personalPhoneNumber"
+              title="Personal Phone"
+              onChangeFun={handleFilterChange}
+            />
+
+            {/* Min CPI */}
+            <FilterInput
+              name="minCPI"
+              title="Min. CPI"
+              onChangeFun={handleFilterChange}
+            />
+
+            {/* Max CPI */}
+
+            <FilterInput
+              name="maxCPI"
+              title="Max. CPI"
+              onChangeFun={handleFilterChange}
+            />
+            {/* Min 12th Perc */}
+
+            <FilterInput
+              name="minTwelfthPerc"
+              title="Min. 12th %"
+              onChangeFun={handleFilterChange}
+            />
+
+            {/* Max 12th Perc */}
+            <FilterInput
+              name="maxTwelfthPerc"
+              title="Max. 12th %"
+              onChangeFun={handleFilterChange}
+            />
+
+            {/* Min 10th Perc */}
+            <FilterInput
+              name="minTenthPerc"
+              title="Min. 10th %"
+              onChangeFun={handleFilterChange}
+            />
+
+            {/* Max 10th % */}
+            <FilterInput
+              name="maxTenthPerc"
+              title="Min. 10th %"
+              onChangeFun={handleFilterChange}
+            />
+
+            {/* Min Diploma % */}
+            <FilterInput
+              name="minDiplomaPerc"
+              title="Min. Diploma %"
+              onChangeFun={handleFilterChange}
+            />
+
+            {/* Max Diploma % */}
+            <FilterInput
+              name="maxDiplomaPerc"
+              title="Min. Diploma %"
+              onChangeFun={handleFilterChange}
+            />
+
+            {/* City % */}
+            <FilterInput
+              name="city"
+              title="City"
+              onChangeFun={handleFilterChange}
+            />
+
+            {/* State % */}
+            <FilterInput
+              name="state"
+              title="State"
+              onChangeFun={handleFilterChange}
+            />
+          </form>
+        </div>
         {isLoading || isError ? (
           <div className="flex flex-row justify-center mt-12">
             <HashLoader color="white" />

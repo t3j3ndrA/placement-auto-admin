@@ -293,7 +293,50 @@ const StudentView = () => {
                   className="outline-none px-4 py-1 rounded-md bg-subSection"
                 />
               </div>
+              {/* Competitive programming */}
+              <h2 className="mt-3 w-full font-semibold text-2xl">
+                Competitive Coding
+              </h2>
+              {stu?.competitiveCoding?.map((cpItem, cpIndex) => {
+                return (
+                  <>
+                    {/* Platform */}
+                    <div className="flex  flex-col gap-1 w-full md:w-2/5">
+                      <span className="text-placeholder">Platform</span>
+                      <input
+                        name="platform"
+                        className="outline-none px-4 py-1 rounded-md bg-subSection"
+                        value={cpItem.platform}
+                        disabled={true}
+                      />
+                    </div>
+                    {/* Stars */}
+                    <div className="flex  flex-col gap-1 w-full md:w-2/5">
+                      <span className="text-placeholder">Stars</span>
+                      <input
+                        name="stars"
+                        type="number"
+                        className="outline-none px-4 py-1 rounded-md bg-subSection"
+                        value={cpItem.stars}
+                        disabled={true}
+                      />
+                    </div>
+                    {/* Ratings */}
+                    <div className="flex  flex-col gap-1 w-full md:w-2/5">
+                      <span className="text-placeholder">Ratings</span>
+                      <input
+                        name="ratings"
+                        type="number"
+                        className="outline-none px-4 py-1 rounded-md bg-subSection"
+                        value={cpItem.ratings}
+                        disabled={true}
+                      />
+                    </div>
 
+                    <div className="w-full bg-lightHover h-[1px]"></div>
+                  </>
+                );
+              })}
               {/* Placement Status*/}
               <h2 className="w-full font-semibold text-2xl mt-3">
                 Placement Status
