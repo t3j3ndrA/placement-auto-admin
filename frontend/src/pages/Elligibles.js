@@ -84,7 +84,7 @@ const Elligibles = () => {
       <div className="px-2 py-5 flex flex-col gap-8 md:px-8 lg:px-12">
         {/* Companies */}
 
-        <h1 className="text-3xl "> Applications for {data?.name}</h1>
+        <h1 className="text-3xl "> Elligibles for {data?.name}</h1>
         <h1 className="text-2xl -mt-7 capitalize">
           {data?.role.mode + " " + data?.role.name}
         </h1>

@@ -19,6 +19,9 @@ const NotifyStudents = () => {
   const [showFilter, setShowFilter] = useState(false);
   const navigate = useNavigate();
 
+  const [selectedStudents, setSelectedStudents] = useState(new Set());
+  const [checkKey, setCheckKey] = useState(Math.random());
+
   const fetchBasicCRInfo = async () => {
     return axios
       .get(`http://localhost:5000/api/company/${cid}/role/${rid}/basic`, {
@@ -36,8 +39,6 @@ const NotifyStudents = () => {
     for (const query in filter) {
       filterURL += `${query}=${filter[query]}&`;
     }
-
-    console.log(filterURL);
 
     return axios
       .get(`http://localhost:5000/api/student?${filterURL}`, {
@@ -63,7 +64,6 @@ const NotifyStudents = () => {
     setFilter("");
     const allInputs = document.body.getElementsByTagName("input");
     const allSelects = document.body.getElementsByTagName("select");
-    console.log(allSelects);
     for (let i = 0; i < allInputs.length; ++i) {
       allInputs.item(i).style.border = "";
     }
@@ -73,6 +73,18 @@ const NotifyStudents = () => {
     }
 
     document.getElementById("filter-form").reset();
+  };
+
+  const handleNotify = async (e) => {
+    e.preventDefault();
+    // const { companyId, roleId, selectedStudents } = req.body;
+    const body = {
+      companyId: cid,
+      roleId: rid,
+      selectedStudents: Array.from(selectedStudents),
+    };
+    const { data } = await axios.put("/api/company/notify", body);
+    console.log("data >> ", data);
   };
 
   const { data, isLoading, isError } = useQuery(
@@ -91,8 +103,6 @@ const NotifyStudents = () => {
     keepPreviousData: true,
   });
 
-  console.log("cData", cData);
-
   return (
     <div className="bg-backg min-h-screen text-white">
       {/* Navbar */}
@@ -100,7 +110,6 @@ const NotifyStudents = () => {
       {/* Wrapper */}
       <div className="px-2 py-5 flex flex-col gap-8 md:px-8 lg:px-12">
         {/* Companies */}
-
         <h1 className="text-3xl "> Notify for {cData?.name}</h1>
         <h1 className="text-2xl -mt-7 capitalize">
           {cData?.role.mode + " " + cData?.role.name}
@@ -203,9 +212,6 @@ const NotifyStudents = () => {
               <select
                 name="gender"
                 className="outline-none px-4 py-1 rounded-md bg-alternate"
-                onChange={(e) => {
-                  handleFilterChange(e);
-                }}
               >
                 <option value="">All</option>
                 <option value="male">Male</option>
@@ -320,6 +326,27 @@ const NotifyStudents = () => {
             />
           </form>
         </div>
+        {/* View elli, Notify others BUTTON BOX */}
+        <div className="flex flx-row justify-end mt-2 ">
+          <div className="flex flex-row gap-4">
+            <button
+              className="text-section  bg-white rounded-md px-4 py-2"
+              onClick={handleNotify}
+            >
+              Notify Selected
+            </button>
+            <button className="text-section  bg-white rounded-md px-4 py-2">
+              <Link to={`/company/${cid}/role/${rid}/applications`}>
+                View Applications
+              </Link>
+            </button>
+            <button className="text-section  bg-white rounded-md px-4 py-2">
+              <Link to={`/company/${cid}/role/${rid}/elligibles`}>
+                View Elligibles
+              </Link>
+            </button>
+          </div>
+        </div>
         {isLoading || isError ? (
           <div className="flex flex-row justify-center mt-12">
             <HashLoader color="white" />
@@ -329,6 +356,32 @@ const NotifyStudents = () => {
             <table className=" leading-normal w-full mt-2">
               <thead>
                 <tr className="border-b bg-tableHead border-placeholder uppercase font-normal text-left  text-sm ">
+                  <th className="">
+                    <input
+                      type={"checkbox"}
+                      key={checkKey + 1}
+                      checked={data?.data.length === selectedStudents.size}
+                      className="ml-2 w-5 h-5"
+                      onClick={(e) => {
+                        // to prevent from calling parent's onClick functin on table row
+                        // Otherwise it will open user's page instead of opening it
+                        if (!e) var e = window.event;
+                        e.cancelBubble = true;
+                        if (e.stopPropagation) e.stopPropagation();
+
+                        let s = new Set();
+                        if (selectedStudents.size == data.data.length) {
+                          setSelectedStudents(s);
+                        } else {
+                          data?.data?.forEach((item) => {
+                            s.add(item._id);
+                          });
+                          setSelectedStudents(s);
+                        }
+                        setCheckKey(Math.random());
+                      }}
+                    />
+                  </th>
                   <th className="">Name</th>
                   <th>College ID</th>
                   <th>Email</th>
@@ -343,13 +396,37 @@ const NotifyStudents = () => {
                 {data?.data?.map((item) => {
                   return (
                     <tr
-                      className="border-b-[1px] border-b-white bg-subSection hover:bg-lightHover hover:cursor-pointer even:bg-alternate"
+                      key={item._id}
+                      className="border-b-[1px] border-b-white bg-subSection hover:bg-lightHover hover:cursor-pointer even:bg-alternate "
                       onClick={() => {
                         navigate(`/students/student-view/${item._id}`, {
                           state: item,
                         });
                       }}
                     >
+                      <td className="ml-1">
+                        <input
+                          type={"checkbox"}
+                          key={checkKey}
+                          checked={selectedStudents.has(item._id)}
+                          className="ml-2 w-5 h-5"
+                          onClick={(e) => {
+                            // to prevent from calling parent's onClick functin on table row
+                            // Otherwise it will open user's page instead of opening it
+                            if (!e) var e = window.event;
+                            e.cancelBubble = true;
+                            if (e.stopPropagation) e.stopPropagation();
+                            let s = selectedStudents;
+                            if (s.has(item._id)) {
+                              s.delete(item._id);
+                            } else {
+                              s.add(item._id);
+                            }
+                            setCheckKey(Math.random());
+                            setSelectedStudents(s);
+                          }}
+                        />
+                      </td>
                       <td>{item.firstName + " " + item.lastName}</td>
                       <td>{item.collegeID} </td>
                       <td className="">{item.collegeEmail}</td>

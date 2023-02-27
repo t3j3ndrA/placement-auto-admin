@@ -447,4 +447,20 @@ router.get("/:companyId/role/:roleId", async (req, res) => {
   return res.json({ success: true, data: data });
 });
 
+router.put("/notify", async (req, res) => {
+  const { companyId, roleId, selectedStudents } = req.body;
+
+  const updated = await Company.findOneAndUpdate(
+    { _id: companyId, "roles._id": roleId },
+    {
+      $addToSet: {
+        "roles.$.elligibles": selectedStudents,
+      },
+    },
+    { new: true }
+  );
+
+  return res.json({ success: true, data: updated });
+});
+
 module.exports = router;
