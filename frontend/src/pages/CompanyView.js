@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { ClipLoader, HashLoader } from "react-spinners";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import companyViewValidator from "../form-validators/companyView.validator";
 import {
@@ -14,6 +14,7 @@ const CompanyView = () => {
   const [company, setCompany] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [isUpdating, setIsUpdating] = useState(false);
+
   const updateCompany = async () => {
     setIsUpdating(true);
     const response = await axios.put(
@@ -150,10 +151,7 @@ const CompanyView = () => {
           <div className="bg-section mx-auto px-4 py-4 lg:w-2/3">
             <h1 className="text-3xl font-bold">{company.name}</h1>
 
-            <div className="flex flx-row justify-between mt-2 ">
-              <button className="text-section  bg-white rounded-md px-4 ">
-                View Applications
-              </button>
+            <div className="flex flx-row justify-end mt-2 ">
               <div className="flex flex-row gap-4">
                 <button className="text-section  bg-white rounded-md px-4 py-2">
                   Edit
@@ -227,7 +225,16 @@ const CompanyView = () => {
                 return (
                   <>
                     {/* Remove this role */}
-                    <div className="flex flex-row w-full justify-end">
+                    <div className="flex flex-row w-full justify-between">
+                      {/* View Application for that roles */}
+                      <Link
+                        to={`/company/${company._id}/role/${role._id}/applications`}
+                      >
+                        <button className="text-section  bg-white rounded-md px-4 ">
+                          View Applications
+                        </button>
+                      </Link>
+                      {/* Delete the role */}
                       <button
                         className="flex flex-row  gap-2 justify-center bg-lightHover px-2 py-1 rounded-md"
                         onClick={(e) => handleRemoveRole(e, roleIndex)}

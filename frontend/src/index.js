@@ -14,6 +14,7 @@ import Companies from "./pages/Companies";
 import CompanyView from "./pages/CompanyView";
 import CreateCompany from "./pages/CreateCompany";
 import StudentView from "./pages/StudentView";
+import Applications from "./pages/Applications";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -45,6 +46,10 @@ const router = createBrowserRouter([
   {
     path: "/companies/create-post",
     element: <CreateCompany />,
+  },
+  {
+    path: "/company/:cid/role/:rid/applications",
+    element: <Applications />,
   },
   {
     path: "/reports",

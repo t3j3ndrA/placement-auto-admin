@@ -13,8 +13,20 @@ const StudentView = () => {
   const { id } = useParams();
   const location = useLocation();
 
-  const stu = location.state;
-  const [isLoading, setIsLoading] = useState(false);
+  // const stu = location.state;
+  const [isLoading, setIsLoading] = useState(true);
+  const [stu, setStu] = useState({});
+  useEffect(() => {
+    setIsLoading(true);
+    axios
+      .get(`/api/student?id=${id}`, { withCredentials: true })
+      .then((result) => {
+        setStu(result.data?.data);
+        setIsLoading(false);
+      })
+      .catch((err) => console.log(err));
+  }, []);
+
   return (
     <div className="bg-backg min-h-screen text-white">
       {/* Navbar */}
