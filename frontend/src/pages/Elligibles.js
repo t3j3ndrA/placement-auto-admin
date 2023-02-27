@@ -12,7 +12,7 @@ import {
 } from "react-icons/ai";
 import FilterInput from "../components/FilterInput";
 
-const Applications = () => {
+const Elligibles = () => {
   // /company/:cid/role/:rid/applications
   const { cid, rid } = useParams();
   const [filter, setFilter] = useState({});
@@ -89,8 +89,8 @@ const Applications = () => {
           {data?.role.mode + " " + data?.role.name}
         </h1>
 
+        {/* role.interviewMode */}
         <div className="w-full flex flex-row flex-wrap justify-between gap-2">
-          {/* role.mode */}
           <div className="flex  flex-col gap-1 w-full md:w-1/6">
             <span className="text-placeholder">Interview Mode</span>
             <input
@@ -138,8 +138,8 @@ const Applications = () => {
         <div className="flex flx-row justify-end mt-2 ">
           <div className="flex flex-row gap-4">
             <button className="text-section  bg-white rounded-md px-4 py-2">
-              <Link to={`/company/${cid}/role/${rid}/elligibles`}>
-                View Elligibles
+              <Link to={`/company/${cid}/role/${rid}/applications`}>
+                View Applications
               </Link>
             </button>
             <button className="text-section  bg-white rounded-md px-4 py-2 disabled:bg-section">
@@ -340,7 +340,7 @@ const Applications = () => {
               </thead>
               <tbody>
                 {/* All comapanies */}
-                {data?.applications?.map((item) => {
+                {data?.elligibles?.map((item) => {
                   return (
                     <tr
                       className="border-b-[1px] border-b-white bg-subSection hover:bg-lightHover hover:cursor-pointer even:bg-alternate"
@@ -374,4 +374,4 @@ const Applications = () => {
   );
 };
 
-export default Applications;
+export default Elligibles;

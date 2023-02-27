@@ -12,31 +12,39 @@ import {
 } from "react-icons/ai";
 import FilterInput from "../components/FilterInput";
 
-const Applications = () => {
-  // /company/:cid/role/:rid/applications
+const NotifyStudents = () => {
   const { cid, rid } = useParams();
+
   const [filter, setFilter] = useState({});
   const [showFilter, setShowFilter] = useState(false);
   const navigate = useNavigate();
 
-  const fetchApplications = async () => {
-    let filterURL = "";
+  const fetchBasicCRInfo = async () => {
+    return axios
+      .get(`http://localhost:5000/api/company/${cid}/role/${rid}/basic`, {
+        withCredentials: true,
+      })
+      .then((response) => response.data)
+      .then((data) => data.data)
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
+  const fetchStudents = async () => {
+    let filterURL = "";
     for (const query in filter) {
       filterURL += `${query}=${filter[query]}&`;
     }
 
-    console.log("FilterURL", filterURL);
+    console.log(filterURL);
 
     return axios
-      .get(
-        `http://localhost:5000/api/company/${cid}/role/${rid}?${filterURL}`,
-        {
-          withCredentials: true,
-        }
-      )
+      .get(`http://localhost:5000/api/student?${filterURL}`, {
+        withCredentials: true,
+      })
       .then((response) => response.data)
-      .then((data) => data.data)
+      .then((data) => data)
       .catch((err) => {
         console.log(err);
       });
@@ -68,35 +76,43 @@ const Applications = () => {
   };
 
   const { data, isLoading, isError } = useQuery(
-    ["applications", cid, rid, filter],
-    fetchApplications,
+    ["students", filter],
+    fetchStudents,
     {
       keepPreviousData: true,
     }
   );
 
-  console.log("data", data);
+  const {
+    data: cData,
+    isLoading: cIsLoading,
+    isError: cIsError,
+  } = useQuery(["comapany", cid], fetchBasicCRInfo, {
+    keepPreviousData: true,
+  });
+
+  console.log("cData", cData);
+
   return (
     <div className="bg-backg min-h-screen text-white">
       {/* Navbar */}
-      <Navbar focusOn="students" />
+      <Navbar focusOn="comapnies" />
       {/* Wrapper */}
       <div className="px-2 py-5 flex flex-col gap-8 md:px-8 lg:px-12">
         {/* Companies */}
 
-        <h1 className="text-3xl "> Applications for {data?.name}</h1>
+        <h1 className="text-3xl "> Notify for {cData?.name}</h1>
         <h1 className="text-2xl -mt-7 capitalize">
-          {data?.role.mode + " " + data?.role.name}
+          {cData?.role.mode + " " + cData?.role.name}
         </h1>
-
+        {/* role.interviewMode */}
         <div className="w-full flex flex-row flex-wrap justify-between gap-2">
-          {/* role.mode */}
           <div className="flex  flex-col gap-1 w-full md:w-1/6">
             <span className="text-placeholder">Interview Mode</span>
             <input
               name="mode"
               className="outline-none px-4 py-1 rounded-md bg-subSection"
-              value={data?.role.interviewMode}
+              value={cData?.role.interviewMode}
               disabled={true}
             />
           </div>
@@ -106,7 +122,7 @@ const Applications = () => {
             <input
               name="bonds"
               className="outline-none px-4 py-1 rounded-md bg-subSection"
-              value={data?.role.bonds}
+              value={cData?.role.bonds}
               type="number"
               disabled={true}
             />
@@ -118,7 +134,7 @@ const Applications = () => {
               name="deadline"
               type="date"
               className="outline-none px-4 py-1 rounded-md bg-subSection"
-              value={data?.role.deadline.substring(0, 10)}
+              value={cData?.role.deadline.substring(0, 10)}
               disabled={true}
             />
           </div>
@@ -129,24 +145,9 @@ const Applications = () => {
               name="interviewDate"
               type="date"
               className="outline-none px-4 py-1 rounded-md bg-subSection"
-              value={data?.role.interviewDate.substring(0, 10)}
+              value={cData?.role.interviewDate.substring(0, 10)}
               disabled={true}
             />
-          </div>
-        </div>
-        {/* View elli, Notify others BUTTON BOX */}
-        <div className="flex flx-row justify-end mt-2 ">
-          <div className="flex flex-row gap-4">
-            <button className="text-section  bg-white rounded-md px-4 py-2">
-              <Link to={`/company/${cid}/role/${rid}/elligibles`}>
-                View Elligibles
-              </Link>
-            </button>
-            <button className="text-section  bg-white rounded-md px-4 py-2 disabled:bg-section">
-              <Link to={`/company/${cid}/role/${rid}/notify`}>
-                Notify Other
-              </Link>
-            </button>
           </div>
         </div>
         {/*  Filters*/}
@@ -319,7 +320,6 @@ const Applications = () => {
             />
           </form>
         </div>
-
         {isLoading || isError ? (
           <div className="flex flex-row justify-center mt-12">
             <HashLoader color="white" />
@@ -332,15 +332,15 @@ const Applications = () => {
                   <th className="">Name</th>
                   <th>College ID</th>
                   <th>Email</th>
-                  {/* <th className="hidden md:table-cell">Status</th> */}
+                  <th className="hidden md:table-cell">Status</th>
                   <th className="hidden lg:table-cell">Gender</th>
-                  {/* <th className=" hidden lg:table-cell">Passing Year</th> */}
+                  <th className=" hidden lg:table-cell">Passing Year</th>
                   {/* <th className="hidden lg:table-cell">Mode</th> */}
                 </tr>
               </thead>
               <tbody>
                 {/* All comapanies */}
-                {data?.applications?.map((item) => {
+                {data?.data?.map((item) => {
                   return (
                     <tr
                       className="border-b-[1px] border-b-white bg-subSection hover:bg-lightHover hover:cursor-pointer even:bg-alternate"
@@ -351,17 +351,17 @@ const Applications = () => {
                       }}
                     >
                       <td>{item.firstName + " " + item.lastName}</td>
-                      <td className="">{item.collegeID} </td>
+                      <td>{item.collegeID} </td>
                       <td className="">{item.collegeEmail}</td>
-                      {/* <td className="capitalize hidden md:inline">
+                      <td className="capitalize hidden md:inline">
                         {item.placementStatus.selected}
-                      </td> */}
+                      </td>
                       <td className="hidden lg:table-cell capitalize">
                         {item.gender}
                       </td>
-                      {/* <td className=" hidden lg:table-cell">
+                      <td className=" hidden lg:table-cell">
                         {item?.passingYear}
-                      </td> */}
+                      </td>
                     </tr>
                   );
                 })}
@@ -374,4 +374,20 @@ const Applications = () => {
   );
 };
 
-export default Applications;
+export default NotifyStudents;
+
+//   {/* View elli, Notify others BUTTON BOX */}
+//   <div className="flex flx-row justify-end mt-2 ">
+//   <div className="flex flex-row gap-4">
+//     <button className="text-section  bg-white rounded-md px-4 py-2">
+//       <Link to={`/company/${cid}/role/${rid}/applications`}>
+//         View Applications
+//       </Link>
+//     </button>
+//     <button className="text-section  bg-white rounded-md px-4 py-2">
+//       <Link to={`/company/${cid}/role/${rid}/eliigibles`}>
+//         View Elligibles
+//       </Link>
+//     </button>
+//   </div>
+// </div>

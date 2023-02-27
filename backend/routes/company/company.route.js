@@ -156,6 +156,22 @@ router.put("/apply-to/:companyId/for/:roleId/:stuId", async (req, res) => {
     });
 });
 
+// get company & role detail using rid & cid
+router.get("/:companyId/role/:roleId/basic", async (req, res) => {
+  const { companyId, roleId } = req.params;
+
+  const company = await Company.findOne(
+    { _id: companyId, "roles._id": roleId },
+    { name: 1, "roles.$": 1 }
+  );
+  let data = {
+    name: company.name,
+    role: company.roles[0],
+  };
+  return res.json({ success: true, data });
+});
+
+// get applications & elligibles students
 router.get("/:companyId/role/:roleId", async (req, res) => {
   const { companyId, roleId } = req.params;
   const {
@@ -309,7 +325,7 @@ router.get("/:companyId/role/:roleId", async (req, res) => {
       lastName: 1,
       middleName: 1,
       collegeEmail: 1,
-      collegeId: 1,
+      collegeID: 1,
       gender: 1,
     }
   );
@@ -420,7 +436,7 @@ router.get("/:companyId/role/:roleId", async (req, res) => {
       lastName: 1,
       middleName: 1,
       collegeEmail: 1,
-      collegeId: 1,
+      collegeID: 1,
       gender: 1,
     }
   );

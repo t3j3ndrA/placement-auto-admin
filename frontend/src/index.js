@@ -15,6 +15,8 @@ import CompanyView from "./pages/CompanyView";
 import CreateCompany from "./pages/CreateCompany";
 import StudentView from "./pages/StudentView";
 import Applications from "./pages/Applications";
+import Elligibles from "./pages/Elligibles";
+import NotifyStudents from "./pages/NotifyStudents";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -50,6 +52,14 @@ const router = createBrowserRouter([
   {
     path: "/company/:cid/role/:rid/applications",
     element: <Applications />,
+  },
+  {
+    path: "/company/:cid/role/:rid/elligibles",
+    element: <Elligibles />,
+  },
+  {
+    path: "/company/:cid/role/:rid/notify",
+    element: <NotifyStudents />,
   },
   {
     path: "/reports",
