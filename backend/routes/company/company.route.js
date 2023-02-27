@@ -2,6 +2,7 @@ const router = require("express").Router();
 const Company = require("../../models/company/company.model");
 const Student = require("../../models/student/student.model");
 const verifyAdmin = require("../../middleware/verifyAdmin");
+const mongoose = require("mongoose");
 
 const {
   NO_EMAIL,
@@ -9,19 +10,13 @@ const {
   DUPLICATE_STUDENT,
 } = require("../../constants/constantsMessages");
 
+const {
+  setStudentsElligibility,
+  isElligible,
+} = require("../../utils/company.utils");
+
 router.get("/", (req, res) => {
-  const {
-    name,
-    email,
-    minPackageInLPA,
-    maxPackageInLPA,
-    minAvgSPIReq,
-    minCPIReq,
-    jobMode,
-    forBranch,
-    city,
-    id,
-  } = req.query;
+  const { name, website, email, id } = req.query;
 
   if (id) {
     return Company.findOne({ _id: id })
@@ -39,40 +34,6 @@ router.get("/", (req, res) => {
           $options: "i",
         },
       },
-      // {
-      //   city: {
-      //     $regex: city ? ".*" + city + "*." : ".*.",
-      //     $options: "i",
-      //   },
-      // },
-      // {
-      //   minCPIReq: {
-      //     $gte: minCPIReq ? minCPIReq : 0,
-      //   },
-      // },
-      // {
-      //   minAvgSPIReq: {
-      //     $gte: minAvgSPIReq ? minAvgSPIReq : 0,
-      //   },
-      // },
-      {
-        packageInLPA: {
-          $gte: minPackageInLPA ? minPackageInLPA : 0,
-          $lte: maxPackageInLPA ? maxPackageInLPA : Number.MAX_VALUE,
-        },
-      },
-      {
-        forBranch: {
-          $regex: forBranch ? forBranch : ".*.",
-          $options: "i",
-        },
-      },
-      {
-        jobMode: {
-          $regex: jobMode ? "^" + jobMode + "$" : ".*.",
-          $options: "i",
-        },
-      },
     ],
   })
     .then((foundCompany) => {
@@ -82,46 +43,6 @@ router.get("/", (req, res) => {
       return res.json({ success: false, error });
     });
 });
-
-const setStudentsElligibility = async (roles, forBatch) => {
-  let allStudents = await Student.find({ passingYear: { $eq: forBatch } });
-  roles?.forEach((role, index) => {
-    let students = new Map();
-    allStudents?.forEach((student) => {
-      if (
-        student.result.cpi >= (role.requirements?.cpi || 0) &&
-        ((student.result.twelfthPerc != 0 &&
-          student.result.twelfthPerc >=
-            (role.requirements?.twelfthPerc || 0)) ||
-          (student.result.diplomaPerc != 0 &&
-            student.result.diplomaPerc >=
-              (role.requirements?.diplomaPerc || 0))) &&
-        student.result.tenthPerc >= (role.requirements?.tenthPerc || 0)
-      ) {
-        let isSatisfies = true;
-        role.requirements?.competitiveCoding?.forEach((reqItem, index) => {
-          let isSubSatisfies = false;
-          student?.competitiveCoding?.forEach((stuItem) => {
-            if (
-              reqItem.platform === stuItem.platform &&
-              (stuItem.stars >= reqItem.stars ||
-                stuItem.ratings >= reqItem.ratings)
-            ) {
-              isSubSatisfies = true;
-            }
-          });
-          isSatisfies = isSatisfies && isSubSatisfies;
-        });
-        if (isSatisfies) students.set(student._id, { isElligible: true });
-        else students.set(student._id, { isElligible: false });
-      } else {
-        students.set(student._id, { isElligible: false });
-      }
-    });
-
-    roles[index].students = students;
-  });
-};
 
 // register new Company
 router.post("/new", async (req, res) => {
@@ -192,6 +113,45 @@ router.put("/update", async (req, res) => {
     })
     .catch((error) => {
       return res.json({ success: false, error });
+    });
+});
+
+// apply to company via company id , student id if not already, role id
+router.put("/apply-to/:companyId/for/:roleId/:stuId", async (req, res) => {
+  const { companyId, roleId, stuId } = req.params;
+
+  if (!companyId || !roleId || !stuId) {
+    console.log("companyId", companyId);
+    console.log("stuId", stuId);
+    console.log("roleId", roleId);
+    return res.json({ msg: "Insufficient data" });
+  }
+
+  const check = await isElligible(companyId, roleId, stuId);
+  console.log("Check = ", check);
+  if (!check) {
+    return res.json({ success: false, msg: "You are not elligibel" });
+  }
+
+  Company.findOneAndUpdate(
+    {
+      _id: companyId,
+      "roles._id": roleId,
+    },
+    {
+      $addToSet: {
+        "roles.$.applications": stuId,
+      },
+    },
+    {
+      new: true,
+    }
+  )
+    .then((updatedCompany) => {
+      return res.json({ success: true, data: updatedCompany });
+    })
+    .catch((err) => {
+      console.log(err);
     });
 });
 

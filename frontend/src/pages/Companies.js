@@ -9,11 +9,7 @@ const Companies = () => {
 
   const fetchCompanies = async () => {
     let filterURL = "";
-    // for (const query in filter) {
-    //   filterURL += `${query}=${filter[query]}&`;
-    // }
 
-    // console.log(filterURL);
     return axios
       .get(`http://localhost:5000/api/company?${filterURL}`, {
         withCredentials: true,

@@ -14,7 +14,7 @@ import FilterInput from "../components/FilterInput";
 
 const Students = () => {
   const [filter, setFilter] = useState({});
-  const [showFilter, setShowFilter] = useState(true);
+  const [showFilter, setShowFilter] = useState(false);
   const navigate = useNavigate();
 
   const fetchCompanies = async () => {

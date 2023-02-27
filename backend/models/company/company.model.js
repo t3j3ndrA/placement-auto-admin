@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const studentModel = require("../student/student.model");
 
 const CompanySchema = mongoose.Schema({
   name: { type: String, required: true },
@@ -38,14 +39,17 @@ const CompanySchema = mongoose.Schema({
             expectedSkills: { type: String },
           }),
         },
+        applications: [mongoose.Types.ObjectId],
+        elligibles: [mongoose.Types.ObjectId],
         // key will be student id
-        students: {
-          type: Map,
-          of: mongoose.Schema({
-            isElligible: { type: Boolean, default: false },
-            hasApplied: { type: Boolean, default: false },
-          }),
-        },
+        // students: [
+        //   mongoose.Schema({
+        //     // student ID
+        //     _id: { type: mongoose.Types.ObjectId },
+        //     isElligible: { type: Boolean, default: false },
+        //     hasApplied: { type: Boolean, default: false },
+        //   }),
+        // ],
       }),
     ],
   },
