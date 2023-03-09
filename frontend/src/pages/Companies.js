@@ -41,7 +41,7 @@ const Companies = () => {
       {/* Wrapper */}
       <div className="px-2 py-5 flex flex-col gap-8 md:px-8 lg:px-12">
         {/* Create Post */}
-        <div className="flex justify-between  items-center">
+        <div className="flex justify-between  items-center bg-tableHead p-3 rounded-md">
           <h1 className="text-2xl">New Company Announcement</h1>
           <Link to="/companies/create-post">
             <button className="text-section font-semibold bg-white rounded-md text-lg px-4 py-2">

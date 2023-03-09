@@ -7,6 +7,7 @@ import {
   AiOutlineUsergroupAdd,
   AiOutlineUsergroupDelete,
 } from "react-icons/ai";
+import { toast, ToastContainer } from "react-toastify";
 
 const CreateCompany = () => {
   const [company, setCompany] = useState({
@@ -48,7 +49,12 @@ const CreateCompany = () => {
     const response = await axios.post(`/api/company/new`, company, {
       withCredentials: true,
     });
-    setCompany(response.data.data);
+    console.log("resp.data >> ", response.data);
+    if (response.data?.success == true) {
+      toast.success("Comany Registed ✅");
+    } else {
+      toast.error("Insufficiente data ❌");
+    }
     setIsCreating(false);
   };
 
@@ -560,6 +566,16 @@ const CreateCompany = () => {
               {/* </div> */}
             </div>
           </form>
+          <ToastContainer
+            position="bottom-left"
+            autoClose={4000}
+            hideProgressBar={false}
+            closeOnClic={true}
+            pauseOnHover={true}
+            draggable={true}
+            progress={undefined}
+            theme="dark"
+          />
         </div>
       </div>
     </div>
