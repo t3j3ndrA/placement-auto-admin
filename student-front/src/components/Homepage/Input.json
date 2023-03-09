@@ -1,0 +1,52 @@
+{
+    "companies": 
+    [
+        {
+            "name": "Crest Data System",
+            "role": ["SDE-1","SDE-2"],
+            "package": 13,
+            "location": [
+                "Ahemdabad","Banglore","Pune"
+            ],
+            "deadline": "15-01-23"
+        },
+
+        {
+            "name": "Crest Data System",
+            "role": ["SDE-1","SDE-2"],
+            "package": 13,
+            "location": [
+                "Ahemdabad","Banglore","Pune"
+            ],
+            "deadline": "15-01-23"
+        },
+        {
+            "name": "Crest Data System",
+            "role": ["SDE-1","SDE-2"],
+            "package": 13,
+            "location": [
+                "Ahemdabad","Banglore","Pune"
+            ],
+            "deadline": "15-01-23"
+        },
+        {
+            "name": "Crest Data System",
+            "role": ["SDE-1","SDE-2"],
+            "package": 13,
+            "location": [
+                "Ahemdabad","Banglore","Pune"
+            ],
+            "deadline": "15-01-23"
+        },
+
+        {
+            "name": "InfoCusp",
+            "role": ["Product Manager", "Associate Software Engineer"],
+            "package": 18,
+            "location": [
+                "Ahemdabad","Mumbai","Hyderabad","Banglore"
+            ],
+            "deadline": "20-01-23"
+        }
+    ]
+}

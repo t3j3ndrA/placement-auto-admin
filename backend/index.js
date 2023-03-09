@@ -8,7 +8,7 @@ const StudentRoute = require("./routes/student/student.route");
 const AdminRoute = require("./routes/admin/admin.route");
 const AuthRoute = require("./routes/auth/auth.route");
 const CompanyRoute = require("./routes/company/company.route");
-const TrashRoute = require("./routes/trash/trash.route");
+// const TrashRoute = require("./routes/trash/trash.route");
 const mongoose = require("mongoose");
 const MongoStore = require("connect-mongo");
 const verifyStudent = require("./middleware/verifyStudent");
@@ -50,7 +50,7 @@ app.use("/api/admin", AdminRoute);
 app.use("/api/company", CompanyRoute);
 
 // trash routes only under developments
-app.use("/api/trash", TrashRoute);
+// app.use("/api/trash", TrashRoute);
 ///////////////////////////////////////
 app.get("/get-session", (req, res) => {
   res.json(req.session.isAuth);

@@ -1,0 +1,906 @@
+ {
+    "totalresults": 128,
+    "key1": "valu1",
+    "articles":
+[
+    {
+     "Name": "Engineering Mathematics‐II",
+     "Semester": 1,
+     "Count": 18,
+     "Id": 1001,
+     "Department": "IT"
+    },
+    {
+     "Name": "Higher Engineering Mathematics",
+     "Semester": 1,
+     "Count": 13,
+     "Id": 1002,
+     "Department": "IT"
+    },
+    {
+     "Name": "Let Us C",
+     "Semester": 1,
+     "Count": 17,
+     "Id": 1003,
+     "Department": "IT"
+    },
+    {
+     "Name": "Programming in C",
+     "Semester": 1,
+     "Count": 10,
+     "Id": 1004,
+     "Department": "IT"
+    },
+    {
+     "Name": "Linux Programming",
+     "Semester": 1,
+     "Count": 7,
+     "Id": 1005,
+     "Department": "IT"
+    },
+    {
+     "Name": "Erach Bharucha Textbook of Environmental Studies",
+     "Semester": 2,
+     "Count": 10,
+     "Id": 1006,
+     "Department": "IT"
+    },
+    {
+     "Name": "Electronic Principles",
+     "Semester": 2,
+     "Count": 19,
+     "Id": 1007,
+     "Department": "IT"
+    },
+    {
+     "Name": "Modem Economics",
+     "Semester": 2,
+     "Count": 9,
+     "Id": 1008,
+     "Department": "IT"
+    },
+    {
+     "Name": "Programming in ANSI C",
+     "Semester": 2,
+     "Count": 25,
+     "Id": 1009,
+     "Department": "IT"
+    },
+    {
+     "Name": "The C Programming Language",
+     "Semester": 2,
+     "Count": 20,
+     "Id": 1010,
+     "Department": "IT"
+    },
+    {
+     "Name": "Microelectronics",
+     "Semester": 3,
+     "Count": 19,
+     "Id": 1011,
+     "Department": "IT"
+    },
+    {
+     "Name": "IBM PC and clones",
+     "Semester": 3,
+     "Count": 12,
+     "Id": 1012,
+     "Department": "IT"
+    },
+    {
+     "Name": "C++ Programming Design TMH publications",
+     "Semester": 3,
+     "Count": 29,
+     "Id": 1013,
+     "Department": "IT"
+    },
+    {
+     "Name": "Elements of Discrete Mathematic",
+     "Semester": 3,
+     "Count": 29,
+     "Id": 1014,
+     "Department": "IT"
+    },
+    {
+     "Name": "Electronic Communication (Fourth Edition)",
+     "Semester": 3,
+     "Count": 28,
+     "Id": 1015,
+     "Department": "IT"
+    },
+    {
+     "Name": "Financial Accounting for Managers -Text book & cases - Third Revised edition",
+     "Semester": 4,
+     "Count": 10,
+     "Id": 1016,
+     "Department": "IT"
+    },
+    {
+     "Name": "Higher Engineering Mathematics",
+     "Semester": 4,
+     "Count": 30,
+     "Id": 1017,
+     "Department": "IT"
+    },
+    {
+     "Name": "Computer Architecture and Organisation",
+     "Semester": 4,
+     "Count": 32,
+     "Id": 1018,
+     "Department": "IT"
+    },
+    {
+     "Name": "Computer System Architecture",
+     "Semester": 4,
+     "Count": 36,
+     "Id": 1019,
+     "Department": "IT"
+    },
+    {
+     "Name": "Architecture, Programming & applications with 8085\/8080A",
+     "Semester": 4,
+     "Count": 35,
+     "Id": 1020,
+     "Department": "IT"
+    },
+    {
+     "Name": "Fundamentals of Data Structures",
+     "Semester": 4,
+     "Count": 40,
+     "Id": 1021,
+     "Department": "IT"
+    },
+    {
+     "Name": "Communication Networks",
+     "Semester": 4,
+     "Count": 22,
+     "Id": 1022,
+     "Department": "IT"
+    },
+    {
+     "Name": "Database System Concepts",
+     "Semester": 5,
+     "Count": 28,
+     "Id": 1023,
+     "Department": "IT"
+    },
+    {
+     "Name": "Parallel Computers – Architecture and Programming",
+     "Semester": 5,
+     "Count": 29,
+     "Id": 1024,
+     "Department": "IT"
+    },
+    {
+     "Name": "Fundamentals of Computer Algorithms",
+     "Semester": 5,
+     "Count": 16,
+     "Id": 1025,
+     "Department": "IT"
+    },
+    {
+     "Name": "An Introduction to JAVA programming",
+     "Semester": 5,
+     "Count": 34,
+     "Id": 1026,
+     "Department": "IT"
+    },
+    {
+     "Name": "Introduction to Languages and Theory of Computation",
+     "Semester": 5,
+     "Count": 30,
+     "Id": 1027,
+     "Department": "IT"
+    },
+    {
+     "Name": "Software Engineering - A practitioner's Approach",
+     "Semester": 6,
+     "Count": 29,
+     "Id": 1028,
+     "Department": "IT"
+    },
+    {
+     "Name": "Operating System Concept",
+     "Semester": 6,
+     "Count": 22,
+     "Id": 1029,
+     "Department": "IT"
+    },
+    {
+     "Name": "The theory and practice of Compiler Writing",
+     "Semester": 6,
+     "Count": 15,
+     "Id": 1030,
+     "Department": "IT"
+    },
+    {
+     "Name": "JSP and Servlets: A Comprehensive Study",
+     "Semester": 6,
+     "Count": 26,
+     "Id": 1031,
+     "Department": "IT"
+    },
+    {
+     "Name": "Head First Design Patterns",
+     "Semester": 6,
+     "Count": 21,
+     "Id": 1032,
+     "Department": "IT"
+    },
+    {
+     "Name": "Design Patterns Elements of Reusable Object-Oriented Software",
+     "Semester": 6,
+     "Count": 20,
+     "Id": 1033,
+     "Department": "IT"
+    },
+    {
+     "Name": "Wireless Communication: Principles and Practice",
+     "Semester": 6,
+     "Count": 24,
+     "Id": 1034,
+     "Department": "IT"
+    },
+    {
+     "Name": "Handbook of Mobile Middleware",
+     "Semester": 6,
+     "Count": 25,
+     "Id": 1035,
+     "Department": "IT"
+    },
+    {
+     "Name": "Interactive Computer Graphics: A Top-Down Approach with OpenGL, 5th edition",
+     "Semester": 6,
+     "Count": 24,
+     "Id": 1036,
+     "Department": "IT"
+    },
+    {
+     "Name": "Data Mining – Concepts & Techniques",
+     "Semester": 7,
+     "Count": 24,
+     "Id": 1037,
+     "Department": "IT"
+    },
+    {
+     "Name": "Introduction to Applied Fuzzy Logic,",
+     "Semester": 7,
+     "Count": 19,
+     "Id": 1038,
+     "Department": "IT"
+    },
+    {
+     "Name": "Professional ASP.NET 2.0",
+     "Semester": 7,
+     "Count": 35,
+     "Id": 1039,
+     "Department": "IT"
+    },
+    {
+     "Name": "E-Commerce with Net. Commerce,",
+     "Semester": 7,
+     "Count": 11,
+     "Id": 1040,
+     "Department": "IT"
+    },
+    {
+     "Name": "Neural Network, 2nd edition",
+     "Semester": 7,
+     "Count": 23,
+     "Id": 1041,
+     "Department": "IT"
+    },
+    {
+     "Name": "Fundamentals of Digital Image Processing",
+     "Semester": 7,
+     "Count": 31,
+     "Id": 1042,
+     "Department": "IT"
+    },
+    {
+     "Name": "Cloud Computing Principles and Paradigm",
+     "Semester": 7,
+     "Count": 30,
+     "Id": 1043,
+     "Department": "IT"
+    },
+    {
+     "Name": "Beginning Android Programming with Android Studio",
+     "Semester": 7,
+     "Count": 35,
+     "Id": 1044,
+     "Department": "IT"
+    },
+    {
+     "Name": "Veerarajan T., Engineering Mathematics for first year",
+     "Semester": 1,
+     "Count": 28,
+     "Id": 1045,
+     "Department": "IT"
+    },
+    {
+     "Name": "Electrical Engineering Fundamentals",
+     "Semester": 1,
+     "Count": 23,
+     "Id": 1046,
+     "Department": "EC"
+    },
+    {
+     "Name": "Bhatt N.D., Panchal V.M. & Ingle P.R., (2014), Engineering Drawing, Charotar Publishing House",
+     "Semester": 1,
+     "Count": 20,
+     "Id": 1047,
+     "Department": "MH"
+    },
+    {
+     "Name": "Calculus and Analytic geometry",
+     "Semester": 1,
+     "Count": 15,
+     "Id": 1048,
+     "Department": "IT"
+    },
+    {
+     "Name": "Semiconductor Optoelectronics: Physics and Technology",
+     "Semester": 2,
+     "Count": 31,
+     "Id": 1049,
+     "Department": "EC"
+    },
+    {
+     "Name": "Electronic Components and Materials Principles",
+     "Semester": 2,
+     "Count": 27,
+     "Id": 1050,
+     "Department": "EC"
+    },
+    {
+     "Name": "Learning Web Design",
+     "Semester": 2,
+     "Count": 34,
+     "Id": 1051,
+     "Department": "IT"
+    },
+    {
+     "Name": "Integrated Electronics",
+     "Semester": 3,
+     "Count": 28,
+     "Id": 1052,
+     "Department": "EC"
+    },
+    {
+     "Name": "Electrical & Electronic Measurement & Measuring Instruments",
+     "Semester": 3,
+     "Count": 22,
+     "Id": 1053,
+     "Department": "EC"
+    },
+    {
+     "Name": "Network Analysis and Synthesis",
+     "Semester": 3,
+     "Count": 25,
+     "Id": 1054,
+     "Department": "IT"
+    },
+    {
+     "Name": "Circuit Theory - Analysis & Synthesis",
+     "Semester": 3,
+     "Count": 27,
+     "Id": 1055,
+     "Department": "EC"
+    },
+    {
+     "Name": "Fundamentals of Digital Logic with Verilog Design",
+     "Semester": 3,
+     "Count": 32,
+     "Id": 1056,
+     "Department": "IT"
+    },
+    {
+     "Name": "Integrated Electronics",
+     "Semester": 4,
+     "Count": 19,
+     "Id": 1057,
+     "Department": "EC"
+    },
+    {
+     "Name": "Modern Control Engineering",
+     "Semester": 4,
+     "Count": 34,
+     "Id": 1058,
+     "Department": "MH"
+    },
+    {
+     "Name": "Principles of Power System",
+     "Semester": 4,
+     "Count": 30,
+     "Id": 1059,
+     "Department": "MH"
+    },
+    {
+     "Name": "CMOS logic Circuit Design",
+     "Semester": 4,
+     "Count": 22,
+     "Id": 1060,
+     "Department": "EC"
+    },
+    {
+     "Name": "Digital Logic and Computer Design",
+     "Semester": 3,
+     "Count": 20,
+     "Id": 1061,
+     "Department": "EC"
+    },
+    {
+     "Name": "Principles and Practice of Cost Accounting",
+     "Semester": 3,
+     "Count": 15,
+     "Id": 1062,
+     "Department": "CH"
+    },
+    {
+     "Name": "Web Design with HTML, CSS, JavaScript and jQuery Set",
+     "Semester": 3,
+     "Count": 39,
+     "Id": 1063,
+     "Department": "CE"
+    },
+    {
+     "Name": "Modern Applied Algebra",
+     "Semester": 4,
+     "Count": 22,
+     "Id": 1064,
+     "Department": "IT"
+    },
+    {
+     "Name": "Professional Java Server Programming",
+     "Semester": 4,
+     "Count": 36,
+     "Id": 1065,
+     "Department": "IT"
+    },
+    {
+     "Name": "Core Java Volume I –Fundamentals",
+     "Semester": 4,
+     "Count": 40,
+     "Id": 1066,
+     "Department": "IT"
+    },
+    {
+     "Name": "Software Engineering",
+     "Semester": 4,
+     "Count": 23,
+     "Id": 1067,
+     "Department": "CE"
+    },
+    {
+     "Name": "Agile Software Development",
+     "Semester": 4,
+     "Count": 26,
+     "Id": 1068,
+     "Department": "CE"
+    },
+    {
+     "Name": "Bootstrap 4 quick start",
+     "Semester": 4,
+     "Count": 13,
+     "Id": 1069,
+     "Department": "CE"
+    },
+    {
+     "Name": "Engineering Materials",
+     "Semester": 4,
+     "Count": 19,
+     "Id": 1070,
+     "Department": "MH"
+    },
+    {
+     "Name": "Fluid Mechanics by A K Jain",
+     "Semester": 5,
+     "Count": 29,
+     "Id": 1071,
+     "Department": "MH"
+    },
+    {
+     "Name": "Basic Structural Analysis by C.S. Reddy,",
+     "Semester": 5,
+     "Count": 26,
+     "Id": 1072,
+     "Department": "CL"
+    },
+    {
+     "Name": "Fundamentals of Surveying by S K Roy",
+     "Semester": 5,
+     "Count": 28,
+     "Id": 1073,
+     "Department": "CH"
+    },
+    {
+     "Name": "Design of Steel Structures by N. Subramanian,",
+     "Semester": 5,
+     "Count": 29,
+     "Id": 1074,
+     "Department": "MH"
+    },
+    {
+     "Name": "Concrete Technology",
+     "Semester": 6,
+     "Count": 21,
+     "Id": 1075,
+     "Department": "CL"
+    },
+    {
+     "Name": "Business Communication: Second edition",
+     "Semester": 5,
+     "Count": 12,
+     "Id": 1076,
+     "Department": "CH"
+    },
+    {
+     "Name": "Soil Mechanics and Foundation engineering by V.N.S Murthi",
+     "Semester": 6,
+     "Count": 23,
+     "Id": 1077,
+     "Department": "CL"
+    },
+    {
+     "Name": "Introduction to Environmental Engineering",
+     "Semester": 6,
+     "Count": 15,
+     "Id": 1078,
+     "Department": "CH"
+    },
+    {
+     "Name": "Finite Element Analysis BY C.S.Krishnamoorthy",
+     "Semester": 6,
+     "Count": 24,
+     "Id": 1079,
+     "Department": "IT"
+    },
+    {
+     "Name": "Ramana B.V., Higher Engineering Mathematics",
+     "Semester": 1,
+     "Count": 14,
+     "Id": 1080,
+     "Department": "IT"
+    },
+    {
+     "Name": "Yunus A. Cengel, Michael A. Boles., “Thermodynamics",
+     "Semester": 1,
+     "Count": 15,
+     "Id": 1081,
+     "Department": "MH"
+    },
+    {
+     "Name": "Nag P.K., “Engineering Thermodynamics”,",
+     "Semester": 1,
+     "Count": 12,
+     "Id": 1082,
+     "Department": "MH"
+    },
+    {
+     "Name": "V. K. Mehta & Rohit Mehta, Principles of Electronics",
+     "Semester": 1,
+     "Count": 16,
+     "Id": 1083,
+     "Department": "EC"
+    },
+    {
+     "Name": "Mechanical Vibrations - J P Den Hartog",
+     "Semester": 1,
+     "Count": 12,
+     "Id": 1084,
+     "Department": "EC"
+    },
+    {
+     "Name": "Yashvant Kanetkar, Let Us C",
+     "Semester": 1,
+     "Count": 10,
+     "Id": 1085,
+     "Department": "IT"
+    },
+    {
+     "Name": "B. S. Grewal, Higher Engineering Mathematics",
+     "Semester": 2,
+     "Count": 12,
+     "Id": 1086,
+     "Department": "IT"
+    },
+    {
+     "Name": "Bhatt N.D., Panchal V.M. & Ingle P.R., (2014), Engineering Drawing",
+     "Semester": 2,
+     "Count": 14,
+     "Id": 1087,
+     "Department": "MH"
+    },
+    {
+     "Name": "Agrawal B. & Agrawal C. M. (2012), Engineering Graphics",
+     "Semester": 2,
+     "Count": 16,
+     "Id": 1088,
+     "Department": "MH"
+    },
+    {
+     "Name": "M. M. Mano, \"Digital logic and Computer design\",",
+     "Semester": 2,
+     "Count": 13,
+     "Id": 1089,
+     "Department": "IT"
+    },
+    {
+     "Name": "Strength of Materials, Sadhu Singh, 1st Edition",
+     "Semester": 2,
+     "Count": 10,
+     "Id": 1090,
+     "Department": "CH"
+    },
+    {
+     "Name": "Fundamentals of Molecular Spectroscopy",
+     "Semester": 2,
+     "Count": 12,
+     "Id": 1091,
+     "Department": "CH"
+    },
+    {
+     "Name": "Programming in ANCI C by E. Balagurusamy 2nd Edition",
+     "Semester": 3,
+     "Count": 14,
+     "Id": 1092,
+     "Department": "IT"
+    },
+    {
+     "Name": "Engineering Mechanics by A.K.Tayal",
+     "Semester": 3,
+     "Count": 14,
+     "Id": 1093,
+     "Department": "MH"
+    },
+    {
+     "Name": "Engineering Mechanics Vol – I and II",
+     "Semester": 3,
+     "Count": 12,
+     "Id": 1094,
+     "Department": "MH"
+    },
+    {
+     "Name": "Work shop Technology Vol. I & II, Gupta & Kaushik",
+     "Semester": 3,
+     "Count": 10,
+     "Id": 1095,
+     "Department": "CE"
+    },
+    {
+     "Name": "Modern economics theory- K.K.Dewett",
+     "Semester": 3,
+     "Count": 10,
+     "Id": 1096,
+     "Department": "CH"
+    },
+    {
+     "Name": "Introduction to economics and managerial economics",
+     "Semester": 3,
+     "Count": 11,
+     "Id": 1097,
+     "Department": "CH"
+    },
+    {
+     "Name": "Fundamentals of Engineering Drawing,",
+     "Semester": 3,
+     "Count": 12,
+     "Id": 1098,
+     "Department": "MH"
+    },
+    {
+     "Name": "Electronic Principles (Third Edition) by Albert Paul Malvino",
+     "Semester": 3,
+     "Count": 11,
+     "Id": 1099,
+     "Department": "EC"
+    },
+    {
+     "Name": "Strength of Materials by S. Ramamruthum",
+     "Semester": 4,
+     "Count": 10,
+     "Id": 1100,
+     "Department": "CH"
+    },
+    {
+     "Name": "Mechanics of Solid by R.S. Khurmi",
+     "Semester": 4,
+     "Count": 12,
+     "Id": 1101,
+     "Department": "MH"
+    },
+    {
+     "Name": "Elements of Mechanical Engineering, A. V. Mehta,",
+     "Semester": 4,
+     "Count": 11,
+     "Id": 1102,
+     "Department": "MH"
+    },
+    {
+     "Name": "ITB Hand book, Engineering industry training board",
+     "Semester": 4,
+     "Count": 12,
+     "Id": 1103,
+     "Department": "MH"
+    },
+    {
+     "Name": "Rajagopalan, Environmental Studies,",
+     "Semester": 4,
+     "Count": 13,
+     "Id": 1104,
+     "Department": "CH"
+    },
+    {
+     "Name": "Environmental Chemistry by De AK",
+     "Semester": 4,
+     "Count": 13,
+     "Id": 1105,
+     "Department": "CH"
+    },
+    {
+     "Name": "Hazardous Waste Incineration by Brunner RC,",
+     "Semester": 4,
+     "Count": 12,
+     "Id": 1106,
+     "Department": "CH"
+    },
+    {
+     "Name": "Mathematics for Engineering by Chandrika Prasad",
+     "Semester": 4,
+     "Count": 10,
+     "Id": 1107,
+     "Department": "IT"
+    },
+    {
+     "Name": "Chemical Process Industries, 4 Ed. by R. Norris Shreve",
+     "Semester": 4,
+     "Count": 11,
+     "Id": 1108,
+     "Department": "CH"
+    },
+    {
+     "Name": "Management Accounting - By Ravi M. Kishore",
+     "Semester": 4,
+     "Count": 12,
+     "Id": 1109,
+     "Department": "CH"
+    },
+    {
+     "Name": "Fundamental Managerial Accounting Concept Irwin McGraw Hill Edmonds,",
+     "Semester": 5,
+     "Count": 10,
+     "Id": 1110,
+     "Department": "CH"
+    },
+    {
+     "Name": "Introduction to Chemical Engineering by L. B. Andersen",
+     "Semester": 5,
+     "Count": 11,
+     "Id": 1111,
+     "Department": "CH"
+    },
+    {
+     "Name": "Machine Design by R. S. Khurmi & J. K. Gupta",
+     "Semester": 5,
+     "Count": 12,
+     "Id": 1112,
+     "Department": "IT"
+    },
+    {
+     "Name": "Theory of Machines by N. C. Pandya & C. S. Shah",
+     "Semester": 5,
+     "Count": 13,
+     "Id": 1113,
+     "Department": "MH"
+    },
+    {
+     "Name": "Thenical Dynamics by L. B. Shah, R. C. Patel & B. M. Patel",
+     "Semester": 5,
+     "Count": 12,
+     "Id": 1114,
+     "Department": "MH"
+    },
+    {
+     "Name": "Elements of physical Chemistry by S. Glassstone Macmillan & Co. Ltd., London",
+     "Semester": 5,
+     "Count": 10,
+     "Id": 1115,
+     "Department": "MH"
+    },
+    {
+     "Name": "Advance Organic Chemistry by Fischer & Fischer",
+     "Semester": 6,
+     "Count": 11,
+     "Id": 1116,
+     "Department": "CE"
+    },
+    {
+     "Name": "Advance Organic Chemistry by Robert & Cassero",
+     "Semester": 6,
+     "Count": 12,
+     "Id": 1117,
+     "Department": "CE"
+    },
+    {
+     "Name": "A Text Book of Applied Mathematics by P. N. Wartikar & J. N. Wartikar",
+     "Semester": 6,
+     "Count": 12,
+     "Id": 1118,
+     "Department": "IT"
+    },
+    {
+     "Name": "Mathematics for Engineering by Chandrika Prasad",
+     "Semester": 6,
+     "Count": 12,
+     "Id": 1119,
+     "Department": "IT"
+    },
+    {
+     "Name": "Chemical Engineering Thermodynamics by B. F. Dodge McGraw Hill Book Company",
+     "Semester": 7,
+     "Count": 12,
+     "Id": 1120,
+     "Department": "CH"
+    },
+    {
+     "Name": "Nature & Properties of engineering Materials, by D. ZasterZebski",
+     "Semester": 7,
+     "Count": 13,
+     "Id": 1121,
+     "Department": "CH"
+    },
+    {
+     "Name": "Elements of Material Science by Van Valk",
+     "Semester": 7,
+     "Count": 14,
+     "Id": 1122,
+     "Department": "CH"
+    },
+    {
+     "Name": "Petroleum Refinery Processes by Nelson McGraw Hill Publication.",
+     "Semester": 7,
+     "Count": 12,
+     "Id": 1123,
+     "Department": "CH"
+    },
+    {
+     "Name": "Theoretical Electrochemistry by L. Antropov, Mir Publishers",
+     "Semester": 1,
+     "Count": 10,
+     "Id": 1124,
+     "Department": "CH"
+    },
+    {
+     "Name": "Instrumental Method of Analysis by Willard, Merritt & Dean EWP",
+     "Semester": 1,
+     "Count": 12,
+     "Id": 1125,
+     "Department": "IC"
+    },
+    {
+     "Name": "Instrumental Method of Analysis by B. K. Sharma",
+     "Semester": 1,
+     "Count": 11,
+     "Id": 1126,
+     "Department": "IC"
+    },
+    {
+     "Name": "Synthetic Organic Chemistry by O. P. Agarwal",
+     "Semester": 1,
+     "Count": 12,
+     "Id": 1127,
+     "Department": "CH"
+    },
+    {
+     "Name": "Natural Products Vol. 1 by O. P. Agarwal",
+     "Semester": 1,
+     "Count": 12,
+     "Id": 1128,
+     "Department": "CH"
+    }
+
+   ]
+}
+   
+   
