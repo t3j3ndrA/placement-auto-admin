@@ -22,7 +22,7 @@ export const Homepage1 = () => {
     
         const getValues = async () => {
           try {
-            const data = await fetch(`${url}/company`).then(response => response.json()).then(console.log(json))
+            const data = await fetch(`${url}/company/of/63ec9c9fe7db39977126093a`).then(response => response.json()).then(console.log(json))
             console.log("Data from company page: ", data)
             set_data(data.data)
             setIsLoading(false)

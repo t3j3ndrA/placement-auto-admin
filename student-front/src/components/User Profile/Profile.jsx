@@ -6,6 +6,7 @@ import { Homepage } from '../Homepage/Homepage';
 import myImage from './person.jpg'
 import { Navbar } from '../Navbar/Navbar';
 import { Pre_loading_page } from '../Pre-Loading/Pre_loading_page';
+import styled from '@emotion/styled';
 
 export const Profile = () => {
 
@@ -180,7 +181,6 @@ export const Profile = () => {
 
       const newCompititiveCoding = [...student.competitiveCoding];
       newCompititiveCoding[index].ratings = e.target.value;
-
       setstudent(prevState => ({...prevState, competitiveCoding : newCompititiveCoding}))
     }
 
@@ -198,6 +198,44 @@ export const Profile = () => {
       const dateObject = new Date(`${year}-${month}-${day}`);
       return dateObject;
     }
+
+    const handleStipendChange = (e) =>{
+      const newInternship = student.internshipStatus
+      newInternship.stipend = e.target.value;
+
+      setstudent(prevState =>({...prevState, internshipStatus: newInternship}))
+    }
+
+
+    const handleInternShipDurationChange = (e) =>{
+      const newInternship = student.internshipStatus
+      newInternship.duration = e.target.value;
+
+      setstudent(prevState =>({...prevState, internshipStatus: newInternship}))
+    }
+
+    const handleInternShipCompanyNameChange = (e) =>{
+      const newInternship = student.internshipStatus
+      newInternship.companyName = e.target.value;
+
+      setstudent(prevState =>({...prevState, internshipStatus: newInternship}))
+    }
+    
+    
+    const handleInternShipDateChange = (e) =>{
+      // const dateString = e;
+      const [day, month, year] = e.split('-');
+      const dateObject = new Date(`${year}-${month}-${day}`);
+      return dateObject;
+    }
+
+    const handleCompanyDateChange = (e) =>{
+      // const dateString = e;
+      const [day, month, year] = e.split('-');
+      const dateObject = new Date(`${year}-${month}-${day}`);
+      return dateObject;
+    }
+
 
     useEffect(() =>{
       const getValues  = async() =>{
@@ -330,7 +368,7 @@ export const Profile = () => {
           // const res = await axios.patch(`/profile/${id}`, post, {withCredentials : true })
           // const res = await axios.get(`http://localhost:5000/get-session`, {withCredentials : true })
 
-          const res = await axios.post(`http://localhost:5000/api/student/profile/update`, post, {withCredentials : true })
+          const res = await axios.put(`http://localhost:5000/api/student/update`, post, {withCredentials : true })
 
           console.log("after making changes: ", res.data)
           location.reload()
@@ -401,7 +439,7 @@ export const Profile = () => {
           <div>
             <label className='flex'>Date of Birth</label>
             <div>
-              <input type="text" className=' px-3 py-2 flex rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none' autoComplete='false' value={student.dateOfBirth}  onChange = {(e) => {setstudent(prevState => ({...prevState,dateOfBirth: e.target.value}))}}></input>
+              <input type="date" className=' px-3 py-2 flex rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none' autoComplete='false' value={new Date()}  onChange = {(e) => {setstudent(prevState => ({...prevState,dateOfBirth: e.target.value}))}}></input>
             </div>
           </div>
         </div>
@@ -775,7 +813,7 @@ export const Profile = () => {
 
           <div>
           <label className='flex'>Company Name</label>
-        <input type="text" value={student?.internshipStatus?.companyName} className='px-3 py-2 flex rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none' autoComplete='false'></input>
+        <input type="text" value={student?.internshipStatus?.companyName} className='px-3 py-2 flex rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none' autoComplete='false' onChange={(e) => handleInternShipCompanyNameChange(e)}></input>
         </div>
       </div>
 
@@ -793,7 +831,7 @@ export const Profile = () => {
           <div>
             <label className='flex'>Internship Duration (in Months)</label>
             <div>
-              <input type="text" value={student?.internshipStatus?.duration} className=' px-3 py-2 flex rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none' autoComplete='false'></input>
+              <input type="text" value={student?.internshipStatus?.duration} className=' px-3 py-2 flex rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none' autoComplete='false' onChange={(e) => handleInternShipDurationChange(e)}></input>
             </div>
           </div>
         </div>
@@ -806,14 +844,14 @@ export const Profile = () => {
           <div>
           <label className='flex'>Stipend (In thousand Rupees)</label>
             <div>
-              <input type="text" value={student?.internshipStatus?.stipend} className=' px-3 py-2 flex rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none' autoComplete='false'></input>
+              <input type="text" value={student?.internshipStatus?.stipend} className=' px-3 py-2 flex rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none' autoComplete='false' onChange={(e) => handleStipendChange(e)}></input>
             </div>
           </div>
 
           <div>
             <label className='flex'>Mode</label>
             <div className='text-black'>
-            <select value={student?.internshipStatus?.mode} name="internship_status" id="internship_status" className='text-white p-1' style={{ backgroundColor: '#0B0E2A' }}>
+            <select value={student?.internshipStatus?.mode} name="internship_status" id="internship_status" className='text-white p-1' style={{ backgroundColor: '#0B0E2A' }}  >
             <option value="--Select--" className='text-white p-1' style={{ backgroundColor: '#0B0E2A' }} defaultValue={true}>--Select--</option>
             <option value="remote" className='text-white p-1' style={{ backgroundColor: '#0B0E2A' }}>Remote</option>
             <option value="onsite" className='text-white p-1' style={{ backgroundColor: '#0B0E2A' }}>Work from Home</option>
