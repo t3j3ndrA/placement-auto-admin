@@ -1,0 +1,51 @@
+{
+    "name": "Flipkart",
+    "website": "www.amazon.com",
+    "email": "job@amazon.com",
+    "forBatch": 2024,
+    "description": "This is the sample amazon description, this could be even longer but not typing much",
+    "address": {
+        "city": "baroda",
+        "district": "baroda",
+        "state": "Gujarat",
+        "postalCode": 232323,
+        "completeAddress": "23 Vaniyavad, Baroda."
+    },
+    "roles": [
+        {
+            "name": "Software developer",
+            "avgPackage": 23,
+            "type": "full-time",
+            "mode": "remote",
+            "bonds": 24,
+            "deadline": "2023-03-05",
+            "interviewDate": "2023-03-10",
+            "interviewMode": "offline",
+            "requirements": {
+                "cpi": 8.2,
+                "twelfthPerc": 85,
+                "competitiveCoding": [
+                    {
+                        "platform": "hackerank",
+                        "stars": 4
+                    }
+                ],
+                "expectedSkills": "react, mern stack , javascript, basic DSA"
+            }
+        },
+        {
+            "name": "UI/UX Designer",
+            "avgPackage": 10,
+            "type": "internship",
+            "mode": "on-site",
+            "bonds": 12,
+            "deadline": "2023-03-05",
+            "interviewDate": "2023-03-10",
+            "interviewMode": "online",
+            "requirements": {
+                "cpi": 7.5,
+                "expectedSkills": "Figma, photoshop , video editing"
+            }
+        }
+    ]
+}
