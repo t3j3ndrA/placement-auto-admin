@@ -166,7 +166,7 @@ router.get("/", (req, res) => {
 });
 
 // register new student with email
-router.post("/new", verifyAdmin, async (req, res) => {
+router.post("/new", async (req, res) => {
   const { collegeEmails } = req.body;
 
   let students = [];

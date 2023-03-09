@@ -28,7 +28,11 @@ const Login = () => {
     const password = getValues("password");
 
     axios
-      .post("/api/auth/login", { email, password }, { withCredentials: true })
+      .post(
+        "http://localhost:5000/api/auth/admin/login",
+        { email, password },
+        { withCredentials: true }
+      )
       .then((response) => {
         return response.data;
       })
