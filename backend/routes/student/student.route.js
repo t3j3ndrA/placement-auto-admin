@@ -169,27 +169,27 @@ router.get("/", (req, res) => {
 router.post("/new", verifyAdmin, async (req, res) => {
   const { collegeEmails } = req.body;
 
-  let promises = collegeEmails.filter((email) =>
-    Student.findOne({ collegeEmail: email })
-  );
-
-  const nonExistedEmails = await Promise.all(promises);
-  console.log(nonExistedEmails);
-  return res.json({ data: nonExistedEmails });
-  // if (studentFound) {
-  //   return res.json({ success: false, msg: DUPLICATE_STUDENT });
-  // }
-
-  // const password = generator.generate({
-  //   length: 8,
-  // });
-
-  //   const tempStudent = new Student({ collegeEmail, password });
-
-  //   tempStudent
-  //     .save()
-  //     .then((savedStudent) => res.json({ success: true, data: savedStudent }))
-  //     .catch((error) => res.json({ success: false, error: error }));
+  let students = [];
+  for (let i = 0; i < collegeEmails.length; ++i) {
+    const foundStudent = await Student.findOne({
+      collegeEmail: collegeEmails[i],
+    });
+    if (!foundStudent) {
+      students.push(
+        new Student({
+          collegeEmail: collegeEmails[i],
+          password: generator.generate({
+            length: 8,
+            lowercase: true,
+            uppercase: true,
+            numbers: true,
+          }),
+        })
+      );
+    }
+  }
+  const savedStudents = await Student.bulkSave(students);
+  return res.json({ success: true, data: savedStudents });
 });
 
 // update the existing user
