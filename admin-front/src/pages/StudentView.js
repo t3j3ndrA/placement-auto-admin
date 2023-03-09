@@ -97,7 +97,7 @@ const StudentView = () => {
                 <input
                   name="dateOfBirth"
                   className="outline-none px-4 py-1 rounded-md bg-subSection"
-                  value={stu.dateOfBirth.substring(0, 10)}
+                  value={stu.dateOfBirth?.substring(0, 10)}
                 />
               </div>
 
@@ -396,7 +396,7 @@ const StudentView = () => {
                     <input
                       disabled={true}
                       name="duration"
-                      value={stu.placementStatus.joiningDate.substring(0, 10)}
+                      value={stu.placementStatus.joiningDate?.substring(0, 10)}
                       className="outline-none px-4 py-1 rounded-md bg-subSection"
                     />
                   </div>
@@ -465,7 +465,7 @@ const StudentView = () => {
                     <input
                       disabled={true}
                       name="duration"
-                      value={stu.internshipStatus.joiningDate.substring(0, 10)}
+                      value={stu.internshipStatus.joiningDate?.substring(0, 10)}
                       className="outline-none px-4 py-1 rounded-md bg-subSection"
                     />
                   </div>

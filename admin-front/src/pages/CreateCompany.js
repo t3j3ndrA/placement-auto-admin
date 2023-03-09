@@ -320,7 +320,7 @@ const CreateCompany = () => {
                         name="deadline"
                         type="date"
                         className="outline-none px-4 py-1 rounded-md bg-subSection"
-                        value={role.deadline.substring(0, 10)}
+                        value={role.deadline?.substring(0, 10)}
                         onChange={(e) => {
                           handleRoleChange(e, roleIndex);
                         }}
@@ -333,7 +333,7 @@ const CreateCompany = () => {
                         name="interviewDate"
                         type="date"
                         className="outline-none px-4 py-1 rounded-md bg-subSection"
-                        value={role.interviewDate.substring(0, 10)}
+                        value={role.interviewDate?.substring(0, 10)}
                         onChange={(e) => {
                           handleRoleChange(e, roleIndex);
                         }}

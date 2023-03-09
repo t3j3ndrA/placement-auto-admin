@@ -149,7 +149,7 @@ const CompanyView = () => {
           </div>
         ) : (
           <div className="bg-section mx-auto px-4 py-4 lg:w-2/3">
-            <h1 className="text-3xl font-bold">{company.name}</h1>
+            <h1 className="text-3xl font-bold">{company?.name}</h1>
 
             <div className="flex flx-row justify-end mt-2 ">
               <div className="flex flex-row gap-4">
@@ -325,7 +325,7 @@ const CompanyView = () => {
                           name="deadline"
                           type="date"
                           className="outline-none px-4 py-1 rounded-md bg-subSection"
-                          value={role.deadline.substring(0, 10)}
+                          value={role?.deadline?.substring(0, 10)}
                           onChange={(e) => {
                             handleRoleChange(e, roleIndex);
                           }}
@@ -338,7 +338,7 @@ const CompanyView = () => {
                           name="interviewDate"
                           type="date"
                           className="outline-none px-4 py-1 rounded-md bg-subSection"
-                          value={role.interviewDate.substring(0, 10)}
+                          value={role?.interviewDate?.substring(0, 10)}
                           onChange={(e) => {
                             handleRoleChange(e, roleIndex);
                           }}

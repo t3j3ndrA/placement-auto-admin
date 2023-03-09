@@ -118,7 +118,7 @@ const Applications = () => {
               name="deadline"
               type="date"
               className="outline-none px-4 py-1 rounded-md bg-subSection"
-              value={data?.role.deadline.substring(0, 10)}
+              value={data?.role.deadline?.substring(0, 10)}
               disabled={true}
             />
           </div>
@@ -129,7 +129,7 @@ const Applications = () => {
               name="interviewDate"
               type="date"
               className="outline-none px-4 py-1 rounded-md bg-subSection"
-              value={data?.role.interviewDate.substring(0, 10)}
+              value={data?.role.interviewDate?.substring(0, 10)}
               disabled={true}
             />
           </div>

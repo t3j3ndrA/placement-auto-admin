@@ -17,6 +17,7 @@ import StudentView from "./pages/StudentView";
 import Applications from "./pages/Applications";
 import Elligibles from "./pages/Elligibles";
 import NotifyStudents from "./pages/NotifyStudents";
+import RegisterStudent from "./pages/RegisterStudent";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
   {
     path: "/students",
     element: <Students />,
+  },
+  {
+    path: "/students/register",
+    element: <RegisterStudent />,
   },
   {
     path: "/companies",

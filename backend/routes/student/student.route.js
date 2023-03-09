@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const Student = require("../../models/student/student.model");
+const Company = require("../../models/company/company.model");
 const generator = require("generate-password");
 const {
   NO_EMAIL,
@@ -166,25 +167,29 @@ router.get("/", (req, res) => {
 
 // register new student with email
 router.post("/new", verifyAdmin, async (req, res) => {
-  const { collegeEmail } = req.body;
+  const { collegeEmails } = req.body;
 
-  if (!collegeEmail) return res.json({ success: false, msg: NO_EMAIL });
-
-  const studentFound = await Student.findOne({ collegeEmail: collegeEmail });
-
-  if (studentFound) {
-    return res.json({ success: false, msg: DUPLICATE_STUDENT });
+  let students = [];
+  for (let i = 0; i < collegeEmails.length; ++i) {
+    const foundStudent = await Student.findOne({
+      collegeEmail: collegeEmails[i],
+    });
+    if (!foundStudent) {
+      students.push(
+        new Student({
+          collegeEmail: collegeEmails[i],
+          password: generator.generate({
+            length: 8,
+            lowercase: true,
+            uppercase: true,
+            numbers: true,
+          }),
+        })
+      );
+    }
   }
-
-  const password = generator.generate({
-    length: 8,
-  });
-
-  const tempStudent = new Student({ collegeEmail, password });
-  tempStudent
-    .save()
-    .then((savedStudent) => res.json({ success: true, data: savedStudent }))
-    .catch((error) => res.json({ success: false, error: error }));
+  const savedStudents = await Student.bulkSave(students);
+  return res.json({ success: true, data: savedStudents });
 });
 
 // update the existing user
@@ -243,4 +248,27 @@ router.put("/update", (req, res) => {
     .catch((error) => res.json({ success: false, error }));
 });
 
+// get student's applications with roles
+router.get("/:stuId/applications", async (req, res) => {
+  const { stuId } = req.params;
+  const student = await Student.findOne({ _id: stuId });
+
+  if (!student) return res.json({ success: false, msg: "Invalid students" });
+
+  const companies = await Company.find({ forBatch: student.passingYear });
+
+  // const comapny = await Company.findOne({ _id: id });
+  let result = [];
+
+  companies.forEach((company) => {
+    let roles = company.roles.filter((role) => {
+      return role?.applications?.includes(stuId);
+    });
+    if (roles.length > 0) {
+      result.push({ ...company._doc, roles });
+    }
+  });
+
+  return res.json({ success: true, data: result });
+});
 module.exports = router;
