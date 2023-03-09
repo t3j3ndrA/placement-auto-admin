@@ -8,6 +8,7 @@ import { Pre_loading_page } from '../Pre-Loading/Pre_loading_page'
 
 export const Company_page = ({fetched_url}) => {
   let url = "http://127.0.0.1:5000/api"
+  var student_id;
   const [_data, set_data] = useState({})
   const [isLoading, setIsLoading] = useState(true);
   const [isElligible, setisElligible] = useState([
@@ -24,12 +25,13 @@ export const Company_page = ({fetched_url}) => {
     console.log("hello from company page")
     const id1 = '63fda9a0dc1e2307a2ec7b84';
     const id = fetched_url.id1;
+    student_id = "63ec9c9fe7db39977126093a";
     console.log("id from props : ", id)
     const getValues = async () => {
       try {
         // getId()
         // const data = await axios.get(`${url}/Company/${id}`)
-        const data = await fetch(`${url}/company/?id=${id}`).then(response => response.json()).then(console.log(json))
+        const data = await fetch(`${url}/company/?id=${id}&stuId=63ec9c9fe7db39977126093a`).then(response => response.json()).then(console.log(json))
         console.log("Data from company page: ", data)
         set_data(data.data)
         setIsLoading(false)
@@ -334,7 +336,7 @@ export const Company_page = ({fetched_url}) => {
 
                   <div className='flex justify-center'>
                     <div  className='w-2/12 grid justify-items-center m-2 p-2 hover:bg-blue-700 bg-indigo-900'>
-                      <a href="www.google.com"><button className='text-white' key={index} onClick = {handleApply} disabled = {isElligible[index]._value} 
+                      <a href="www.google.com"><button className='text-white disabled:bg-slate-500' key={index} onClick = {handleApply} disabled = {!item.elligibles.includes(student_id)} 
                        >Apply</button></a>
                     </div>
                   </div>
