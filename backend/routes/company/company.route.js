@@ -16,13 +16,25 @@ const {
 } = require("../../utils/company.utils");
 const studentModel = require("../../models/student/student.model");
 
-router.get("/", (req, res) => {
-  const { name, website, email, id } = req.query;
+router.get("/", async (req, res) => {
+  const { name, website, email, id, stuId } = req.query;
+
+  if (id && stuId) {
+    const comapny = await Company.findOne({ _id: id });
+    let roles = comapny.roles.map((role) => {
+      if (role?.elligibles.includes(stuId)) {
+        return { ...role._doc, isElligible: true };
+      } else {
+        return { ...role._doc, isElligible: false };
+      }
+    });
+
+    return res.json({ success: true, data: { ...comapny._doc, roles } });
+  }
 
   if (id) {
-    return Company.findOne({ _id: id })
-      .then((result) => res.json({ success: true, data: result }))
-      .catch((err) => res.json({ success: false, err }));
+    const comapny = await Company.findOne({ _id: id });
+    return res.json({ success: true, data: comapny });
   }
 
   // regex documentations -> https://www.mongodb.com/docs/manual/reference/operator/query/regex/
