@@ -143,7 +143,7 @@ const NotifyStudents = () => {
               name="deadline"
               type="date"
               className="outline-none px-4 py-1 rounded-md bg-subSection"
-              value={cData?.role.deadline.substring(0, 10)}
+              value={cData?.role.deadline?.substring(0, 10)}
               disabled={true}
             />
           </div>
@@ -154,7 +154,7 @@ const NotifyStudents = () => {
               name="interviewDate"
               type="date"
               className="outline-none px-4 py-1 rounded-md bg-subSection"
-              value={cData?.role.interviewDate.substring(0, 10)}
+              value={cData?.role.interviewDate?.substring(0, 10)}
               disabled={true}
             />
           </div>

@@ -76,6 +76,16 @@ const Students = () => {
       <Navbar focusOn="students" />
       {/* Wrapper */}
       <div className="px-2 py-5 flex flex-col gap-8 md:px-8 lg:px-12">
+        {/* Add students */}
+        <div className="flex justify-between  items-center bg-tableHead p-3 rounded-md">
+          <h1 className="text-2xl">Register Students</h1>
+          <Link to="/students/register">
+            <button className="text-section font-semibold bg-white rounded-md text-lg px-4 py-2">
+              Register
+            </button>
+          </Link>
+        </div>
+
         {/* Companies */}
 
         <h1 className="text-2xl">Students</h1>
