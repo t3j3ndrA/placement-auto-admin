@@ -29,7 +29,7 @@ const Login = () => {
 
     axios
       .post(
-        "http://localhost:5000/api/auth/admin/login",
+        "/api/auth/admin/login",
         { email, password },
         { withCredentials: true }
       )

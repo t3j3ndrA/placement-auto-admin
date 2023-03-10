@@ -25,7 +25,7 @@ const RegisterStudent = () => {
   const handleSubmit = async (e) => {
     setIsLoading(true);
     e.preventDefault();
-    const { data } = await axios.post("http://localhost:5000/api/student/new", {
+    const { data } = await axios.post("/api/student/new", {
       collegeEmails: studentsArr,
     });
     console.log(data);

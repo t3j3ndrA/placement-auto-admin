@@ -24,7 +24,7 @@ const NotifyStudents = () => {
 
   const fetchBasicCRInfo = async () => {
     return axios
-      .get(`http://localhost:5000/api/company/${cid}/role/${rid}/basic`, {
+      .get(`/api/company/${cid}/role/${rid}/basic`, {
         withCredentials: true,
       })
       .then((response) => response.data)
@@ -41,7 +41,7 @@ const NotifyStudents = () => {
     }
 
     return axios
-      .get(`http://localhost:5000/api/student?${filterURL}`, {
+      .get(`/api/student?${filterURL}`, {
         withCredentials: true,
       })
       .then((response) => response.data)

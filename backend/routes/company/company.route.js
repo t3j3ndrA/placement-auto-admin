@@ -17,7 +17,25 @@ const {
 const studentModel = require("../../models/student/student.model");
 
 router.get("/", async (req, res) => {
-  const { name, website, email, id, stuId } = req.query;
+  const {
+    name,
+    website,
+    email,
+    id,
+    stuId,
+    roleName,
+    avgPackage,
+    type,
+    mode,
+    bonds,
+    deadline,
+    interviewMode,
+    cpi,
+    twelfthPerc,
+    tenthPerc,
+    diplomaPerc,
+    expectedSkills,
+  } = req.query;
 
   if (id && stuId) {
     const comapny = await Company.findOne({ _id: id });
@@ -43,14 +61,86 @@ router.get("/", async (req, res) => {
     $and: [
       {
         name: {
-          $regex: name ? ".*" + name + "*." : ".*.",
+          $regex: name ? name : ".*.",
           $options: "i",
         },
       },
+      {
+        website: {
+          $regex: website ? website : ".*.",
+          $options: "i",
+        },
+      },
+      {
+        email: {
+          $regex: email ? email : ".*.",
+          $options: "i",
+        },
+      },
+      {
+        "roles.name": {
+          $regex: roleName ? roleName : ".*.",
+          $options: "i",
+        },
+      },
+      {
+        "roles.avgPackage": {
+          $gte: avgPackage ? avgPackage : 0,
+        },
+      },
+      {
+        "roles.type": {
+          $regex: type ? type : ".*.",
+          $options: "i",
+        },
+      },
+      {
+        "roles.mode": {
+          $regex: mode ? mode : ".*.",
+          $options: "i",
+        },
+      },
+      {
+        "roles.bonds": {
+          $gte: bonds ? bonds : 0,
+        },
+      },
+      {
+        "roles.interviewMode": {
+          $regex: interviewMode ? interviewMode : ".*.",
+          $options: "i",
+        },
+      },
+      {
+        "roles.requirements.cpi": {
+          $gte: cpi ? cpi : 0,
+        },
+      },
+      {
+        "roles.requirements.twelfthPerc": {
+          $gte: twelfthPerc ? twelfthPerc : 0,
+        },
+      },
+      {
+        "roles.requirements.tenthPerc": {
+          $gte: tenthPerc ? tenthPerc : 0,
+        },
+      },
+      {
+        "roles.requirements.diplomaPerc": {
+          $gte: diplomaPerc ? diplomaPerc : 0,
+        },
+      },
+      // {
+      //   "roles.requirements.expectedSkills": {
+      //     $regex: expectedSkills ? expectedSkills : ".*.",
+      //     $options: "i",
+      //   },
+      // },
     ],
   })
-    .then((foundCompany) => {
-      return res.json({ success: true, data: foundCompany });
+    .then((foundCompanies) => {
+      return res.json({ success: true, data: foundCompanies });
     })
     .catch((error) => {
       return res.json({ success: false, error });
@@ -365,6 +455,7 @@ router.get("/:companyId/role/:roleId", async (req, res) => {
       gender: 1,
     }
   );
+
   const elligibles = await Student.find(
     {
       $and: [

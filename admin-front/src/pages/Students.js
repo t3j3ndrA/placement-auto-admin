@@ -26,7 +26,7 @@ const Students = () => {
     console.log(filterURL);
 
     return axios
-      .get(`http://localhost:5000/api/student?${filterURL}`, {
+      .get(`/api/student?${filterURL}`, {
         withCredentials: true,
       })
       .then((response) => response.data)

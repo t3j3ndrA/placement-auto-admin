@@ -29,12 +29,9 @@ const Elligibles = () => {
     console.log("FilterURL", filterURL);
 
     return axios
-      .get(
-        `http://localhost:5000/api/company/${cid}/role/${rid}?${filterURL}`,
-        {
-          withCredentials: true,
-        }
-      )
+      .get(`/api/company/${cid}/role/${rid}?${filterURL}`, {
+        withCredentials: true,
+      })
       .then((response) => response.data)
       .then((data) => data.data)
       .catch((err) => {
