@@ -24,7 +24,7 @@ const Reports = () => {
       <div className="px-2 py-5 flex flex-col gap-8 md:px-8 lg:px-12">
         {/* Title */}
         <div className="flex justify-between  items-center bg-section p-3 rounded-md">
-          <h1 className="text-2xl">Placement Reports</h1>
+          <h1 className="text-3xl">Placement Reports</h1>
         </div>
 
         <PlacementRatio />
