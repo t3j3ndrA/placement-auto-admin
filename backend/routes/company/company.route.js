@@ -131,6 +131,7 @@ router.get("/", async (req, res) => {
           $gte: diplomaPerc ? diplomaPerc : 0,
         },
       },
+      // address filtring
       // {
       //   "roles.requirements.expectedSkills": {
       //     $regex: expectedSkills ? expectedSkills : ".*.",
