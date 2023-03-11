@@ -17,7 +17,7 @@ const Students = () => {
   const [showFilter, setShowFilter] = useState(false);
   const navigate = useNavigate();
 
-  const fetchCompanies = async () => {
+  const fetchStudents = async () => {
     let filterURL = "";
     for (const query in filter) {
       filterURL += `${query}=${filter[query]}&`;
@@ -63,7 +63,7 @@ const Students = () => {
 
   const { data, isLoading, isError } = useQuery(
     ["students", filter],
-    fetchCompanies,
+    fetchStudents,
     {
       keepPreviousData: true,
     }
