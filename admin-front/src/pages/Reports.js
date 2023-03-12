@@ -6,6 +6,7 @@ import PlacementRatio from "../components/reports/PlacementRatio";
 import Top10Placements from "../components/reports/Top10Placements";
 import YearlyPlaced from "../components/reports/YearlyPlaced";
 import YearlyNotPlaced from "../components/reports/YearlyNotPlaced";
+import DownloadReport from "../components/reports/DownloadReport";
 
 // Year wise placement reposts
 // company wise + year wise placement
@@ -23,8 +24,9 @@ const Reports = () => {
       {/* Wrapper */}
       <div className="px-2 py-5 flex flex-col gap-8 md:px-8 lg:px-12">
         {/* Title */}
-        <div className="flex justify-between  items-center bg-section p-3 rounded-md">
+        <div className=" bg-section p-3 rounded-md">
           <h1 className="text-3xl">Placement Reports</h1>
+          <DownloadReport />
         </div>
 
         <PlacementRatio />

@@ -11,6 +11,7 @@
     "@testing-library/user-event": "^13.2.1",
     "axios": "^1.2.3",
     "chart.js": "^4.2.1",
+    "downloadjs": "^1.4.7",
     "localforage": "^1.10.0",
     "match-sorter": "^6.3.1",
     "moment": "^2.29.4",
