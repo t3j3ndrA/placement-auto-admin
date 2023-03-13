@@ -85,7 +85,7 @@ const StudentSchema = mongoose.Schema({
       duration: { type: Number, defualt: 0 },
       stipend: { type: Number, default: 0 },
       joiningDate: { type: Date },
-      mode: { type: String, enum: ["remote", "onsite"] },
+      mode: { type: String, enum: ["remote", "on-site"] },
     }),
   },
 

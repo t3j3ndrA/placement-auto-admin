@@ -6,6 +6,7 @@ import { Homepage } from '../Homepage/Homepage';
 import myImage from './person.jpg'
 import { Navbar } from '../Navbar/Navbar';
 import { Pre_loading_page } from '../Pre-Loading/Pre_loading_page';
+import getStuId from "../../utils/getStuId";
 import styled from '@emotion/styled';
 
 export const Profile = () => {
@@ -15,6 +16,12 @@ export const Profile = () => {
     const [rollNumber, setrollNumber] = useState('')
     const [email, setemail] = useState("abcde@gmail.com")
     const [password, setpassword] = useState('12345')
+    const [key, setKey] = useState(Math.random());
+    const Gender = ["Male", "Female"];
+    const InternshipSelected = ["yes", "no"];
+    const CompanySelected = ["yes", "no"];
+    const InternshipMode = ["remote", "on-site"];
+    const CompanypMode = ["remote", "on-site"];
 
     const[student, setstudent] = useState({
       _id : "",
@@ -24,6 +31,7 @@ export const Profile = () => {
       password: "",
       rollNumber: "",
       collegeId: "",
+      // gender: [options[0]],
       gender: "",
       branch: "",
       passingYear: "",
@@ -49,6 +57,8 @@ export const Profile = () => {
       dateOfBirth: "",
       personalPhoneNumber: "",
       parentsPhoneNumber: "",
+
+
       city: "",
       pincode: "",
       registrationStatus : "",
@@ -199,10 +209,48 @@ export const Profile = () => {
       return dateObject;
     }
 
+
+    const handleDeleteIndividualProfileChange = (index) =>{
+  
+      // e.preventDefault();
+      console.log("compititve programming before delete : ", student.competitiveCoding[index], " -- ", index)
+      const newCompititiveCoding = student.competitiveCoding;
+      newCompititiveCoding.splice(index, 1);
+      setstudent(prevState =>({...prevState, competitiveCoding: newCompititiveCoding}))
+      console.log("compititve programming after delete : ", student.competitiveCoding)
+    }
+
+    const handleGenderChange = (e) =>{
+      var newGender = student.gender;
+      newGender = e.target.value;
+      // console.group("gender: ",newGender, "  -- actual gender before: ", student.gender);
+      setstudent(prevState => ({...prevState, gender: newGender}));
+      // console.group("gender after change  : ",student.gender);
+    }
+
+
+    const handleInternshipStatusChange = (e) =>{
+      var newInternshipStatus = student.internshipStatus;
+      newInternshipStatus.selected = e.target.value;
+      // console.log("e.t.v >> " , e.target.value);
+      // console.log("nis >> " , newInternshipStatus)
+      // setstudent(prevState => ({...prevState, internshipStatus: newInternshipStatus}))
+      setstudent({...student, internshipStatus : newInternshipStatus})
+      setKey(Math.random())
+    }
+
+    const handleInternShipModeChange = (e) =>{
+
+      var newInternshipStatus = student.internshipStatus;
+      console.group("internship mode  before  change: ",student.internshipStatus.mode);
+      newInternshipStatus.mode = e.target.value;
+      setstudent(prevState => ({...prevState, internshipStatus: newInternshipStatus}));
+      console.group("internship mode  after change: ",student.internshipStatus.mode);
+    }
+
     const handleStipendChange = (e) =>{
       const newInternship = student.internshipStatus
       newInternship.stipend = e.target.value;
-
       setstudent(prevState =>({...prevState, internshipStatus: newInternship}))
     }
 
@@ -212,16 +260,14 @@ export const Profile = () => {
       newInternship.duration = e.target.value;
 
       setstudent(prevState =>({...prevState, internshipStatus: newInternship}))
-    }
-
+    }   
+    
     const handleInternShipCompanyNameChange = (e) =>{
       const newInternship = student.internshipStatus
       newInternship.companyName = e.target.value;
-
       setstudent(prevState =>({...prevState, internshipStatus: newInternship}))
     }
-    
-    
+
     const handleInternShipDateChange = (e) =>{
       // const dateString = e;
       const [day, month, year] = e.split('-');
@@ -234,6 +280,69 @@ export const Profile = () => {
       const [day, month, year] = e.split('-');
       const dateObject = new Date(`${year}-${month}-${day}`);
       return dateObject;
+    }  
+
+    // console.log("s.insta >> " , student.internshipStatus)
+
+    const handlePlacementCompanyNameChange = (e) =>{
+      const newPlacement = student.placementStatus
+      newPlacement.companyName = e.target.value;
+      setstudent(prevState =>({...prevState, placementStatus: newPlacement}))
+    }
+
+
+    const handleCompanyStatusChange = (e) =>{
+      var newplacementStatus = student.placementStatus
+      newplacementStatus.selected = e.target.value;
+      setstudent(prevState => ({...prevState, placementStatus: newplacementStatus}))
+    }
+
+    const handleCompanyModeChange = (e) =>{
+      var newplacementStatus = student.placementStatus
+      newplacementStatus.mode = e.target.value;
+      setstudent(prevState => ({...prevState, placementStatus: newplacementStatus}))
+    }
+
+    const handlePackageChange = (e) =>{
+      const newPlacement = student.placementStatus
+      newPlacement.package = e.target.value;
+      setstudent(prevState =>({...prevState, placementStatus: newPlacement}))
+    }
+
+    const handleCompanyBondChange = (e) =>{
+      const newPlacement = student.placementStatus
+      newPlacement.duration = e.target.value;
+      setstudent(prevState =>({...prevState, placementStatus: newPlacement}))
+    }
+
+    const handleCityChange = (e) =>{
+      var newAddress = student.address
+      newAddress.city = e.target.value;
+      setstudent(prevState =>({...prevState, address: newAddress}))
+    }
+
+    const handleStateChange = (e) =>{
+      var newAddress = student.address
+      newAddress.state = e.target.value;
+      setstudent(prevState =>({...prevState, address: newAddress}))
+    }
+
+    const handlePostalCodeChange = (e) =>{
+      var newAddress = student.address
+      newAddress.postalCode = e.target.value;
+      setstudent(prevState =>({...prevState, address: newAddress}))
+    }
+
+    const handlesubDistrictChange = (e) =>{
+      var newAddress = student.address
+      newAddress.subDistrict = e.target.value;
+      setstudent(prevState =>({...prevState, address: newAddress}))
+    }
+
+    const handlecompleteAddressChange = (e) =>{
+      var newAddress = student.address
+      newAddress.completeAddress = e.target.value;
+      setstudent(prevState =>({...prevState, address: newAddress}))
     }
 
 
@@ -245,8 +354,9 @@ export const Profile = () => {
             personalEmail : email
             }
           // console.log("Patch request from useEffect: ")
+          
           console.log("from client to server ", post)
-            const {data} = await axios.get("http://127.0.0.1:5000/api/student/?id=63ec9c9fe7db39977126093a" , post, {withCredentials : true})
+            const {data} = await axios.get(`/api/student/?id=${getStuId()}` , post, {withCredentials : true})
             // const task = await fetch(`http://127.0.0.1:5000/api/student/profile`).then(response => response.json())
             // const {data} = await axios.get(`${url}/profile/${id}`);
 
@@ -356,10 +466,10 @@ export const Profile = () => {
         try{
 
           // converting date from user to Date object in javascript
-          const dateObject = handleDate(student.dateOfBirth.toString())
-          {setstudent(prevState => ({...prevState,dateOfBirth: dateObject}))}
+          // const dateObject = handleDate(student.dateOfBirth.toString())
+          // {setstudent(prevState => ({...prevState,dateOfBirth: dateObj ect}))}
 
-          console.log("updated date : ", dateObject)
+          // console.log("updated date : ", dateObject)
           const post = student
           console.log("Post request from postEntry: ")
           console.log(post)
@@ -368,7 +478,7 @@ export const Profile = () => {
           // const res = await axios.patch(`/profile/${id}`, post, {withCredentials : true })
           // const res = await axios.get(`http://localhost:5000/get-session`, {withCredentials : true })
 
-          const res = await axios.put(`http://localhost:5000/api/student/update`, post, {withCredentials : true })
+          const res = await axios.put(`/api/student/update`, post, {withCredentials : true })
 
           console.log("after making changes: ", res.data)
           location.reload()
@@ -395,8 +505,8 @@ export const Profile = () => {
     <div style={{ backgroundColor: '#0B0E2A' }} className="text-white pt-16">
     <div style={{ backgroundColor: "#1A1C33" }} className="mx-72 grid ">
 
-      <div className='grid justify-items-center mt-10'>
-        <img src={myImage} className="rounded-full h-1/4"/>
+      <div className='flex w-full justify-center items-center my-3'>
+        <img src={myImage} className="rounded-full w-[200px] h-auto"/>
       </div>
 
       <form>
@@ -469,7 +579,7 @@ export const Profile = () => {
         <div className='mx-8'>
         <label className='flex'>Address</label>
             <div>
-              <input type="text" className='w-full px-3 py-2 flex rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none' autoComplete='false' value={"ad"}  onChange = {(e) =>{setstudent(prevState => ({...prevState,homeAddress: e.target.value}))}}></input>
+              <input type="text" className='w-full px-3 py-2 flex rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none' autoComplete='false' value={student.address.completeAddress}  onChange = {(e) =>handlecompleteAddressChange(e)}></input>
             </div>
         </div>
 
@@ -478,17 +588,17 @@ export const Profile = () => {
 
         <div className='flex justify-between mx-8'>
           <div>
-            <label className='flex'>City</label>
+            <label className='flex'>Sub District</label>
             <div>
-              <input value={student?.address?.city} type="text" className=' px-3 py-2 flex rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none' autoComplete='false'   onChange = {(e) =>{setstudent(prevState => ({...prevState,city: e.target.value}))}}></input>
+              <input value={student?.address?.subDistrict} type="text" className=' px-3 py-2 flex rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none' autoComplete='false'   onChange = {(e) =>handlesubDistrictChange(e)}></input>
             </div>
           </div>
 
 
           <div>
-            <label className='flex'>Pincode</label>
+            <label className='flex'>City</label>
             <div>
-              <input type="text" value={student?.address?.postalCode} className=' px-3 py-2 flex rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none' autoComplete='false' onChange = {(e) =>{setstudent(prevState => ({...prevState,pincode: e.target.value}))}}></input>
+              <input type="text" value={student?.address?.city} className=' px-3 py-2 flex rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none' autoComplete='false' onChange = {(e) => handleCityChange(e)}></input>
             </div>
           </div>
         </div>
@@ -498,34 +608,47 @@ export const Profile = () => {
 
         <div className='flex justify-between mx-8'>
           <div>
+            <label className='flex'>Pincode</label>
+            <div>
+              <input type="text" value={student?.address?.postalCode} className=' px-3 py-2 flex rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none' autoComplete='false' onChange = {(e) =>handlePostalCodeChange(e)}></input>
+            </div>
+          </div>
+
+          <div>
             <label className='flex'>State</label>
             <div>
-              <input type="text" value={student?.address?.state} className=' px-3 py-2 flex rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none' autoComplete='false' onChange = {(e) =>{setstudent(prevState => ({...prevState,state: e.target.value}))}}></input>
+              <input type="text" value={student?.address?.state} className=' px-3 py-2 flex rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none' autoComplete='false' onChange = {(e) =>handleStateChange(e)}></input>
             </div>
           </div>
         </div>
-
 
         {/* *************************** row 6 ************************* */}
 
         <br />
 
         <div className='flex justify-between mx-8'>
-          <div>
+          {/* <div>
             <label className='flex'>Age</label>
             <div>
               <input type="text" className=' px-3 py-2 flex rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none' autoComplete='false'></input>
             </div>
-          </div>
+          </div> */}
 
 
           <div>
             <label className='flex'>Gender</label>
-            <div className='flex'>
-              <input type="radio" className='mx-2'  value="Male" name = "gender"/><label> Male</label>
-              <input type="radio" className='mx-2' value="Female" name = "gender"/><label> Female</label>
+            <div className='text-black'>
+            <select name="internship_status" id="internship_status" className='text-white p-1' style={{ backgroundColor: '#0B0E2A' }} value = {student.gender} onChange = {(e) => handleGenderChange(e)}>
+              {
+                Gender.map((item) =>(
+                  <option value={item} key= {item} className='text-white p-1' style={{ backgroundColor: '#0B0E2A' }}>{item}</option>
+                ))
+              }
+            </select>
             </div>
+
           </div>
+
         </div>
 
         {/* ******************************* row 7 ************************* */}
@@ -592,12 +715,12 @@ export const Profile = () => {
             </div>
           </div>
 
-          <div>
+          {/* <div>
             <label className='flex'>Confirm Password</label>
             <div>
               <input type="text" className=' px-3 py-2 flex rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none' autoComplete='false'></input>
             </div>
-          </div>
+          </div> */}
         </div>
 
         <br />
@@ -730,10 +853,7 @@ export const Profile = () => {
           <div className='mx-8'>
             <button style={{ backgroundColor: '#3040D6' }} className = 'p-3 rounded-full' onClick={handleAddProfile}>Add Profile</button>
           </div>
-
-          <div>
-            <button style={{ backgroundColor: '#3040D6' }} className = 'p-3 rounded-full' onClick={handleDeleteProfile}>Delete Profile</button>
-          </div>
+          
           </div>
         </div>
 
@@ -777,10 +897,17 @@ export const Profile = () => {
                 </div>
               </div>
               <br />
+
+              <div>
+                <button type='button' style={{ backgroundColor: '#3040D6' }} className = 'p-3 rounded-full' onClick={() => handleDeleteIndividualProfileChange(index)}>Delete Profile</button>
+              </div>
+                <br />
               <hr />
               <br />
               </div>)
               })
+
+              
             }
           </div> : null
         }
@@ -803,13 +930,25 @@ export const Profile = () => {
             <label className='flex'>Selected for Internship</label>
           </div>
 
-          <div>
+          {/* <div>
             <select value={student?.internshipStatus?.selected} name="internship_status" id="internship_status" className='text-white p-1' style={{ backgroundColor: '#0B0E2A' }}>
               <option value="--Select--" className='text-white p-1' style={{ backgroundColor: '#0B0E2A' }} defaultValue={true}>--Select--</option>
             <option value="yes" className='text-white p-1' style={{ backgroundColor: '#0B0E2A' }}>Yes</option>
             <option value="no" className='text-white p-1' style={{ backgroundColor: '#0B0E2A' }}>No</option>
             </select>
-          </div>
+          </div> */}
+
+          <div className='text-black' key={key}>
+            <select value={student?.internshipStatus?.selected} name="internship_status" id="internship_status" className='text-white p-1' style={{ backgroundColor: '#0B0E2A' }}  onChange = {(e) => handleInternshipStatusChange(e)}>
+                <option value={"yes"} >Yes</option>
+                <option value={"no"} >No</option>
+                {/* { 
+                  InternshipSelected.map((item) => (
+                    <option value={item} className='text-white p-1' style={{ backgroundColor: '#0B0E2A' }} key={item}>{item}</option>
+                  ))
+                } */}
+            </select>
+            </div>
 
           <div>
           <label className='flex'>Company Name</label>
@@ -851,10 +990,12 @@ export const Profile = () => {
           <div>
             <label className='flex'>Mode</label>
             <div className='text-black'>
-            <select value={student?.internshipStatus?.mode} name="internship_status" id="internship_status" className='text-white p-1' style={{ backgroundColor: '#0B0E2A' }}  >
-            <option value="--Select--" className='text-white p-1' style={{ backgroundColor: '#0B0E2A' }} defaultValue={true}>--Select--</option>
-            <option value="remote" className='text-white p-1' style={{ backgroundColor: '#0B0E2A' }}>Remote</option>
-            <option value="onsite" className='text-white p-1' style={{ backgroundColor: '#0B0E2A' }}>Work from Home</option>
+            <select value={student?.internshipStatus?.mode} name="internship_status" id="internship_status" className='text-white p-1' style={{ backgroundColor: '#0B0E2A' }}  onChange = {(e) => handleInternShipModeChange(e)}>
+                {
+                  InternshipMode.map((item) => (
+                    <option value={item} className='text-white p-1' style={{ backgroundColor: '#0B0E2A' }} key={item}>{item}</option>
+                  ))
+                }
             </select>
             </div>
           </div>
@@ -876,16 +1017,15 @@ export const Profile = () => {
           </div>
 
           <div>
-            <select name="internship_status" id="internship_status" className='text-white p-1' style={{ backgroundColor: '#0B0E2A' }}>
-              <option value="--Select--" className='text-white p-1' style={{ backgroundColor: '#0B0E2A' }} defaultValue={true}>--Select--</option>
-            <option value="yes" className='text-white p-1' style={{ backgroundColor: '#0B0E2A' }}>Yes</option>
-            <option value="no" className='text-white p-1' style={{ backgroundColor: '#0B0E2A' }}>No</option>
+            <select name="internship_status" id="internship_status" className='text-white p-1' style={{ backgroundColor: '#0B0E2A' }} value={student.placementStatus.selected} onChange = {(e) => handleCompanyStatusChange(e)}>
+              <option value="yes" className='text-white p-1' style={{ backgroundColor: '#0B0E2A' }}>Yes</option>
+              <option value="no" className='text-white p-1' style={{ backgroundColor: '#0B0E2A' }}>No</option>
             </select>
           </div>
 
           <div>
           <label className='flex'>Company Name</label>
-        <input type="text" className='px-3 py-2 flex rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none' autoComplete='false'></input>
+        <input type="text" className='px-3 py-2 flex rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none' autoComplete='false' value={student.placementStatus.companyName} onChange = {(e) => handlePlacementCompanyNameChange(e)}></input>
         </div>
       </div>
 
@@ -903,7 +1043,7 @@ export const Profile = () => {
           <div>
             <label className='flex'>Job Bond (in Months)</label>
             <div>
-              <input type="text" className=' px-3 py-2 flex rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none' autoComplete='false'></input>
+              <input type="text" className=' px-3 py-2 flex rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none' autoComplete='false' value={student.placementStatus.duration} onChange = {(e) => handleCompanyBondChange(e)}></input>
             </div>
           </div>
         </div>
@@ -916,15 +1056,14 @@ export const Profile = () => {
           <div>
           <label className='flex'>Annual Package (In Lakhs)</label>
             <div>
-              <input type="text" className=' px-3 py-2 flex rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none' autoComplete='false'></input>
+              <input type="text" className=' px-3 py-2 flex rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none' autoComplete='false' value={student.placementStatus.package} onChange = {(e) => handlePackageChange(e)}></input>
             </div>
           </div>
 
           <div>
             <label className='flex'>Mode</label>
             <div className='text-black'>
-            <select name="internship_status" id="internship_status" className='text-white p-1' style={{ backgroundColor: '#0B0E2A' }}>
-            <option value="--Select--" className='text-white p-1' style={{ backgroundColor: '#0B0E2A' }} defaultValue={true}>--Select--</option>
+            <select name="internship_status" id="internship_status" className='text-white p-1' style={{ backgroundColor: '#0B0E2A' }} value = {student.placementStatus.mode} onChange = {(e) => handleCompanyModeChange(e)}>
             <option value="yes" className='text-white p-1' style={{ backgroundColor: '#0B0E2A' }}>Remote</option>
             <option value="no" className='text-white p-1' style={{ backgroundColor: '#0B0E2A' }}>Work from Home</option>
             </select>
@@ -933,8 +1072,6 @@ export const Profile = () => {
         </div>
 
       </form>
-
-
       <br /><br /><br />
 
       <div className='flex justify-around mx-8'>
@@ -946,10 +1083,8 @@ export const Profile = () => {
             <button style={{ backgroundColor: '#3040D6' }} className = 'p-3 rounded-full w-40'>Cancel</button>
           </div>
         </div>
-
         <br /><br />
     </div>
-
     <br /><br /><br />
   </div>
   </div>

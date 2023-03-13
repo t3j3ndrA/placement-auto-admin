@@ -50,7 +50,7 @@ export const Register = () => {
       console.log("hello from method in register.jsx")
       // const _path = path.join(url, '/Register')
       console.log(post)
-      const res = await axios.post(`${url}/Register`, post)
+      const res = await axios.post(`/api/Register`, post, {withCredentials : true})
       console.log(res.status)
       if(res.status === 201){        
         console.log("hello from status 201")

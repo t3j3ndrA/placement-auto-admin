@@ -1,9 +1,9 @@
 import React from 'react'
-import data from './data.json'
-import loadImg from '../Form/1.jpeg'
-import Cards from './Cards';
-import Input from './Input.json'
-import Input1 from './Input1.json'
+import data from '../Homepage/data.json'
+// import loadImg from '/Form/1.jpeg'
+import Cards from '../Homepage/Cards';
+import Input from '../Homepage/Input.json'
+import Input1 from '../Homepage/Input1.json'
 import { Navbar } from '../Navbar/Navbar';
 import {useEffect, useState} from 'react'
 import { json } from 'react-router-dom'
@@ -11,21 +11,21 @@ import crypto from 'crypto-js'
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { Pre_loading_page } from '../Pre-Loading/Pre_loading_page';
-import axios from "axios";
+import axios from 'axios';
 import getStuId from "../../utils/getStuId"
-
-export const Homepage1 = () => {
+export const Already_applied = () => {
 
     let url = "http://127.0.0.1:5000/api"
     let navigate = useNavigate();
     const [_data, set_data] = useState({});
     const [isLoading, setIsLoading] = useState(true);
+    const studId = getStuId();
     useEffect(() => {
         console.log("hello from homepage")
     
         const getValues = async () => {
           try {
-            const {data} = await axios.get(`/api/company/of/${getStuId()}`, {withCredentials : true})
+            const {data} = await axios.get(`/api/student/${studId}/applications`)
             console.log("Data from company page: ", data)
             set_data(data.data)
             setIsLoading(false)
@@ -51,14 +51,14 @@ export const Homepage1 = () => {
       }
 
       function encrypter(data){
-        const encodedWord = crypto.enc.Utf8.parse(data); // e
-        var encoded = crypto.enc.Base64.stringify(encodedWord);
-        encoded = encoded.replace(/\+/g,'p23S').replace(/\//g,'sL3S4').replace(/=/g,'e2uAl');
-        return encoded;
+        const key = "RanDOM@12345"
+        var encrypted = crypto.AES.encrypt(data,key).toString();
+        encrypted = encrypted.replace(/\+/g,'p1L2u3S').replace(/\//g,'s1L2a3S4h').replace(/=/g,'e1Q2u3A4l');
+        // encrypted = encrypted.toString().replace('+','xMl3Jk').replace('/','Por21Ld').replace('=','Ml32');
+        return encrypted;
       }
 
-
-      function redirect(data){  
+      function redirect(data){
         console.log("hello from redirect")
         const encrypt = encrypter(data);
         console.log("data from encryption: " + encrypt)

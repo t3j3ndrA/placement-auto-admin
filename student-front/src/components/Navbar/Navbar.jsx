@@ -1,11 +1,18 @@
 import React from 'react'
-import { Link, Router } from 'react-router-dom'
+import { Link, Router, useNavigate } from 'react-router-dom'
 import HomeIcon from '@mui/icons-material/Home';
 import DoneAllIcon from '@mui/icons-material/DoneAll';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import LogoutIcon from '@mui/icons-material/Logout';
+import removeStuId from '../../utils/removeStuId';
 
 export const Navbar = () => {
+  const navigate = useNavigate();
+  const handleLogOut = () => {
+    removeStuId();
+    navigate("/")
+  }
+
   return (
     <nav className="  shadow shadow-gray-300 w-100 px-8 md:px-auto dark:bg-gray-900">
 	<div className="md:h-16 h-28 mx-auto md:px-4 container flex items-center justify-between flex-wrap md:flex-nowrap">
@@ -25,13 +32,13 @@ export const Navbar = () => {
                   <div className='mx-1'>Home</div>
                 </div>
         </li></Link>
-				<li className="md:px-4 md:py-2 text-indigo-500 hover:bg-blue-600 hover:text-white">
+				<Link to='/AlreadyApplied'><li className="md:px-4 md:py-2 text-indigo-500 hover:bg-blue-600 hover:text-white">
                 <div className='flex'>
                   {/* <div className='h-6 mr-3 sm:h-9'>{HomeIcon}</div> */}
                   <DoneAllIcon className='mx-1'/>
                   <div className='mx-1'>Already Applied</div>
                 </div>
-        </li>
+        </li></Link>
 				<Link to='/Profile'><li className="md:px-4 md:py-2 text-indigo-500 hover:bg-blue-600 hover:text-white">
                 <div className='flex'>
                   {/* <div className='h-6 mr-3 sm:h-9'>{HomeIcon}</div> */}
@@ -42,7 +49,8 @@ export const Navbar = () => {
 			</ul>
 		</div>
 		<div className="order-2 md:order-3">
-			<button className="px-4 py-2 bg-indigo-500 hover:bg-indigo-600 text-gray-50 rounded-xl flex items-center gap-2">
+			<button type="button" className="px-4 py-2 bg-indigo-500 hover:bg-indigo-600 text-gray-50 rounded-xl flex items-center gap-2" onClick={handleLogOut
+      }>
                 {/* <!-- Heroicons - Login Solid --> */}
                 <LogoutIcon className='mx-1'/>
                 <span className='mx-1'>Logout</span>

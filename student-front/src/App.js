@@ -17,16 +17,14 @@ import { Card2 } from './components/Homepage/Card2';
 import { Homepage1 } from './components/Homepage/Homepage1';
 import crypto from 'crypto-js'
 import { Pre_loading_page } from './components/Pre-Loading/Pre_loading_page'; 
+import { Already_applied } from './components/Already applied/Already_applied';
 
 function Fetch_id(){
   var {id} = useParams();
-  id = id.replace(/p1L2u3S/g, '+' ).replace(/s1L2a3S4h/g, '/').replace(/e1Q2u3A4l/g, '=');
-  const key = "RanDOM@12345"
-  id = crypto.AES.decrypt(id, key);
-  id = id.toString(crypto.enc.Utf8);
-  return <Company_page fetched_url = {{id1: id}}/>
+  const encodedWord = crypto.enc.Base64.parse(id); // encodedWord via Base64.parse()
+  const decoded = crypto.enc.Utf8.stringify(encodedWord);
+  return <Company_page fetched_url = {{id1: decoded}}/>
 };
-
 
 function App() {
   return (
@@ -39,6 +37,7 @@ function App() {
         <Route exact path = '/Register' element = {<Register/>}/>
         <Route exact path = '/Profile' element = {<Profile/>}/>
         <Route exact path = '/Company/:id' element = {<Fetch_id/>}/>
+        <Route exact path='/AlreadyApplied' element = {<Already_applied/>}/>
       </Routes>
       </BrowserRouter>
     </div>

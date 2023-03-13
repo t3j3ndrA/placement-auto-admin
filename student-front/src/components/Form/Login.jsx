@@ -29,12 +29,13 @@ export const Login = () => {
       }
       console.log(post)
 
-      const res = await axios.post(`${url}/auth/student/login`, post, {withCredentials : true})
+      const res = await axios.post(`/api/auth/student/login`, post, {withCredentials : true})
       console.log(res.data.success)
       console.log(res.data)
       if(res.data.success === true){
-
-        console.log("response: " ,res)
+        
+        console.log("response: " ,res.data.data)
+        localStorage.setItem("stuId", res.data.data.studentId);
         navigate('/Homepage') 
         }else{
           alert("Incorrect password or username")
@@ -49,10 +50,6 @@ export const Login = () => {
 
   return (
     <div className='grid grid-cols-1 sm:grid-cols-2 h-screen w-full'>
-      <div className='hidden sm:block'>
-        <img className='w-full h-full object-cover' src={loadImg} alt =""></img>
-      </div>
-
       <div className='bg-gray-800 flex flex-col justify-center'>
         <form className='max-w-[400px] w-full mx-auto bg-gray-900 p-8 px-8 rounded-lg' action={addEntry} method = "post">
           <h2 className='text-4xl dark:text-white font-bold text-center'>
@@ -75,6 +72,10 @@ export const Login = () => {
           <Link to ={'/Homepage'}><button className='rounded-lg w-full my-5 py-2 bg-teal-500 shadow-lg shadow-teal-300/30 hover: shadow-teal-500/40 text-white font-semibold' onClick={postEntry}>Sign in</button></Link>
           <Link to = {'/Register'}><button className='rounded-lg w-full my-5 py-2 bg-teal-500 shadow-lg shadow-teal-300/30 hover: shadow-teal-500/40 text-white font-semibold'>New User? Register here</button></Link>  
         </form>
+      </div>
+
+      <div className='hidden sm:block'>
+        <img className='w-full h-full object-cover' src={loadImg} alt =""></img>
       </div>
     </div>
   )
