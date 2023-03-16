@@ -18,6 +18,7 @@ import Applications from "./pages/Applications";
 import Elligibles from "./pages/Elligibles";
 import NotifyStudents from "./pages/NotifyStudents";
 import RegisterStudent from "./pages/RegisterStudent";
+import CreateCompany1 from "./pages/CreateCompany1";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -52,7 +53,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/companies/create-post",
-    element: <CreateCompany />,
+    element: <CreateCompany1 />,
   },
   {
     path: "/company/:cid/role/:rid/applications",

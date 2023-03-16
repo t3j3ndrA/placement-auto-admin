@@ -29,7 +29,7 @@ const PackageLineChart = ({ data }) => {
             <CartesianGrid strokeDasharray="3 3" />
             <Tooltip formatter={(val, name) => [val + " LPA", "Package"]} />
             {/* <Legend /> */}
-            <XAxis color="#ffffff" dataKey={"firstName"} fill="#fffff" />
+            <XAxis color="#ffffff" dataKey={"rollNumber"} fill="#fffff" />
             <YAxis
               dataKey={"placementStatus.package"}
               unit={"  LPA"}

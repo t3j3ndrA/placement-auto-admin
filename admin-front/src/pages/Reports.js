@@ -7,6 +7,7 @@ import Top10Placements from "../components/reports/Top10Placements";
 import YearlyPlaced from "../components/reports/YearlyPlaced";
 import YearlyNotPlaced from "../components/reports/YearlyNotPlaced";
 import DownloadReport from "../components/reports/DownloadReport";
+import PlacementComparision from "../components/reports/PlacementComparision";
 
 // Year wise placement reposts
 // company wise + year wise placement
@@ -28,7 +29,7 @@ const Reports = () => {
           <h1 className="text-3xl">Placement Reports</h1>
           <DownloadReport />
         </div>
-
+        <PlacementComparision />
         <PlacementRatio />
         <Top10Placements />
         <YearlyPlaced />

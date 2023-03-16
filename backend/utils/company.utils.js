@@ -45,6 +45,7 @@ const setStudentsElligibility = async (roles, forBatch) => {
     });
     // console.log("stuList : ", stuList);
     roles[index].elligibles = stuList;
+    roles[index].applications = [];
   });
 };
 
