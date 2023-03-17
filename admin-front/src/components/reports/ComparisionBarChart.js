@@ -12,7 +12,7 @@ import {
   YAxis,
 } from "recharts";
 
-const ComparisionBarChart = ({}) => {
+const ComparisionBarChart = ({ data }) => {
   const datax = [
     {
       name: "Page A",
@@ -64,7 +64,7 @@ const ComparisionBarChart = ({}) => {
       </div>
       <div className="w-full my-5 flex-wrap flex flex-row justify-center items-center  overflow-x-auto overflow-y-hidden">
         <ResponsiveContainer width="100%" height={340}>
-          <BarChart width="100%" height={400} data={datax}>
+          <BarChart width="100%" height={400} data={data}>
             <Bar
               fill="red"
               type="monotone"

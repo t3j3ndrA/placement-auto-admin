@@ -14,6 +14,7 @@ import {
 } from "recharts";
 import { useNavigate } from "react-router-dom";
 import PackageLineChart from "./PackageLineChart";
+import FilterInputWithValue from "../FilterInputWithValue";
 
 const YearlyPlaced = () => {
   const [filter, setFilter] = useState({
@@ -69,13 +70,13 @@ const YearlyPlaced = () => {
 
       <div className="flex flex-row justify-start gap-4 mb-4">
         {/* First Name */}
-        <FilterInput
+        <FilterInputWithValue
           name="year"
           value={filter.year}
           title="Year"
           onChangeFun={handleFilterChange}
         />
-        <FilterInput
+        <FilterInputWithValue
           name="limit"
           value={filter.limit}
           title="Display Limit"

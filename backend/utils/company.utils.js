@@ -8,6 +8,7 @@ const setStudentsElligibility = async (roles, forBatch) => {
     let students = new Map();
     allStudents?.forEach((student) => {
       if (
+        student.placementStatus.selected === "no" &&
         student.result.cpi >= (role.requirements?.cpi || 0) &&
         ((student.result.twelfthPerc != 0 &&
           student.result.twelfthPerc >=
@@ -22,9 +23,10 @@ const setStudentsElligibility = async (roles, forBatch) => {
           let isSubSatisfies = false;
           student?.competitiveCoding?.forEach((stuItem) => {
             if (
-              reqItem.platform === stuItem.platform &&
-              (stuItem.stars >= reqItem.stars ||
-                stuItem.ratings >= reqItem.ratings)
+              reqItem.platform.toLowerCase() ===
+                stuItem.platformtoLowerCase() &&
+              stuItem.stars >= reqItem.stars &&
+              stuItem.ratings >= reqItem.ratings
             ) {
               isSubSatisfies = true;
             }

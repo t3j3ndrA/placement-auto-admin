@@ -1,28 +1,15 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { useQuery } from "react-query";
-import FilterInput from "../FilterInput";
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-} from "recharts";
-import { useNavigate } from "react-router-dom";
-import PackageLineChart from "./PackageLineChart";
 import ComparisionBarChart from "./ComparisionBarChart";
+import { ClipLoader } from "react-spinners";
+import FilterInputWithValue from "../FilterInputWithValue";
 
 const PlacementComparision = () => {
   const [filter, setFilter] = useState({
     minYear: new Date().getFullYear() + 1,
     maxYear: new Date().getFullYear() + 1,
   });
-
-  const navigate = useNavigate();
 
   const handleFilterChange = (e) => {
     if (e.target.value) {
@@ -33,7 +20,7 @@ const PlacementComparision = () => {
     setFilter({ ...filter, [e.target.name]: e.target.value });
   };
 
-  const fetchStudents = async () => {
+  const fetchComparision = async () => {
     let filterURL = "";
     for (const query in filter) {
       filterURL += `${query}=${filter[query]}&`;
@@ -42,23 +29,26 @@ const PlacementComparision = () => {
     console.log(filterURL);
 
     return axios
-      .get(`api/reports/placed?${filterURL}`, {
+      .get(`api/reports/comparision?${filterURL}`, {
         withCredentials: true,
       })
       .then((response) => response.data)
-      .then((data) => data)
+      .then((data) => {
+        return data;
+      })
       .catch((err) => {
         console.log(err);
       });
   };
 
-  // const { data, isLoading, isError } = useQuery(
-  //   ["top-placed", filter],
-  //   fetchStudents,
-  //   {
-  //     keepPreviousData: true,
-  //   }
-  // );
+  const { data, isLoading, isError } = useQuery(
+    ["comp", filter],
+    fetchComparision,
+    {
+      keepPreviousData: true,
+      staleTime: 1 * 60 * 60 * 1000,
+    }
+  );
 
   // console.log(data);
   return (
@@ -71,21 +61,24 @@ const PlacementComparision = () => {
 
       <div className="flex flex-row justify-start gap-4 mb-4">
         {/* First Name */}
-        <FilterInput
-          name="year"
+        <FilterInputWithValue
+          name="minYear"
           value={filter.minYear}
           title="Min. Year"
           onChangeFun={handleFilterChange}
         />
-        <FilterInput
-          name="limit"
+        <FilterInputWithValue
+          name="maxYear"
           value={filter.maxYear}
           title="Max. Year"
           onChangeFun={handleFilterChange}
         />
       </div>
-      {/* {isLoading ? <></> : <ComparisionBarChart />} */}
-      <ComparisionBarChart />
+      {isLoading ? (
+        <ClipLoader color="white" size={40} />
+      ) : (
+        <ComparisionBarChart data={data.data} />
+      )}
     </div>
   );
 };
