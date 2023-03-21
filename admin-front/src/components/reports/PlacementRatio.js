@@ -78,15 +78,15 @@ const PlacementRatio = () => {
           <div className="w-full flex flex-row flex-wrap justify-around items-center">
             <RatioPieChart
               title={"All"}
-              data={[data.totalPlaced, data.totalNotPlaced]}
+              data={[data?.totalPlaced, data?.totalNotPlaced]}
             />
             <RatioPieChart
               title={"Male"}
-              data={[data.malePlaced, data.maleNotPlaced]}
+              data={[data?.malePlaced, data?.maleNotPlaced]}
             />
             <RatioPieChart
               title={"Female"}
-              data={[data.femalePlaced, data.femaleNotPlaced]}
+              data={[data?.femalePlaced, data?.femaleNotPlaced]}
             />
           </div>
         )}

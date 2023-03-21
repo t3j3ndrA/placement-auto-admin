@@ -12,6 +12,7 @@ import FormInputField from "../components/form/FormInputField";
 import { handleAddCP, handleRemoveCP } from "../components/form/handleCP";
 import { handleAddRole, handleRemoveRole } from "../components/form/handleRole";
 import { ErrorMessage } from "@hookform/error-message";
+import { toast } from "react-toastify";
 
 const CompanyView = () => {
   const { id } = useParams();
@@ -37,7 +38,9 @@ const CompanyView = () => {
         withCredentials: true,
       }
     );
-
+    if (data?.success === false) {
+      toast.error("😿 Company does not exists");
+    }
     setIsUpdating(false);
   };
 
@@ -75,7 +78,7 @@ const CompanyView = () => {
 
             <div className="flex flx-row justify-end mt-2 ">
               <div className="flex flex-row gap-4">
-                <Link to={"/companies/create-post"} state={company}>
+                <Link to={"/companies/create-post"} state={getValues()}>
                   <button
                     disabled={isLoading || isUpdating}
                     className="text-section  bg-white rounded-md px-4 py-2"
@@ -148,7 +151,14 @@ const CompanyView = () => {
                 return (
                   <>
                     {/* Remove this role */}
-                    <div className="flex flex-row w-full justify-end">
+                    <div className="flex flex-row w-full justify-between">
+                      <button className="text-section  bg-white rounded-md px-4 py-2">
+                        <Link
+                          to={`/company/${id}/role/${role._id}/applications`}
+                        >
+                          Applications
+                        </Link>
+                      </button>
                       <button
                         className="flex flex-row  gap-2 justify-center bg-lightHover px-2 py-1 rounded-md"
                         onClick={(e) => handleRemoveRole(e, roleIndex)}

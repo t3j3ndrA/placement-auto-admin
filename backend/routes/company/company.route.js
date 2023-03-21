@@ -37,11 +37,16 @@ router.get("/", async (req, res) => {
     expectedSkills,
   } = req.query;
 
+  // to find the companies with elligibilities
   if (id && stuId) {
     const comapny = await Company.findOne({ _id: id });
     let roles = comapny.roles.map((role) => {
-      if (role?.elligibles.includes(stuId)) {
-        return { ...role._doc, isElligible: true };
+      if (role?.elligibles.includes(stuId) && role) {
+        return {
+          ...role._doc,
+          isElligible: true,
+          hasApplied: role?.applications.includes(stuId),
+        };
       } else {
         return { ...role._doc, isElligible: false };
       }
