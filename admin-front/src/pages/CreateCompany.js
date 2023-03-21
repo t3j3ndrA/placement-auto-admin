@@ -8,40 +8,45 @@ import {
   AiOutlineUsergroupDelete,
 } from "react-icons/ai";
 import { toast, ToastContainer } from "react-toastify";
-
+import { useFormAction, useLocation } from "react-router-dom";
 const CreateCompany = () => {
-  const [company, setCompany] = useState({
-    name: "",
-    website: "",
-    email: "",
-    forBatch: new Date().getFullYear(),
-    description: "",
-    address: {
-      city: "",
-      district: "",
-      state: "",
-      postalCode: 0,
-      completeAddress: "",
-    },
-    roles: [
-      {
+  const location = useLocation();
+
+  const initialCompany = location.state
+    ? { ...location.state, _id: "", applications: [], elligibles: [] }
+    : {
         name: "",
-        avgPackage: 0,
-        type: "full-time",
-        mode: "on-site",
-        bonds: 0,
-        deadline: "",
-        interviewDate: "",
-        interviewMode: "",
-        requirements: {
-          cpi: 0,
-          twelfthPerc: 0,
-          competitiveCoding: [],
-          expectedSkills: "",
+        website: "",
+        email: "",
+        forBatch: new Date().getFullYear(),
+        description: "",
+        address: {
+          city: "",
+          district: "",
+          state: "",
+          postalCode: 0,
+          completeAddress: "",
         },
-      },
-    ],
-  });
+        roles: [
+          {
+            name: "",
+            avgPackage: 0,
+            type: "full-time",
+            mode: "on-site",
+            bonds: 0,
+            deadline: "",
+            interviewDate: "",
+            interviewMode: "",
+            requirements: {
+              cpi: 0,
+              twelfthPerc: 0,
+              competitiveCoding: [],
+              expectedSkills: "",
+            },
+          },
+        ],
+      };
+  const [company, setCompany] = useState(initialCompany);
   const [isCreating, setIsCreating] = useState(false);
 
   const createCompany = async () => {
@@ -53,12 +58,14 @@ const CreateCompany = () => {
     if (response.data?.success == true) {
       toast.success("Comany Registed ✅");
     } else {
+      console.log("err >> ", response.data);
       toast.error("Insufficiente data ❌");
     }
     setIsCreating(false);
   };
 
   const handleBasicChange = (e) => {
+    console.log("Handle basic change");
     setCompany({ ...company, [e.target.name]: e.target.value });
   };
 
@@ -166,7 +173,10 @@ const CreateCompany = () => {
     // setIsLoading(false);
   }, []);
 
+  const handleFormSubmit = () => {};
+
   console.log("company", company);
+
   return (
     <div className="bg-backg min-h-screen text-white">
       {/* Navbar */}
@@ -180,6 +190,7 @@ const CreateCompany = () => {
           <form className="flex flex-row justify-between gap-2 flex-wrap mt-5">
             <div className="flex  flex-col gap-1 w-full md:w-2/5">
               <span className="text-placeholder">Name</span>
+              {/* <span className="text-danger">{errors?.["name"]?.message}</span> */}
               <input
                 name="name"
                 className="outline-none px-4 py-1 rounded-md bg-subSection"
@@ -554,8 +565,9 @@ const CreateCompany = () => {
               {/* <div className="flex flex-row gap-4"> */}
               <button
                 className="text-section  bg-white rounded-md px-4 py-2 disabled:bg-section"
+                type="submit"
                 onClick={() => createCompany()}
-                disabled={isCreating}
+                // disabled={isCreating}
               >
                 {!isCreating ? (
                   "Post Company"

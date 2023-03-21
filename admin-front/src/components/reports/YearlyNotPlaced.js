@@ -1,18 +1,8 @@
 import axios from "axios";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useQuery } from "react-query";
-import FilterInput from "../FilterInput";
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-} from "recharts";
 import { useNavigate } from "react-router-dom";
+import FilterInputWithValue from "../FilterInputWithValue";
 
 const YearlyNotPlaced = () => {
   const [filter, setFilter] = useState({
@@ -69,13 +59,13 @@ const YearlyNotPlaced = () => {
 
       <div className="flex flex-row justify-start gap-4 mb-4">
         {/* First Name */}
-        <FilterInput
+        <FilterInputWithValue
           name="year"
           value={filter.year}
           title="Year"
           onChangeFun={handleFilterChange}
         />
-        <FilterInput
+        <FilterInputWithValue
           name="limit"
           value={filter.limit}
           title="Display Limit"

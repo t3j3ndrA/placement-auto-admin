@@ -1,140 +1,62 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { ClipLoader, HashLoader } from "react-spinners";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import Navbar from "../components/Navbar";
-import companyViewValidator from "../form-validators/companyView.validator";
 import {
   AiOutlineUsergroupAdd,
   AiOutlineUsergroupDelete,
 } from "react-icons/ai";
+import { useForm } from "react-hook-form";
+import FormInputField from "../components/form/FormInputField";
+import { handleAddCP, handleRemoveCP } from "../components/form/handleCP";
+import { handleAddRole, handleRemoveRole } from "../components/form/handleRole";
+import { ErrorMessage } from "@hookform/error-message";
 
 const CompanyView = () => {
   const { id } = useParams();
   const [company, setCompany] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [isUpdating, setIsUpdating] = useState(false);
+  const navigate = useNavigate();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    getValues,
+    setValue,
+    watch,
+  } = useForm({});
 
-  const updateCompany = async () => {
+  const updateCompany = async (company) => {
     setIsUpdating(true);
-    const response = await axios.put(
+    const { data } = await axios.put(
       `/api/company/update?id=${id}`,
       { id, ...company },
       {
         withCredentials: true,
       }
     );
-    setCompany(response.data.data);
+
     setIsUpdating(false);
-  };
-
-  const handleBasicChange = (e) => {
-    setCompany({ ...company, [e.target.name]: e.target.value });
-  };
-
-  const handleRoleChange = (e, index) => {
-    let newRoles = company.roles;
-    newRoles[index] = { ...newRoles[index], [e.target.name]: e.target.value };
-    setCompany({ ...company });
-  };
-
-  const handleReqChange = (e, roleIndex) => {
-    let newRoles = company.roles;
-    newRoles[roleIndex] = {
-      ...newRoles[roleIndex],
-      requirements: {
-        ...company.roles[roleIndex].requirements,
-        [e.target.name]: e.target.value,
-      },
-    };
-    setCompany({ ...company, roles: newRoles });
-  };
-
-  const handleAddChange = (e) => {
-    e.preventDefault();
-    setCompany({
-      ...company,
-      address: { ...company.address, [e.target.name]: e.target.value },
-    });
-  };
-
-  const handleAddRole = (e) => {
-    e.preventDefault();
-    let role = {
-      name: "",
-      avgPackage: 0,
-      type: "",
-      mode: "",
-      bonds: 0,
-      deadline: "",
-      interviewDate: "",
-      interviewMode: "",
-      requirements: {
-        cpi: 0,
-        twelfthPerc: 0,
-        competitiveCoding: [],
-        expectedSkills: "",
-      },
-    };
-    let roles = company.roles;
-    roles.push(role);
-    setCompany({ ...company, roles: roles });
-  };
-
-  const handleRemoveRole = (e, roleIndex) => {
-    e.preventDefault();
-
-    let roles = company.roles;
-    roles = roles.filter((role, index) => index !== roleIndex);
-    setCompany({ ...company, roles });
-  };
-
-  const handleAddCP = (e, roleIndex) => {
-    e.preventDefault();
-
-    let newCP = {
-      platform: "",
-      stars: 0,
-      ratings: 0,
-    };
-
-    let roles = company.roles;
-    roles[roleIndex]?.requirements.competitiveCoding.push(newCP);
-    console.log("added cp ", roles[roleIndex]);
-    setCompany({ ...company, roles });
-  };
-
-  const handleRemoveCP = (e, roleIndex, cpIndex) => {
-    e.preventDefault();
-
-    let competitiveCoding = company.roles[
-      roleIndex
-    ].requirements.competitiveCoding.filter(
-      (cpItem, index) => index !== cpIndex
-    );
-
-    let roles = company.roles;
-    roles[roleIndex].requirements.competitiveCoding = competitiveCoding;
-    setCompany({ ...company, roles });
-  };
-
-  const handleCPChange = (e, roleIndex, cpIndex) => {
-    let roles = company.roles;
-    roles[roleIndex].requirements.competitiveCoding[cpIndex] = {
-      ...roles[roleIndex].requirements.competitiveCoding[cpIndex],
-      [e.target.name]: e.target.value,
-    };
-    setCompany({ ...company, roles });
   };
 
   useEffect(() => {
     setIsLoading(true);
     axios
       .get(`/api/company?id=${id}`, { withCredentials: true })
-      .then((result) => setCompany(result.data?.data))
+      .then(({ data }) => {
+        for (const [key, value] of Object.entries(data.data)) {
+          console.log(`${key}: ${value}`);
+          setValue(key, value);
+        }
+      })
       .catch((err) => console.log(err));
     setIsLoading(false);
   }, []);
+  const nameWatch = watch("name");
+  const rolesWatch = watch("roles");
+  const handleDuplicate = () => {};
 
   console.log("company", company);
   return (
@@ -149,16 +71,21 @@ const CompanyView = () => {
           </div>
         ) : (
           <div className="bg-section mx-auto px-4 py-4 lg:w-2/3">
-            <h1 className="text-3xl font-bold">{company?.name}</h1>
+            <h1 className="text-3xl font-bold">{nameWatch}</h1>
 
             <div className="flex flx-row justify-end mt-2 ">
               <div className="flex flex-row gap-4">
-                <button className="text-section  bg-white rounded-md px-4 py-2">
-                  Edit
-                </button>
+                <Link to={"/companies/create-post"} state={company}>
+                  <button
+                    disabled={isLoading || isUpdating}
+                    className="text-section  bg-white rounded-md px-4 py-2"
+                  >
+                    Duplicate
+                  </button>
+                </Link>
                 <button
                   className="text-section  bg-white rounded-md px-4 py-2 disabled:bg-section"
-                  onClick={() => updateCompany()}
+                  onClick={handleSubmit(updateCompany)}
                   disabled={isUpdating}
                 >
                   {!isUpdating ? (
@@ -172,69 +99,56 @@ const CompanyView = () => {
 
             {/* company details */}
             <form className="flex flex-row justify-between gap-2 flex-wrap mt-5">
-              <div className="flex  flex-col gap-1 w-full md:w-2/5">
-                <span className="text-placeholder">Name</span>
-                <input
-                  name="name"
-                  className="outline-none px-4 py-1 rounded-md bg-subSection"
-                  value={company.name}
-                  onChange={handleBasicChange}
-                />
-              </div>
-              <div className="flex  flex-col gap-1 w-full md:w-2/5">
-                <span className="text-placeholder">Website</span>
-                <input
-                  name="website"
-                  className="outline-none px-4 py-1 rounded-md bg-subSection"
-                  value={company.website}
-                  onChange={handleBasicChange}
-                />
-              </div>
-              <div className="flex  flex-col gap-1 w-full md:w-2/5">
-                <span className="text-placeholder">Email</span>
-                <input
-                  name="email"
-                  className="outline-none px-4 py-1 rounded-md bg-subSection"
-                  value={company.email}
-                  onChange={handleBasicChange}
-                />
-              </div>
+              <FormInputField
+                name="name"
+                title={"Name X"}
+                errors={errors}
+                register={register}
+              />
+              <FormInputField
+                name="website"
+                title={"Website"}
+                errors={errors}
+                register={register}
+              />
 
-              <div className="flex  flex-col gap-1 w-full md:w-2/5">
-                <span className="text-placeholder">For Batch ( year )</span>
-                <input
-                  type="number"
-                  name="forBatch"
-                  value={company.forBatch}
-                  className="outline-none px-4 py-1 rounded-md bg-subSection"
-                  onChange={handleBasicChange}
-                />
-              </div>
+              <FormInputField
+                name="email"
+                title={"Email"}
+                errors={errors}
+                register={register}
+              />
+
+              <FormInputField
+                name="forBatch"
+                title={"For Batch"}
+                errors={errors}
+                register={register}
+              />
+
+              {/* Description */}
               <div className="flex  flex-col gap-1 w-full">
                 <span className="text-placeholder">Description</span>
+                <span className="text-danger">{`${
+                  errors["description"]?.message || ""
+                }`}</span>
+
                 <textarea
+                  {...register("description", {
+                    minLength: 1,
+                    required: "Descriptioin is required",
+                  })}
                   name="description"
                   className="outline-none px-4 py-1 rounded-md bg-subSection h-20"
-                  value={company.description}
-                  onChange={handleBasicChange}
                 />
               </div>
 
               <h2 className="w-full font-semibold text-2xl">Roles</h2>
-              {company?.roles?.map((role, roleIndex) => {
+              {rolesWatch?.map((role, roleIndex) => {
                 return (
                   <>
                     {/* Remove this role */}
-                    <div className="flex flex-row w-full justify-between">
-                      {/* View Application for that roles */}
-                      <Link
-                        to={`/company/${company._id}/role/${role._id}/applications`}
-                      >
-                        <button className="text-section  bg-white rounded-md px-4 ">
-                          View Applications
-                        </button>
-                      </Link>
-                      {/* Delete the role */}
+                    <div className="flex flex-row w-full justify-end">
                       <button
                         className="flex flex-row  gap-2 justify-center bg-lightHover px-2 py-1 rounded-md"
                         onClick={(e) => handleRemoveRole(e, roleIndex)}
@@ -245,115 +159,111 @@ const CompanyView = () => {
                     </div>
                     <div className="w-full flex flex-row flex-wrap justify-between gap-2">
                       {/* role.name */}
-                      <div className="flex  flex-col gap-1 w-full md:w-2/5">
-                        <span className="text-placeholder">Role Name</span>
-                        <input
-                          name="name"
-                          className="outline-none px-4 py-1 rounded-md bg-subSection"
-                          value={role.name}
-                          onChange={(e) => {
-                            handleRoleChange(e, roleIndex);
-                          }}
-                        />
-                      </div>
-                      {/* role.avgPackage */}
-                      <div className="flex  flex-col gap-1 w-full md:w-2/5">
-                        <span className="text-placeholder">
-                          Average Package
-                        </span>
-                        <input
-                          name="avgPackage"
-                          className="outline-none px-4 py-1 rounded-md bg-subSection"
-                          value={role.avgPackage}
-                          onChange={(e) => {
-                            handleRoleChange(e, roleIndex);
-                          }}
-                        />
-                      </div>
+                      <FormInputField
+                        name={`roles.${roleIndex}.name`}
+                        title={"Role Name"}
+                        errors={errors}
+                        // errors={errors?.roles[roleIndex]?.name.message}
+                        register={register}
+                      />
+
+                      <FormInputField
+                        name={`roles.${roleIndex}.avgPackage`}
+                        title={"Avg. Package (in LPA)"}
+                        errors={errors}
+                        register={register}
+                        type={"number"}
+                      />
+
                       {/* role.type */}
+
                       <div className="flex  flex-col gap-1 w-full md:w-2/5">
                         <span className="text-placeholder">Type</span>
+                        <ErrorMessage
+                          errors={errors}
+                          name={`roles.${roleIndex}.type`}
+                          render={({ message }) => (
+                            <span className="text-danger">{message}</span>
+                          )}
+                        />
                         <select
-                          name="type"
+                          {...register(`roles.${roleIndex}.type`, {
+                            required: "Type is required",
+                            minLength: 1,
+                          })}
                           className="outline-none px-4 py-1 rounded-md bg-subSection"
-                          value={role.type}
-                          onChange={(e) => {
-                            handleRoleChange(e, roleIndex);
-                          }}
                         >
                           <option value="full-time"> Full Time</option>
                           <option value="internship"> Internship</option>
                         </select>
                       </div>
+
                       {/* role.mode */}
                       <div className="flex  flex-col gap-1 w-full md:w-2/5">
                         <span className="text-placeholder">Mode</span>
+                        <ErrorMessage
+                          errors={errors}
+                          name={`roles.${roleIndex}.mode`}
+                          render={({ message }) => (
+                            <span className="text-danger">{message}</span>
+                          )}
+                        />
                         <select
-                          name="mode"
+                          {...register(`roles.${roleIndex}.mode`, {
+                            required: "Mode is required",
+                            minLength: 1,
+                          })}
                           className="outline-none px-4 py-1 rounded-md bg-subSection"
-                          value={role.mode}
-                          onChange={(e) => {
-                            handleRoleChange(e, roleIndex);
-                          }}
                         >
                           <option value="remote"> Remote</option>
                           <option value="on-site"> On Site</option>
-                          <option value="hybrid"> hybrid </option>
+                          <option value="hybrid"> Hybrid </option>
                         </select>
                       </div>
                       {/* role.bonds */}
-                      <div className="flex  flex-col gap-1 w-full md:w-2/5">
-                        <span className="text-placeholder">
-                          Bonds (in months )
-                        </span>
-                        <input
-                          name="bonds"
-                          className="outline-none px-4 py-1 rounded-md bg-subSection"
-                          value={role.bonds}
-                          type="number"
-                          onChange={(e) => {
-                            handleRoleChange(e, roleIndex);
-                          }}
-                        />
-                      </div>
+                      <FormInputField
+                        name={`roles.${roleIndex}.bonds`}
+                        title={"Bonds (in months)"}
+                        errors={errors}
+                        register={register}
+                        type={"number"}
+                      />
+
                       {/* role.deadling */}
-                      <div className="flex  flex-col gap-1 w-full md:w-2/5">
-                        <span className="text-placeholder">
-                          Deadline to apply
-                        </span>
-                        <input
-                          name="deadline"
-                          type="date"
-                          className="outline-none px-4 py-1 rounded-md bg-subSection"
-                          value={role?.deadline?.substring(0, 10)}
-                          onChange={(e) => {
-                            handleRoleChange(e, roleIndex);
-                          }}
-                        />
-                      </div>
+                      <FormInputField
+                        name={`roles.${roleIndex}.deadline`}
+                        title={" Deadline to apply"}
+                        errors={errors}
+                        register={register}
+                        type="date"
+                      />
+
                       {/* role.interviewDate */}
-                      <div className="flex  flex-col gap-1 w-full md:w-2/5">
-                        <span className="text-placeholder">Interview Date</span>
-                        <input
-                          name="interviewDate"
-                          type="date"
-                          className="outline-none px-4 py-1 rounded-md bg-subSection"
-                          value={role?.interviewDate?.substring(0, 10)}
-                          onChange={(e) => {
-                            handleRoleChange(e, roleIndex);
-                          }}
-                        />
-                      </div>
+                      <FormInputField
+                        name={`roles.${roleIndex}.interviewDate`}
+                        title={"Interview Date"}
+                        errors={errors}
+                        register={register}
+                        type="date"
+                      />
+
                       {/* role.interviewMode */}
                       <div className="flex  flex-col gap-1 w-full md:w-2/5">
                         <span className="text-placeholder">Interview Mode</span>
+                        <ErrorMessage
+                          errors={errors}
+                          name={`roles.${roleIndex}.interviewMode`}
+                          render={({ message }) => (
+                            <span className="text-danger">{message}</span>
+                          )}
+                        />
                         <select
                           name="interviewMode"
                           className="outline-none px-4 py-1 rounded-md bg-subSection"
-                          value={role.interviewMode}
-                          onChange={(e) => {
-                            handleRoleChange(e, roleIndex);
-                          }}
+                          {...register(`roles.${roleIndex}.interviewMode`, {
+                            required: "Mode is required",
+                            minLength: 1,
+                          })}
                         >
                           <option value="online"> Online</option>
                           <option value="offline">Offline</option>
@@ -363,63 +273,39 @@ const CompanyView = () => {
                         Requirements
                       </h3>
                       {/* cpi */}
-                      <div className="flex  flex-col gap-1 w-full md:w-2/5">
-                        <span className="text-placeholder">CPI</span>
-                        <input
-                          name="cpi"
-                          type="number"
-                          className="outline-none px-4 py-1 rounded-md bg-subSection"
-                          value={role.requirements.cpi}
-                          onChange={(e) => {
-                            handleReqChange(e, roleIndex);
-                          }}
-                        />
-                      </div>
+                      <FormInputField
+                        name={`roles.${roleIndex}.requirements.cpi`}
+                        title={"CPI"}
+                        errors={errors}
+                        register={register}
+                        type="number"
+                      />
+
                       {/* 12 Th Perc */}
-                      <div className="flex  flex-col gap-1 w-full md:w-2/5">
-                        <span className="text-placeholder">
-                          12th Percentage{" "}
-                        </span>
-                        <input
-                          name="twelfthPerc"
-                          type="number"
-                          className="outline-none px-4 py-1 rounded-md bg-subSection"
-                          value={role.requirements.twelfthPerc}
-                          onChange={(e) => {
-                            handleReqChange(e, roleIndex);
-                          }}
-                        />
-                      </div>
+                      <FormInputField
+                        name={`roles.${roleIndex}.requirements.twelfthPerc`}
+                        title={"12th Percentage"}
+                        errors={errors}
+                        register={register}
+                        type="number"
+                      />
+
                       {/* 10 Th Perc */}
-                      <div className="flex  flex-col gap-1 w-full md:w-2/5">
-                        <span className="text-placeholder">
-                          10th Percentage{" "}
-                        </span>
-                        <input
-                          name="tenthPerc"
-                          type="number"
-                          className="outline-none px-4 py-1 rounded-md bg-subSection"
-                          value={role.requirements.tenthPerc}
-                          onChange={(e) => {
-                            handleReqChange(e, roleIndex);
-                          }}
-                        />
-                      </div>
+                      <FormInputField
+                        name={`roles.${roleIndex}.requirements.tenthPerc`}
+                        title={"10th Percentage"}
+                        errors={errors}
+                        register={register}
+                        type="number"
+                      />
                       {/* dimploma Perc */}
-                      <div className="flex  flex-col gap-1 w-full md:w-2/5">
-                        <span className="text-placeholder">
-                          Diploma Percentage
-                        </span>
-                        <input
-                          name="diplomaPerc"
-                          type="number"
-                          className="outline-none px-4 py-1 rounded-md bg-subSection"
-                          value={role.requirements.diplomaPerc}
-                          onChange={(e) => {
-                            handleReqChange(e, roleIndex);
-                          }}
-                        />
-                      </div>
+                      <FormInputField
+                        name={`roles.${roleIndex}.requirements.diplomaPerc`}
+                        title={"Diploma Percentage"}
+                        errors={errors}
+                        register={register}
+                        type="number"
+                      />
                       {/* Competitive programming */}
                       <div className="flex flex-row w-full mt-5 justify-between">
                         <h3 className=" font-semibold text-lg ">
@@ -432,47 +318,26 @@ const CompanyView = () => {
                             <>
                               {/* Platform */}
 
-                              <div className="flex  flex-col gap-1 w-full md:w-2/5">
-                                <span className="text-placeholder">
-                                  Platform
-                                </span>
-                                <input
-                                  name="platform"
-                                  className="outline-none px-4 py-1 rounded-md bg-subSection"
-                                  value={cpItem.platform}
-                                  onChange={(e) => {
-                                    handleCPChange(e, roleIndex, cpIndex);
-                                  }}
-                                />
-                              </div>
+                              <FormInputField
+                                name={`roles.${roleIndex}.requirements.competitiveCoding.${cpIndex}.platform`}
+                                title={"Platform"}
+                                errors={errors}
+                                register={register}
+                              />
                               {/* Stars */}
-                              <div className="flex  flex-col gap-1 w-full md:w-2/5">
-                                <span className="text-placeholder">Stars</span>
-                                <input
-                                  name="stars"
-                                  type="number"
-                                  className="outline-none px-4 py-1 rounded-md bg-subSection"
-                                  value={cpItem.stars}
-                                  onChange={(e) => {
-                                    handleCPChange(e, roleIndex, cpIndex);
-                                  }}
-                                />
-                              </div>
+                              <FormInputField
+                                name={`roles.${roleIndex}.requirements.competitiveCoding.${cpIndex}.stars`}
+                                title={"Stars"}
+                                errors={errors}
+                                register={register}
+                              />
                               {/* Ratings */}
-                              <div className="flex  flex-col gap-1 w-full md:w-2/5">
-                                <span className="text-placeholder">
-                                  Ratings
-                                </span>
-                                <input
-                                  name="ratings"
-                                  type="number"
-                                  className="outline-none px-4 py-1 rounded-md bg-subSection"
-                                  value={cpItem.ratings}
-                                  onChange={(e) => {
-                                    handleCPChange(e, roleIndex, cpIndex);
-                                  }}
-                                />
-                              </div>
+                              <FormInputField
+                                name={`roles.${roleIndex}.requirements.competitiveCoding.${cpIndex}.ratings`}
+                                title={"Ratings"}
+                                errors={errors}
+                                register={register}
+                              />
                               <div className="flex flex-col justify-end gap-1 w-full md:w-2/5">
                                 <button
                                   className="flex flex-row  gap-2 justify-center bg-lightHover px-2 py-1 rounded-md"
@@ -513,56 +378,42 @@ const CompanyView = () => {
               </button>
               <h2 className="w-full font-semibold text-2xl">Address</h2>
               {/* address.city */}
-              <div className="flex  flex-col gap-1 w-full md:w-2/5">
-                <span className="text-placeholder">City</span>
-                <input
-                  name="city"
-                  value={company?.address?.city}
-                  className="outline-none px-4 py-1 rounded-md bg-subSection"
-                  onChange={handleAddChange}
-                />
-              </div>
+              <FormInputField
+                name={`address.city`}
+                title={"City"}
+                errors={errors}
+                register={register}
+              />
               {/* address.districts */}
-              <div className="flex  flex-col gap-1 w-full md:w-2/5">
-                <span className="text-placeholder">District</span>
-                <input
-                  name="district"
-                  value={company?.address?.district}
-                  className="outline-none px-4 py-1 rounded-md bg-subSection"
-                  onChange={handleAddChange}
-                />
-              </div>
+              <FormInputField
+                name={`address.district`}
+                title={"District"}
+                errors={errors}
+                register={register}
+              />
+
               {/* address.state */}
-              <div className="flex  flex-col gap-1 w-full md:w-2/5">
-                <span className="text-placeholder">State</span>
-                <input
-                  name="state"
-                  value={company?.address?.state}
-                  className="outline-none px-4 py-1 rounded-md bg-subSection"
-                  onChange={handleAddChange}
-                />
-              </div>
+              <FormInputField
+                name={`address.state`}
+                title={"State"}
+                errors={errors}
+                register={register}
+              />
               {/* address.postalcode */}
-              <div className="flex  flex-col gap-1 w-full md:w-2/5">
-                <span className="text-placeholder">Postal Code</span>
-                <input
-                  name="postalCode"
-                  type={"number"}
-                  value={company?.address?.postalCode}
-                  className="outline-none px-4 py-1 rounded-md bg-subSection"
-                  onChange={handleAddChange}
-                />
-              </div>
+              <FormInputField
+                name={`address.postalcode`}
+                title={"Postalcode"}
+                errors={errors}
+                register={register}
+                type="number"
+              />
               {/* address.completeAddress */}
-              <div className="flex  flex-col gap-1 w-full md:w-2/5">
-                <span className="text-placeholder">Address</span>
-                <input
-                  name="completeAddress"
-                  value={company?.address?.completeAddress}
-                  className="outline-none px-4 py-1 rounded-md bg-subSection"
-                  onChange={handleAddChange}
-                />
-              </div>
+              <FormInputField
+                name={`address.completeAddress`}
+                title={"Complete Address"}
+                errors={errors}
+                register={register}
+              />
             </form>
           </div>
         )}

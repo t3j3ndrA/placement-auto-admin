@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useQueries, useQuery } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { Cell, Pie, PieChart } from "recharts";
-import FilterInput from "../FilterInput";
+import FilterInputWithValue from "../FilterInputWithValue";
 import RatioPieChart from "./RatioPieChart";
 
 const PlacementRatio = () => {
@@ -65,7 +65,7 @@ const PlacementRatio = () => {
         {/* Filter */}
         <div className="flex flex-row justify-start gap-4 mb-4">
           {/* First Name */}
-          <FilterInput
+          <FilterInputWithValue
             name="year"
             value={filter.year}
             title="Year"

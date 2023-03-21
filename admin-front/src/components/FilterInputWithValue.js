@@ -1,9 +1,10 @@
-const FilterInput = ({ title, name, onChangeFun, value }) => {
+const FilterInputWithValue = ({ title, name, onChangeFun, value }) => {
   return (
     <div className={`flex  flex-col gap-1 w-full md:w-1/6 `}>
       <span className="text-placeholder">{title}</span>
       <input
         name={name}
+        value={value ? value : ""}
         onChange={(e) => {
           onChangeFun(e);
         }}
@@ -13,4 +14,4 @@ const FilterInput = ({ title, name, onChangeFun, value }) => {
   );
 };
 
-export default FilterInput;
+export default FilterInputWithValue;

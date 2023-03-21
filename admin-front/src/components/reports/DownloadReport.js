@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import FilterInput from "../FilterInput";
 import download from "downloadjs";
 import { BeatLoader } from "react-spinners";
+import FilterInputWithValue from "../FilterInputWithValue";
 
 const DownloadReport = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -41,7 +42,7 @@ const DownloadReport = () => {
 
   return (
     <div className="my-3 flex flex-row items-center flex-wrap gap-6">
-      <FilterInput
+      <FilterInputWithValue
         name="year"
         value={filter.year}
         title="Year"

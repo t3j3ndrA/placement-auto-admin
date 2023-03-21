@@ -1,7 +1,6 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { useQuery } from "react-query";
-import FilterInput from "../FilterInput";
 import {
   LineChart,
   Line,
@@ -14,6 +13,7 @@ import {
 } from "recharts";
 import { useNavigate } from "react-router-dom";
 import PackageLineChart from "./PackageLineChart";
+import FilterInputWithValue from "../FilterInputWithValue";
 
 const Top10Placements = () => {
   const [filter, setFilter] = useState({
@@ -69,13 +69,13 @@ const Top10Placements = () => {
 
       <div className="flex flex-row justify-start gap-4 mb-4">
         {/* First Name */}
-        <FilterInput
+        <FilterInputWithValue
           name="year"
           value={filter.year}
           title="Year"
           onChangeFun={handleFilterChange}
         />
-        <FilterInput
+        <FilterInputWithValue
           name="limit"
           value={filter.limit}
           title="Display Limit"

@@ -1,4 +1,7 @@
 {
   "name": "admin-panel",
-  "packageManager": "yarn@3.3.1"
+  "packageManager": "yarn@3.3.1",
+  "dependencies": {
+    "@hookform/error-message": "^2.0.1"
+  }
 }
