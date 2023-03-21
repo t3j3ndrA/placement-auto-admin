@@ -17,7 +17,7 @@ const Students = () => {
   const [showFilter, setShowFilter] = useState(false);
   const navigate = useNavigate();
 
-  const fetchCompanies = async () => {
+  const fetchStudents = async () => {
     let filterURL = "";
     for (const query in filter) {
       filterURL += `${query}=${filter[query]}&`;
@@ -26,7 +26,7 @@ const Students = () => {
     console.log(filterURL);
 
     return axios
-      .get(`http://localhost:5000/api/student?${filterURL}`, {
+      .get(`/api/student?${filterURL}`, {
         withCredentials: true,
       })
       .then((response) => response.data)
@@ -63,7 +63,7 @@ const Students = () => {
 
   const { data, isLoading, isError } = useQuery(
     ["students", filter],
-    fetchCompanies,
+    fetchStudents,
     {
       keepPreviousData: true,
     }

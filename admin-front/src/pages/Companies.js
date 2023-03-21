@@ -4,14 +4,22 @@ import { Link } from "react-router-dom";
 import { useQuery } from "react-query";
 import { HashLoader } from "react-spinners";
 import axios from "axios";
+import { AiOutlineFilter } from "react-icons/ai";
+import FilterInput from "../components/FilterInput";
+
 const Companies = () => {
   const [filter, setFilter] = useState({});
+  const [showFilter, setShowFilter] = useState(false);
 
   const fetchCompanies = async () => {
     let filterURL = "";
 
+    for (const query in filter) {
+      filterURL += `${query}=${filter[query]}&`;
+    }
+
     return axios
-      .get(`http://localhost:5000/api/company?${filterURL}`, {
+      .get(`/api/company?${filterURL}`, {
         withCredentials: true,
       })
       .then((response) => response.data)
@@ -22,7 +30,28 @@ const Companies = () => {
   };
 
   const handleFilterChange = (e) => {
+    if (e.target.value) {
+      e.target.style.border = "2px dotted green";
+    } else {
+      e.target.style.border = "";
+    }
     setFilter({ ...filter, [e.target.name]: e.target.value });
+  };
+
+  const handleFilterReset = () => {
+    setFilter("");
+    const allInputs = document.body.getElementsByTagName("input");
+    const allSelects = document.body.getElementsByTagName("select");
+    console.log(allSelects);
+    for (let i = 0; i < allInputs.length; ++i) {
+      allInputs.item(i).style.border = "";
+    }
+
+    for (let i = 0; i < allSelects.length; ++i) {
+      allSelects.item(i).style.border = "";
+    }
+
+    document.getElementById("filter-form").reset();
   };
 
   const { data, isLoading, isError } = useQuery(
@@ -53,14 +82,167 @@ const Companies = () => {
         {/* Companies */}
 
         <h1 className="text-2xl">Companies</h1>
-
         {/*  Filters*/}
-        <form className="flex flex-row gap-2 flex-wrap justify-center">
-          <input className="outline-none px-4 py-1 rounded-md bg-subSection" />
-          <input className="outline-none px-4 py-1 rounded-md bg-subSection" />
-          <input className="outline-none px-4 py-1 rounded-md bg-subSection" />
-          <input className="outline-none px-4 py-1 rounded-md bg-subSection" />
-        </form>
+        <div className="bg-subSection px-2 py-3 rounded-lg">
+          <div className="flex flex-row justify-between items-center  ">
+            <h2 className="text-xl">Filters</h2>
+            <div className="flex flex-row gap-4 items-center">
+              <input
+                type="reset"
+                className={`bg-hover py-2 px-3 rounded-xl hover:cursor-pointer `}
+                value={"Clear"}
+                onClick={handleFilterReset}
+              />
+              <span
+                className="bg-hover rounded-full p-2 hover:cursor-pointer"
+                onClick={() => {
+                  setShowFilter(!showFilter);
+                }}
+              >
+                <AiOutlineFilter size={24} />
+              </span>
+            </div>
+          </div>
+          <form
+            id="filter-form"
+            className={`mt-0 flex flex-row justify-around gap-1 flex-wrap bg-subSection  ${
+              showFilter ? "" : "hidden"
+            }`}
+          >
+            {/* Company Name */}
+            <FilterInput
+              name="name"
+              title="Name"
+              onChangeFun={handleFilterChange}
+            />
+
+            {/* Website */}
+            <FilterInput
+              name="website"
+              title="Website"
+              onChangeFun={handleFilterChange}
+            />
+
+            {/* Email */}
+            <FilterInput
+              name="email"
+              title="Email"
+              onChangeFun={handleFilterChange}
+            />
+
+            {/* Role Name */}
+            <FilterInput
+              name="roleName"
+              title="Role Name"
+              onChangeFun={handleFilterChange}
+            />
+
+            {/* Average Package */}
+            <FilterInput
+              name="avgPackage"
+              title="Avg. Package"
+              onChangeFun={handleFilterChange}
+            />
+
+            {/* Types */}
+
+            <div className="flex  flex-col gap-1 w-full md:w-1/6">
+              <span className="text-placeholder">Type</span>
+              <select
+                name="type"
+                className="outline-none px-4 py-1 rounded-md bg-alternate"
+                onChange={(e) => {
+                  handleFilterChange(e);
+                }}
+              >
+                <option value=""> </option>
+                <option value="full-time"> Full Time</option>
+                <option value="internship"> Internship</option>
+              </select>
+            </div>
+            {/* Mode */}
+            <div className="flex  flex-col gap-1 w-full md:w-1/6">
+              <span className="text-placeholder">Mode</span>
+              <select
+                name="mode"
+                className="outline-none px-4 py-1 rounded-md bg-alternate"
+                onChange={(e) => {
+                  handleFilterChange(e);
+                }}
+              >
+                <option value=""> </option>
+                <option value="remote"> Remote</option>
+                <option value="on-site"> On Site</option>
+                <option value="hybrid"> Hybrid </option>
+              </select>
+            </div>
+
+            {/* Bonds */}
+            <FilterInput
+              name="bonds"
+              title="Bonds (in months)"
+              onChangeFun={handleFilterChange}
+            />
+
+            {/* Interview Mode */}
+            <div className="flex  flex-col gap-1 w-full md:w-1/6">
+              <span className="text-placeholder">Mode</span>
+              <select
+                name="interviewMode"
+                className="outline-none px-4 py-1 rounded-md bg-alternate"
+                onChange={(e) => {
+                  handleFilterChange(e);
+                }}
+              >
+                <option value=""> </option>
+                <option value="online"> Online</option>
+                <option value="offline">Offline</option>
+              </select>
+            </div>
+            {/* Min CPI */}
+            <FilterInput
+              name="cpi"
+              title="Min. CPI"
+              onChangeFun={handleFilterChange}
+            />
+
+            {/* Min 12th Perc */}
+            <FilterInput
+              name="twelfthPerc"
+              title="Min. 12th %"
+              onChangeFun={handleFilterChange}
+            />
+
+            {/* Min 10th Perc */}
+            <FilterInput
+              name="tenthPerc"
+              title="Min. 10th %"
+              onChangeFun={handleFilterChange}
+            />
+
+            {/* Min Diploma % */}
+            <FilterInput
+              name="diplomaPerc"
+              title="Min. Diploma %"
+              onChangeFun={handleFilterChange}
+            />
+
+            {/* City % */}
+            <FilterInput
+              name="city"
+              title="City"
+              onChangeFun={handleFilterChange}
+            />
+
+            {/* State % */}
+            <FilterInput
+              name="state"
+              title="State"
+              onChangeFun={handleFilterChange}
+            />
+          </form>
+        </div>
+
         {isLoading ? (
           <div className="flex flex-row justify-center mt-12">
             <HashLoader color="white" />

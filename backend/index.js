@@ -8,6 +8,7 @@ const StudentRoute = require("./routes/student/student.route");
 const AdminRoute = require("./routes/admin/admin.route");
 const AuthRoute = require("./routes/auth/auth.route");
 const CompanyRoute = require("./routes/company/company.route");
+const ReportsRoute = require("./routes/reports/reports.route");
 // const TrashRoute = require("./routes/trash/trash.route");
 const mongoose = require("mongoose");
 const MongoStore = require("connect-mongo");
@@ -48,6 +49,7 @@ app.use("/api/auth", AuthRoute);
 app.use("/api/student", StudentRoute);
 app.use("/api/admin", AdminRoute);
 app.use("/api/company", CompanyRoute);
+app.use("/api/reports", ReportsRoute);
 
 // trash routes only under developments
 // app.use("/api/trash", TrashRoute);

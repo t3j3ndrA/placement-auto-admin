@@ -7,7 +7,7 @@ const StudentSchema = mongoose.Schema({
   lastName: { type: String, default: "" },
   gender: { type: String, enum: ["male", "female", "other", ""], default: "" },
   dateOfBirth: { type: Date },
-
+  isVerified: { type: Boolean, default: false },
   // college information
   collegeID: { type: String, default: "" },
   rollNumber: { type: String, default: "" },
@@ -73,8 +73,9 @@ const StudentSchema = mongoose.Schema({
       duration: { type: Number, defualt: 0 },
       package: { type: Number, default: 0 },
       joiningDate: { type: Date },
-      mode: { type: String, enum: ["remote", "on-site"] },
+      mode: { type: String, enum: ["remote", "on-site"], default: "on-site" },
     }),
+    default: {},
   },
 
   // internship details
@@ -87,11 +88,9 @@ const StudentSchema = mongoose.Schema({
       joiningDate: { type: Date },
       mode: { type: String, enum: ["remote", "on-site"] },
     }),
+    default: {},
   },
 
-  // applied to companies
-  // key will be company id
-  // roles can be multiple
   appliedTo: {
     type: Map,
     of: mongoose.Schema({

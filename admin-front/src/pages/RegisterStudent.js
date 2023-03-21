@@ -2,10 +2,14 @@ import React, { useState } from "react";
 import { AiFillInfoCircle, AiOutlineInfo } from "react-icons/ai";
 import Info from "../components/Info";
 import Navbar from "../components/Navbar";
+import axios from "axios";
+import { toast, ToastContainer } from "react-toastify";
+import { BeatLoader } from "react-spinners";
 
 const RegisterStudent = () => {
   const [students, setStudents] = useState("");
   const [studentsArr, setStudentsArr] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const handleChange = (e) => {
     console.log(students);
     const val = e.target.value;
@@ -16,6 +20,17 @@ const RegisterStudent = () => {
         .split(" ")
         .filter((item) => item.length > 0)
     );
+  };
+
+  const handleSubmit = async (e) => {
+    setIsLoading(true);
+    e.preventDefault();
+    const { data } = await axios.post("/api/student/new", {
+      collegeEmails: studentsArr,
+    });
+    console.log(data);
+    toast.success("All students registred", { position: "bottom-left" });
+    setIsLoading(false);
   };
 
   return (
@@ -48,9 +63,19 @@ const RegisterStudent = () => {
               );
             })}
           </table>
-          <button className="mt-3 text-section  bg-white rounded-md px-4 py-2">
-            Register
+          <button
+            className="mt-3 text-section  bg-white rounded-md px-4 py-2"
+            type="button"
+            onClick={handleSubmit}
+            disabled={isLoading}
+          >
+            {isLoading ? (
+              <BeatLoader className="text-backg text-sm" />
+            ) : (
+              "Register"
+            )}
           </button>
+          <ToastContainer />
         </div>
       </div>
     </div>

@@ -8,6 +8,7 @@ const {
   DUPLICATE_STUDENT,
 } = require("../../constants/constantsMessages");
 const verifyAdmin = require("../../middleware/verifyAdmin");
+const { sendVerificationEmail } = require("../../utils/sendVerificationEmail");
 
 router.get("/", (req, res) => {
   const {
@@ -40,11 +41,6 @@ router.get("/", (req, res) => {
     postalCode,
   } = req.query;
 
-  console.log(
-    "personalPhoneNumber",
-    personalPhoneNumber,
-    typeof personalPhoneNumber
-  );
   if (id) {
     console.log("id found");
     Student.findOne({ _id: id })
@@ -166,7 +162,7 @@ router.get("/", (req, res) => {
 });
 
 // register new student with email
-router.post("/new", verifyAdmin, async (req, res) => {
+router.post("/new", async (req, res) => {
   const { collegeEmails } = req.body;
 
   let students = [];
@@ -175,17 +171,20 @@ router.post("/new", verifyAdmin, async (req, res) => {
       collegeEmail: collegeEmails[i],
     });
     if (!foundStudent) {
+      const password = generator.generate({
+        length: 8,
+        lowercase: true,
+        uppercase: true,
+        numbers: true,
+      });
+
       students.push(
         new Student({
           collegeEmail: collegeEmails[i],
-          password: generator.generate({
-            length: 8,
-            lowercase: true,
-            uppercase: true,
-            numbers: true,
-          }),
+          password,
         })
       );
+      sendVerificationEmail(collegeEmails[i], password);
     }
   }
   const savedStudents = await Student.bulkSave(students);

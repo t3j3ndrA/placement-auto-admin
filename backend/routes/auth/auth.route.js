@@ -57,6 +57,7 @@ router.post("/student/login", async (req, res) => {
 
       const user = {
         studentId: foundStudent._id,
+        isVerified: foundStudent.isVerified,
       };
 
       return res.json({ success: true, data: user });
