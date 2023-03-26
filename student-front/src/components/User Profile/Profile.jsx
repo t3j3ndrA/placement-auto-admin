@@ -1,13 +1,11 @@
 import React from 'react'
 import axios from 'axios';
 import { useState , useEffect} from 'react'
-import { Link , useNavigate} from "react-router-dom";
-import { Homepage } from '../Homepage/Homepage';
+import {   useNavigate} from "react-router-dom";
 import myImage from './person.jpg'
 import { Navbar } from '../Navbar/Navbar';
 import { Pre_loading_page } from '../Pre-Loading/Pre_loading_page';
 import getStuId from "../../utils/getStuId";
-import styled from '@emotion/styled';
 
 export const Profile = () => {
 

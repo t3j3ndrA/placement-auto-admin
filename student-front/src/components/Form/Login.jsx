@@ -1,9 +1,7 @@
 import React from "react";
-import loadImg from "./1.jpeg";
+import loadImg from "./register2.jpg";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Homepage } from "../Homepage/Homepage";
-import { Register } from "../Register/Register";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
