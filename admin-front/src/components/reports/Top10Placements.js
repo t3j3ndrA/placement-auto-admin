@@ -58,7 +58,6 @@ const Top10Placements = () => {
     }
   );
 
-  console.log(data);
   return (
     <div className="bg-section mx-auto px-4 py-4 w-full">
       {/* Title */}
@@ -73,10 +72,12 @@ const Top10Placements = () => {
           name="year"
           value={filter.year}
           title="Year"
+          type="number"
           onChangeFun={handleFilterChange}
         />
         <FilterInputWithValue
           name="limit"
+          type="number"
           value={filter.limit}
           title="Display Limit"
           onChangeFun={handleFilterChange}

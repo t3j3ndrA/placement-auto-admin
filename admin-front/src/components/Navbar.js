@@ -8,16 +8,19 @@ import {
   AiOutlineBars,
   AiOutlineLogout,
 } from "react-icons/ai";
+import axios from "axios";
+
 import { Link } from "react-router-dom";
 
 const Navbar = ({ focusOn }) => {
-  // w-2/12 is equivalent to col-start-1, col-end-3
-  // h-screen is equivalent to row-start-1 row-end-3 with fixed position
-  // const [cookies, setCookie, removeCookie] = useCookies();
-  // console.log(cookies);
   const [open, setOpen] = useState(false);
+
+  const handleLogout = async () => {
+    const { data } = await axios.post("/api/auth/logout");
+    console.log("Logout request >> ", data);
+  };
+
   return (
-    // <div className="  bg-section h-screen fixed w-2/12 text-white px-3 py-8 rounded-xl">
     <div className=" bg-section text-white px-3 py-8 rounded-xl lg:flex lg:flex-row lg:justify-around">
       {/* Top section */}
       <div className="flex flex-row justify-between items-center">
@@ -27,7 +30,7 @@ const Navbar = ({ focusOn }) => {
             className="rounded-full w-10 h-10 bg-cover"
           />
 
-          <span className="font-semibold text-2xl">DDU</span>
+          <span className="font-semibold text-2xl">DDU - Placement Portal</span>
         </div>
         <div>
           <AiOutlineBars
@@ -78,6 +81,7 @@ const Navbar = ({ focusOn }) => {
         <Link to="/login">
           <div
             className={`flex gap-8 items-center  rounded-md px-2 py-1 hover:bg-hover`}
+            onClick={handleLogout}
           >
             <AiOutlineLogout className="text-2xl" />
             <span className="font-light text-xl">Logout</span>

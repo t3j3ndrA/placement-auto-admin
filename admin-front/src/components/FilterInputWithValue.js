@@ -1,8 +1,17 @@
-const FilterInputWithValue = ({ title, name, onChangeFun, value }) => {
+const FilterInputWithValue = ({
+  title,
+  name,
+  onChangeFun,
+  value,
+  type,
+  min,
+  max,
+}) => {
   return (
     <div className={`flex  flex-col gap-1 w-full md:w-1/6 `}>
       <span className="text-placeholder">{title}</span>
       <input
+        type={type || "text"}
         name={name}
         value={value ? value : ""}
         onChange={(e) => {

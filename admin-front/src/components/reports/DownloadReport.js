@@ -4,6 +4,7 @@ import FilterInput from "../FilterInput";
 import download from "downloadjs";
 import { BeatLoader } from "react-spinners";
 import FilterInputWithValue from "../FilterInputWithValue";
+import { toast } from "react-toastify";
 
 const DownloadReport = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -24,20 +25,20 @@ const DownloadReport = () => {
   const fetchStudents = async () => {
     setIsLoading(true);
     let filterURL = "";
+    toast.success("Download will shortly begin...");
     for (const query in filter) {
       filterURL += `${query}=${filter[query]}&`;
     }
 
-    const { data } = await axios.get(
+    const { data, status } = await axios.get(
       `/api/reports/yearly/download?${filterURL}`,
       {
         withCredentials: true,
         responseType: "blob",
       }
     );
-
-    download(data, `Placement-Reports-${filter.year}.xls`);
     setIsLoading(false);
+    download(data, `Placement-Reports-${filter.year}.xls`);
   };
 
   return (
@@ -46,6 +47,7 @@ const DownloadReport = () => {
         name="year"
         value={filter.year}
         title="Year"
+        type="number"
         onChangeFun={handleFilterChange}
       />
       <button

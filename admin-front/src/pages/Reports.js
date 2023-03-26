@@ -1,7 +1,7 @@
 import React, { PureComponent, useState } from "react";
 import Navbar from "../components/Navbar";
 import { HashLoader } from "react-spinners";
-
+import { ToastContainer } from "react-toastify";
 import PlacementRatio from "../components/reports/PlacementRatio";
 import Top10Placements from "../components/reports/Top10Placements";
 import YearlyPlaced from "../components/reports/YearlyPlaced";
@@ -35,6 +35,16 @@ const Reports = () => {
         <YearlyPlaced />
         <YearlyNotPlaced />
       </div>
+      <ToastContainer
+        position="bottom-left"
+        autoClose={4000}
+        hideProgressBar={false}
+        closeOnClic={true}
+        pauseOnHover={true}
+        draggable={true}
+        progress={undefined}
+        theme="dark"
+      />
     </div>
   );
 };

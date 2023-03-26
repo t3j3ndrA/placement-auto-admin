@@ -11,9 +11,12 @@ import {
   AiOutlineFilter,
 } from "react-icons/ai";
 import FilterInput from "../components/FilterInput";
+import FilterInputWithValue from "../components/FilterInputWithValue";
 
 const Students = () => {
-  const [filter, setFilter] = useState({});
+  const [filter, setFilter] = useState({
+    passingYear: new Date().getFullYear(),
+  });
   const [showFilter, setShowFilter] = useState(false);
   const navigate = useNavigate();
 
@@ -260,6 +263,16 @@ const Students = () => {
             />
           </form>
         </div>
+
+        {/* For Batch */}
+        <FilterInputWithValue
+          name="passingYear"
+          title="Passing Year"
+          value={filter.passingYear}
+          onChangeFun={handleFilterChange}
+          type="number"
+        />
+
         {isLoading || isError ? (
           <div className="flex flex-row justify-center mt-12">
             <HashLoader color="white" />

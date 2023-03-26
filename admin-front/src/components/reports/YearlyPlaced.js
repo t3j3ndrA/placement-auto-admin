@@ -19,7 +19,6 @@ import FilterInputWithValue from "../FilterInputWithValue";
 const YearlyPlaced = () => {
   const [filter, setFilter] = useState({
     year: new Date().getFullYear() + 1,
-    limit: 10,
   });
 
   const navigate = useNavigate();
@@ -74,12 +73,14 @@ const YearlyPlaced = () => {
           name="year"
           value={filter.year}
           title="Year"
+          type="number"
           onChangeFun={handleFilterChange}
         />
         <FilterInputWithValue
           name="limit"
           value={filter.limit}
           title="Display Limit"
+          type="number"
           onChangeFun={handleFilterChange}
         />
       </div>

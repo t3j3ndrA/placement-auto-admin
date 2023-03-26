@@ -6,9 +6,10 @@ import { HashLoader } from "react-spinners";
 import axios from "axios";
 import { AiOutlineFilter } from "react-icons/ai";
 import FilterInput from "../components/FilterInput";
+import FilterInputWithValue from "../components/FilterInputWithValue";
 
 const Companies = () => {
-  const [filter, setFilter] = useState({});
+  const [filter, setFilter] = useState({ forBatch: new Date().getFullYear() });
   const [showFilter, setShowFilter] = useState(false);
 
   const fetchCompanies = async () => {
@@ -83,6 +84,7 @@ const Companies = () => {
 
         <h1 className="text-2xl">Companies</h1>
         {/*  Filters*/}
+
         <div className="bg-subSection px-2 py-3 rounded-lg">
           <div className="flex flex-row justify-between items-center  ">
             <h2 className="text-xl">Filters</h2>
@@ -103,6 +105,7 @@ const Companies = () => {
               </span>
             </div>
           </div>
+
           <form
             id="filter-form"
             className={`mt-0 flex flex-row justify-around gap-1 flex-wrap bg-subSection  ${
@@ -242,7 +245,14 @@ const Companies = () => {
             />
           </form>
         </div>
-
+        {/* For Batch */}
+        <FilterInputWithValue
+          name="forBatch"
+          title="For Batch ( in year )"
+          value={filter.forBatch}
+          onChangeFun={handleFilterChange}
+          type="number"
+        />
         {isLoading ? (
           <div className="flex flex-row justify-center mt-12">
             <HashLoader color="white" />

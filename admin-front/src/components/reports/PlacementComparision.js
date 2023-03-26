@@ -7,7 +7,7 @@ import FilterInputWithValue from "../FilterInputWithValue";
 
 const PlacementComparision = () => {
   const [filter, setFilter] = useState({
-    minYear: new Date().getFullYear() + 1,
+    minYear: new Date().getFullYear() - 1,
     maxYear: new Date().getFullYear() + 1,
   });
 
@@ -63,12 +63,14 @@ const PlacementComparision = () => {
         {/* First Name */}
         <FilterInputWithValue
           name="minYear"
+          type="number"
           value={filter.minYear}
           title="Min. Year"
           onChangeFun={handleFilterChange}
         />
         <FilterInputWithValue
           name="maxYear"
+          type="number"
           value={filter.maxYear}
           title="Max. Year"
           onChangeFun={handleFilterChange}
@@ -77,7 +79,7 @@ const PlacementComparision = () => {
       {isLoading ? (
         <ClipLoader color="white" size={40} />
       ) : (
-        <ComparisionBarChart data={data.data} />
+        <ComparisionBarChart data={data?.data} />
       )}
     </div>
   );

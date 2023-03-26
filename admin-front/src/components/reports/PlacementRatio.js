@@ -50,11 +50,6 @@ const PlacementRatio = () => {
 
   console.log("ratio", data);
 
-  const pieData = [
-    { name: "Placed", value: 100 },
-    { name: "Not Placed", value: 20 },
-  ];
-
   return (
     <div className="bg-section mx-auto px-4 py-4 w-full">
       <div className=" bg-section p-3 rounded-md min-w-full">
@@ -67,6 +62,7 @@ const PlacementRatio = () => {
           {/* First Name */}
           <FilterInputWithValue
             name="year"
+            type="number"
             value={filter.year}
             title="Year"
             onChangeFun={handleFilterChange}
