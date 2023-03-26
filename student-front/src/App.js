@@ -1,6 +1,6 @@
 import { Login } from "./components/Form/Login";
 import { Register } from "./components/Register/Register";
-import Profile from "./components/User Profile/Profile1";
+import Profile from "./components/User Profile/Profile";
 import { Company_page } from "./components/Company/Company_page";
 
 // css for react toastifier
