@@ -153,16 +153,12 @@ router.get("/yearly/download", async (req, res) => {
     });
     // const workSheet = reader.utils.json_to_sheet(excdata);
     reader.utils.book_append_sheet(workBook, workSheet);
-    let exportFileName = `sheets/Placement-Report-${year || "all"}.xls`;
+    let exportFileName = `${__dirname}/Placement-Report-${year || "all"}.xls`;
+
     reader.writeFile(workBook, exportFileName);
 
     return res.sendFile(
-      path.join(
-        __dirname,
-        "..",
-        "..",
-        `/sheets/Placement-Report-${year || "all"}.xls`
-      )
+      path.join(__dirname, `Placement-Report-${year || "all"}.xls`)
     );
   } catch (error) {
     console.log("error >> ", error);
