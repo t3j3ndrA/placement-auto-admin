@@ -8,29 +8,25 @@ import { Link } from "react-router-dom";
 import { Pre_loading_page } from "../Pre-Loading/Pre_loading_page";
 import axios from "axios";
 import getStuId from "../../utils/getStuId";
+import { useQuery } from "react-query";
+import { ClipLoader } from "react-spinners";
+
 export const Already_applied = () => {
-  let navigate = useNavigate();
-  const [_data, set_data] = useState({});
-  const [isLoading, setIsLoading] = useState(true);
   const studId = getStuId();
-  useEffect(() => {
-    console.log("hello from homepage");
 
-    const getValues = async () => {
-      try {
-        const { data } = await axios.get(`/api/student/${studId}/applications`);
-        console.log("Data from company page: ", data);
-        set_data(data.data);
-        setIsLoading(false);
-        console.log("Data stored in useState: ", _data);
-      } catch (err) {
-        console.log("error: ", err);
-      }
-    };
+  const getValues = async () => {
+    return axios.get(`/api/student/${studId}/applications`).then(({ data }) => {
+      return data.data;
+    });
+  };
 
-    getValues();
-    return () => {};
-  }, []);
+  const {
+    data: _data,
+    isLoading,
+    isError,
+  } = useQuery(["applied-companies", "filter"], getValues, {
+    keepPreviousData: true,
+  });
 
   function convertToDate(dateString) {
     const date = new Date(dateString);
@@ -50,13 +46,6 @@ export const Already_applied = () => {
       .replace(/=/g, "e1Q2u3A4l");
     // encrypted = encrypted.toString().replace('+','xMl3Jk').replace('/','Por21Ld').replace('=','Ml32');
     return encrypted;
-  }
-
-  function redirect(data) {
-    console.log("hello from redirect");
-    const encrypt = encrypter(data);
-    console.log("data from encryption: " + encrypt);
-    navigate(`/Company/${encrypt}`);
   }
 
   const renderItem1 = (item) => {
@@ -181,38 +170,11 @@ export const Already_applied = () => {
       </div>
     );
   };
+
   return (
-    <div>
-      {isLoading ? (
-        <Pre_loading_page />
-      ) : (
-        <div style={{ backgroundColor: "#0B0E2A" }}>
-          <Navbar />
-
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-
-          <div className="flex justify-center">
-            <div className="w-2/12 grid justify-items-center m-2 p-2 hover:bg-blue-700 bg-indigo-900">
-              <button className="text-white">Full Time Job</button>
-            </div>
-            <div className="w-2/12 grid justify-items-center m-2 p-2 hover:bg-blue-700 bg-indigo-900">
-              <button className="text-white hover:bg-#2538E6">
-                Internship
-              </button>
-            </div>
-            11
-          </div>
-
-          <br />
-          <br />
-          <br />
-          {_data.map(renderItem1)}
-        </div>
-      )}
+    <div className="min-h-screen" style={{ backgroundColor: "#0B0E2A" }}>
+      <Navbar />
+      {isLoading || isError ? <ClipLoader /> : _data.map(renderItem1)}
     </div>
   );
 };
