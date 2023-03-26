@@ -4,6 +4,6 @@
   "description": "",
   "scripts": {
     "start": "cd backend && node index.js",
-    "build": "cd admin-front && yarn install && yarn build && cd .. && cd student-front && yarn install && yarn build"
+    "build": "cd admin-front && yarn install && yarn build && cd .. && cd student-front && yarn install && yarn build && cd .. && cd backend && yarn install && cd .."
   }
 }
