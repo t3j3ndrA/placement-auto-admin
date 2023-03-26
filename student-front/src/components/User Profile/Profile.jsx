@@ -21,6 +21,7 @@ export const Profile = () => {
     password: "",
     rollNumber: "",
     collegeId: "",
+    collegeEmail: "",
     gender: "",
     branch: "",
     passingYear: "",
@@ -47,8 +48,6 @@ export const Profile = () => {
     personalPhoneNumber: "",
     parentsPhoneNumber: "",
 
-    city: "",
-    pincode: "",
     registrationStatus: "",
     collegEmail: "",
     personalEmail: "",
@@ -316,14 +315,13 @@ export const Profile = () => {
       const post = student;
       console.log("Post request from postEntry: ");
       console.log(post);
-      axios.withCredentials = true;
 
       const res = await axios.put(`/api/student/update`, post, {
         withCredentials: true,
       });
 
       console.log("after making changes: ", res.data);
-      location.reload();
+      // location.reload();
     } catch (e) {
       console.log("error: ", e);
       alert("Incorrect email");
@@ -359,7 +357,7 @@ export const Profile = () => {
                       type="text"
                       className="w-full px-3 py-2 flex rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none"
                       autoComplete="false"
-                      value={student.firstName}
+                      value={student?.firstName}
                       onChange={(e) => {
                         setstudent((prevState) => ({
                           ...prevState,
@@ -375,7 +373,7 @@ export const Profile = () => {
                       type="text"
                       className="w-full px-3 py-2 flex rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none"
                       autoComplete="false"
-                      value={student.middleName}
+                      value={student?.middleName}
                       onChange={(e) => {
                         setstudent((prevState) => ({
                           ...prevState,
@@ -391,7 +389,7 @@ export const Profile = () => {
                       type="text"
                       className="w-full px-3 py-2 flex rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none"
                       autoComplete="false"
-                      value={student.lastName}
+                      value={student?.lastName}
                       onChange={(e) => {
                         setstudent((prevState) => ({
                           ...prevState,
@@ -412,7 +410,7 @@ export const Profile = () => {
                       type="text"
                       className="w-full px-3 py-2 flex rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none"
                       autoComplete="false"
-                      value={student.personalEmail}
+                      value={student?.personalEmail}
                       onChange={(e) => {
                         setstudent((prevState) => ({
                           ...prevState,
@@ -429,7 +427,6 @@ export const Profile = () => {
                         type="date"
                         className=" px-3 py-2 flex rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none"
                         autoComplete="false"
-                        value={new Date()}
                         onChange={(e) => {
                           setstudent((prevState) => ({
                             ...prevState,
@@ -452,7 +449,7 @@ export const Profile = () => {
                       type="text"
                       className="w-full px-3 py-2 flex rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none"
                       autoComplete="false"
-                      value={student.collegeEmail}
+                      value={student?.collegeEmail}
                       onChange={(e) => {
                         setstudent((prevState) => ({
                           ...prevState,
@@ -473,7 +470,7 @@ export const Profile = () => {
                       type="text"
                       className="w-full px-3 py-2 flex rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none"
                       autoComplete="false"
-                      value={student.address.completeAddress}
+                      value={student?.address?.completeAddress}
                       onChange={(e) => handlecompleteAddressChange(e)}
                     ></input>
                   </div>
@@ -554,7 +551,7 @@ export const Profile = () => {
                         id="internship_status"
                         className="text-white p-1"
                         style={{ backgroundColor: "#0B0E2A" }}
-                        value={student.gender}
+                        value={student?.gender}
                         onChange={(e) => handleGenderChange(e)}
                       >
                         {Gender.map((item) => (
@@ -583,7 +580,7 @@ export const Profile = () => {
                         type="text"
                         className=" px-3 py-2 flex rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none"
                         autoComplete="false"
-                        value={student.personalPhoneNumber}
+                        value={student?.personalPhoneNumber}
                         onChange={(e) => {
                           setstudent((prevState) => ({
                             ...prevState,
@@ -603,7 +600,7 @@ export const Profile = () => {
                         type="text"
                         className=" px-3 py-2 flex rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none"
                         autoComplete="false"
-                        value={student.parentsPhoneNumber}
+                        value={student?.parentsPhoneNumber}
                         onChange={(e) => {
                           setstudent((prevState) => ({
                             ...prevState,
@@ -644,7 +641,7 @@ export const Profile = () => {
                         type="text"
                         className=" px-3 py-2 flex rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none"
                         autoComplete="false"
-                        value={student.branch}
+                        value={student?.branch}
                         onChange={(e) => {
                           setstudent((prevState) => ({
                             ...prevState,
@@ -662,7 +659,7 @@ export const Profile = () => {
                         type="text"
                         className=" px-3 py-2 flex rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none"
                         autoComplete="false"
-                        value={student.passingYear}
+                        value={student?.passingYear}
                         onChange={(e) => {
                           setstudent((prevState) => ({
                             ...prevState,
@@ -685,7 +682,7 @@ export const Profile = () => {
                         type="text"
                         className=" px-3 py-2 flex rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none"
                         autoComplete="false"
-                        value={student.password}
+                        value={student?.password}
                         onChange={(e) => {
                           setstudent((prevState) => ({
                             ...prevState,
@@ -713,7 +710,7 @@ export const Profile = () => {
                       className="w-full px-3 py-2 flex rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none"
                       autoComplete="false"
                       name="sem1"
-                      value={student.result.sem1}
+                      value={student?.result?.sem1}
                       onChange={(e) => {
                         setstudent((prevState) => ({
                           ...prevState,
@@ -732,7 +729,7 @@ export const Profile = () => {
                       type="text"
                       className=" px-3 py-2 flex rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none w-full"
                       autoComplete="false"
-                      value={student.result.sem2}
+                      value={student?.result?.sem2}
                       onChange={(e) => {
                         setstudent((prevState) => ({
                           ...prevState,
@@ -751,7 +748,7 @@ export const Profile = () => {
                       type="text"
                       className=" px-3 py-2 flex-shrink rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none w-full"
                       autoComplete="false"
-                      value={student.result.sem3}
+                      value={student?.result?.sem3}
                       onChange={(e) => {
                         setstudent((prevState) => ({
                           ...prevState,
@@ -770,7 +767,7 @@ export const Profile = () => {
                       type="text"
                       className=" px-3 py-2 flex-shrink rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none w-full"
                       autoComplete="false"
-                      value={student.result.sem4}
+                      value={student?.result?.sem4}
                       onChange={(e) => {
                         setstudent((prevState) => ({
                           ...prevState,
@@ -788,7 +785,7 @@ export const Profile = () => {
                       type="text"
                       className=" px-3 py-2 flex rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none w-full"
                       autoComplete="false"
-                      value={student.result.sem5}
+                      value={student?.result?.sem5}
                       onChange={(e) => {
                         setstudent((prevState) => ({
                           ...prevState,
@@ -807,7 +804,7 @@ export const Profile = () => {
                       type="text"
                       className=" px-3 py-2 flex rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none w-full"
                       autoComplete="false"
-                      value={student.result.sem6}
+                      value={student?.result?.sem6}
                       onChange={(e) => {
                         setstudent((prevState) => ({
                           ...prevState,
@@ -826,7 +823,7 @@ export const Profile = () => {
                       type="text"
                       className=" px-3 py-2 flex-shrink rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none w-full"
                       autoComplete="false"
-                      value={student.result.sem7}
+                      value={student?.result?.sem7}
                       onChange={(e) => {
                         setstudent((prevState) => ({
                           ...prevState,
@@ -845,7 +842,7 @@ export const Profile = () => {
                       type="text"
                       className=" px-3 py-2 flex-shrink rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none w-full"
                       autoComplete="false"
-                      value={student.result.sem8}
+                      value={student?.result?.sem8}
                       onChange={(e) => {
                         setstudent((prevState) => ({
                           ...prevState,
@@ -870,7 +867,7 @@ export const Profile = () => {
                     type="text"
                     className=" px-3 py-2 flex rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none"
                     autoComplete="false"
-                    value={student.result.cpi}
+                    value={student?.result?.cpi}
                     onChange={(e) => {
                       setstudent((prevState) => ({
                         ...prevState,
@@ -892,7 +889,7 @@ export const Profile = () => {
                           type="text"
                           className=" px-3 py-2 flex rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none"
                           autoComplete="false"
-                          value={student.result.twelfthPerc}
+                          value={student?.result?.twelfthPerc}
                           onChange={(e) => {
                             setstudent((prevState) => ({
                               ...prevState,
@@ -929,7 +926,7 @@ export const Profile = () => {
                           type="text"
                           className=" px-3 py-2 flex rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none"
                           autoComplete="false"
-                          value={student.result.tenthPerc}
+                          value={student?.result?.tenthPerc}
                           onChange={(e) => {
                             setstudent((prevState) => ({
                               ...prevState,
@@ -991,7 +988,7 @@ export const Profile = () => {
                                   autoComplete="false"
                                   key={index}
                                   value={
-                                    student.competitiveCoding[index].platform
+                                    student?.competitiveCoding[index]?.platform
                                   }
                                   onChange={(e) =>
                                     handlePlatformChange(e, index)
@@ -1030,7 +1027,9 @@ export const Profile = () => {
                                   className=" px-3 py-2 flex rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none"
                                   autoComplete="false"
                                   key={index}
-                                  value={student.competitiveCoding[index].stars}
+                                  value={
+                                    student?.competitiveCoding[index]?.stars
+                                  }
                                   onChange={(e) => handleStarschange(e, index)}
                                 ></input>
                               </div>
@@ -1045,7 +1044,7 @@ export const Profile = () => {
                                   autoComplete="false"
                                   key={index}
                                   value={
-                                    student.competitiveCoding[index].ratings
+                                    student?.competitiveCoding[index]?.ratings
                                   }
                                   onChange={(e) => handleRatingChange(e, index)}
                                 ></input>
@@ -1211,7 +1210,7 @@ export const Profile = () => {
                       id="internship_status"
                       className="text-white p-1"
                       style={{ backgroundColor: "#0B0E2A" }}
-                      value={student.placementStatus.selected}
+                      value={student?.placementStatus?.selected}
                       onChange={(e) => handleCompanyStatusChange(e)}
                     >
                       <option
@@ -1237,7 +1236,7 @@ export const Profile = () => {
                       type="text"
                       className="px-3 py-2 flex rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none"
                       autoComplete="false"
-                      value={student.placementStatus.companyName}
+                      value={student?.placementStatus?.companyName}
                       onChange={(e) => handlePlacementCompanyNameChange(e)}
                     ></input>
                   </div>
@@ -1265,7 +1264,7 @@ export const Profile = () => {
                         type="number"
                         className=" px-3 py-2 flex rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none"
                         autoComplete="false"
-                        value={student.placementStatus.duration}
+                        value={student?.placementStatus?.duration}
                         onChange={(e) => handleCompanyBondChange(e)}
                       ></input>
                     </div>
@@ -1283,7 +1282,7 @@ export const Profile = () => {
                         type="number"
                         className=" px-3 py-2 flex rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none"
                         autoComplete="false"
-                        value={student.placementStatus.package}
+                        value={student?.placementStatus?.package}
                         onChange={(e) => handlePackageChange(e)}
                       ></input>
                     </div>
@@ -1297,7 +1296,7 @@ export const Profile = () => {
                         id="internship_status"
                         className="text-white p-1"
                         style={{ backgroundColor: "#0B0E2A" }}
-                        value={student.placementStatus.mode}
+                        value={student?.placementStatus?.mode}
                         onChange={(e) => handleCompanyModeChange(e)}
                       >
                         <option

@@ -42,7 +42,9 @@ const Login = () => {
           return;
         }
         console.log(data);
-        setCookie("user", data.data.firstName);
+        localStorage.setItem("year", new Date().getFullYear());
+        localStorage.setItem("minYear", new Date().getFullYear() - 1);
+        localStorage.setItem("maxYear", new Date().getFullYear() + 1);
         navigate("/");
       })
       .then(() => setIsLoading(false))

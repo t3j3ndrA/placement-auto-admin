@@ -9,7 +9,9 @@ import FilterInput from "../components/FilterInput";
 import FilterInputWithValue from "../components/FilterInputWithValue";
 
 const Companies = () => {
-  const [filter, setFilter] = useState({ forBatch: new Date().getFullYear() });
+  const [filter, setFilter] = useState({
+    forBatch: localStorage.getItem("year"),
+  });
   const [showFilter, setShowFilter] = useState(false);
 
   const fetchCompanies = async () => {
@@ -36,7 +38,12 @@ const Companies = () => {
     } else {
       e.target.style.border = "";
     }
+
     setFilter({ ...filter, [e.target.name]: e.target.value });
+    if (e.target.name === "forBatch") {
+      localStorage.setItem("year", e.target.value);
+      console.log("local year >> ", localStorage.getItem("year"));
+    }
   };
 
   const handleFilterReset = () => {

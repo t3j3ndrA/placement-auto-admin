@@ -15,7 +15,7 @@ import FilterInputWithValue from "../components/FilterInputWithValue";
 
 const Students = () => {
   const [filter, setFilter] = useState({
-    passingYear: new Date().getFullYear(),
+    passingYear: localStorage.getItem("year"),
   });
   const [showFilter, setShowFilter] = useState(false);
   const navigate = useNavigate();
@@ -46,6 +46,9 @@ const Students = () => {
       e.target.style.border = "";
     }
     setFilter({ ...filter, [e.target.name]: e.target.value });
+    if (e.target.name === "passingYear") {
+      localStorage.setItem("year", e.target.value);
+    }
   };
 
   const handleFilterReset = () => {

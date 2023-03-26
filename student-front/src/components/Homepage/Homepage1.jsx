@@ -13,7 +13,7 @@ import convertToDate from "../../utils/convertToDate";
 export const Homepage1 = () => {
   const getValues = async () => {
     return axios
-      .get(`/api/company/of/${getStuId()}`, {
+      .get(`/api/company/?isActive=true`, {
         withCredentials: true,
       })
       .then(({ data }) => {
@@ -27,7 +27,6 @@ export const Homepage1 = () => {
   } = useQuery(["companies", "filter"], getValues, {
     keepPreviousData: true,
   });
-  console.log("_data >> ", _data);
 
   const renderItem1 = (item) => {
     return (

@@ -7,8 +7,8 @@ import FilterInputWithValue from "../FilterInputWithValue";
 
 const PlacementComparision = () => {
   const [filter, setFilter] = useState({
-    minYear: new Date().getFullYear() - 1,
-    maxYear: new Date().getFullYear() + 1,
+    minYear: localStorage.getItem("minYear"),
+    maxYear: localStorage.getItem("maxYear"),
   });
 
   const handleFilterChange = (e) => {
@@ -18,6 +18,9 @@ const PlacementComparision = () => {
       e.target.style.border = "";
     }
     setFilter({ ...filter, [e.target.name]: e.target.value });
+    if (e.target.name === "minYear" || e.target.name === "maxYear") {
+      localStorage.setItem(e.target.name, e.target.value);
+    }
   };
 
   const fetchComparision = async () => {

@@ -29,16 +29,18 @@ export const Login = () => {
       };
       console.log(post);
 
-      const res = await axios.post(`/api/auth/student/login`, post, {
+      const { data } = await axios.post(`/api/auth/student/login`, post, {
         withCredentials: true,
       });
-      if (res.data.success === true) {
-        localStorage.setItem("stuId", res.data.data.studentId);
-        navigate("/Homepage");
+      if (data.success === true) {
+        localStorage.setItem("stuId", data.data.studentId);
+        if (data.data.isVerified) {
+          navigate("/Homepage");
+        } else {
+          navigate("/Profile");
+        }
       } else {
         toast.error("Invalid credentials");
-        // alert("Incorrect password or username");
-        navigate("/Login");
       }
     } catch (e) {
       console.log("error: ", e);
@@ -89,15 +91,15 @@ export const Login = () => {
             </p> */}
               <p className="underline">Forget password?</p>
             </div>
-            <Link to={"/Homepage"}>
-              <button
-                className="rounded-lg w-full my-5 py-2 bg-teal-500 shadow-lg shadow-teal-300/30 hover: shadow-teal-500/40 text-white font-semibold"
-                onClick={postEntry}
-                disabled={isLoading}
-              >
-                {isLoading ? <BeatLoader color="white" /> : "Sign In"}
-              </button>
-            </Link>
+            {/* <Link to={"/Homepage"}> */}
+            <button
+              className="rounded-lg w-full my-5 py-2 bg-teal-500 shadow-lg shadow-teal-300/30 hover: shadow-teal-500/40 text-white font-semibold"
+              onClick={postEntry}
+              disabled={isLoading}
+            >
+              {isLoading ? <BeatLoader color="white" /> : "Sign In"}
+            </button>
+            {/* </Link> */}
             {/* <Link to={"/Register"}>
             <button className="rounded-lg w-full my-5 py-2 bg-teal-500 shadow-lg shadow-teal-300/30 hover: shadow-teal-500/40 text-white font-semibold">
               New User? Register here
