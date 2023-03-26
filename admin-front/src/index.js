@@ -2,7 +2,6 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import "react-toastify/dist/ReactToastify.css";
-import App from "./App";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Login from "./pages/Login";
 import Students from "./pages/Students";
@@ -24,51 +23,51 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: "/admin",
     element: <Companies />,
   },
   {
-    path: "/login",
+    path: "/admin/login",
     element: <Login />,
   },
   {
-    path: "/students",
+    path: "/admin/students",
     element: <Students />,
   },
   {
-    path: "/students/register",
+    path: "/admin/students/register",
     element: <RegisterStudent />,
   },
   {
-    path: "/companies",
+    path: "/admin/companies",
     element: <Companies />,
   },
   {
-    path: "/companies/company-view/:id",
+    path: "/admin/companies/company-view/:id",
     element: <CompanyView />,
   },
   {
-    path: "/students/student-view/:id",
+    path: "/admin/students/student-view/:id",
     element: <StudentView />,
   },
   {
-    path: "/companies/create-post",
+    path: "/admin/companies/create-post",
     element: <CreateCompany1 />,
   },
   {
-    path: "/company/:cid/role/:rid/applications",
+    path: "/admin/company/:cid/role/:rid/applications",
     element: <Applications />,
   },
   {
-    path: "/company/:cid/role/:rid/elligibles",
+    path: "/admin/company/:cid/role/:rid/elligibles",
     element: <Elligibles />,
   },
   {
-    path: "/company/:cid/role/:rid/notify",
+    path: "/admin/company/:cid/role/:rid/notify",
     element: <NotifyStudents />,
   },
   {
-    path: "/reports",
+    path: "/admin/reports",
     element: <Reports />,
   },
   {

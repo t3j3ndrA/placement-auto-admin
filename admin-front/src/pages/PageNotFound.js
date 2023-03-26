@@ -13,7 +13,7 @@ const PageNotFound = () => {
         <h1 className="text-center text-3xl mt-3">
           Page you are requesting does not exists 😿
         </h1>
-        <Link to="/">
+        <Link to="/admin/">
           <h1 className=" text-center text-3xl mt-5 mb-5 bg-subSection px-4 py-2 rounded-xl">
             Go to Home Page
           </h1>

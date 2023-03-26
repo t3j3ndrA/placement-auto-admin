@@ -15,7 +15,7 @@ import FilterInputWithValue from "../components/FilterInputWithValue";
 
 const Students = () => {
   const [filter, setFilter] = useState({
-    passingYear: new Date().getFullYear(),
+    passingYear: localStorage.getItem("year"),
   });
   const [showFilter, setShowFilter] = useState(false);
   const navigate = useNavigate();
@@ -46,6 +46,9 @@ const Students = () => {
       e.target.style.border = "";
     }
     setFilter({ ...filter, [e.target.name]: e.target.value });
+    if (e.target.name === "passingYear") {
+      localStorage.setItem("year", e.target.value);
+    }
   };
 
   const handleFilterReset = () => {
@@ -82,7 +85,7 @@ const Students = () => {
         {/* Add students */}
         <div className="flex justify-between  items-center bg-tableHead p-3 rounded-md">
           <h1 className="text-2xl">Register Students</h1>
-          <Link to="/students/register">
+          <Link to="/admin/students/register">
             <button className="text-section font-semibold bg-white rounded-md text-lg px-4 py-2">
               Register
             </button>
@@ -298,7 +301,7 @@ const Students = () => {
                     <tr
                       className="border-b-[1px] border-b-white bg-subSection hover:bg-lightHover hover:cursor-pointer even:bg-alternate"
                       onClick={() => {
-                        navigate(`/students/student-view/${item._id}`, {
+                        navigate(`/admin/students/student-view/${item._id}`, {
                           state: item,
                         });
                       }}

@@ -4,28 +4,31 @@ import { ClipLoader, HashLoader } from "react-spinners";
 import { useLocation, useParams } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import companyViewValidator from "../form-validators/companyView.validator";
+
 import {
   AiOutlineUsergroupAdd,
   AiOutlineUsergroupDelete,
 } from "react-icons/ai";
 
+import { useQuery } from "react-query";
 const StudentView = () => {
   const { id } = useParams();
-  const location = useLocation();
 
-  // const stu = location.state;
-  const [isLoading, setIsLoading] = useState(true);
-  const [stu, setStu] = useState({});
-  useEffect(() => {
-    setIsLoading(true);
-    axios
+  const fetchStudentProfile = async () => {
+    return axios
       .get(`/api/student?id=${id}`, { withCredentials: true })
-      .then((result) => {
-        setStu(result.data?.data);
-        setIsLoading(false);
-      })
-      .catch((err) => console.log(err));
-  }, []);
+      .then(({ data }) => {
+        return data.data;
+      });
+  };
+
+  const {
+    data: stu,
+    isLoading,
+    isError,
+  } = useQuery(["profile", id], fetchStudentProfile, {
+    keepPreviousData: true,
+  });
 
   return (
     <div className="bg-backg min-h-screen text-white">

@@ -59,25 +59,49 @@ app.get("/get-session", (req, res) => {
   res.json(req.session.isAuth);
 });
 
-if (process.env.ENV === "production") {
+if (process.env.NODE_ENV === "production") {
   // serving admin builds
   app.use(
     express.static(path.join(__dirname, "..", "admin-front", "build"), {
       index: false,
     })
   );
+  // serving students builds
+  app.use(
+    express.static(path.join(__dirname, "..", "student-front", "build"), {
+      index: false,
+    })
+  );
 
-  app.get("/login", (req, res) => {
+  // only student login is visible without login
+  app.get("/Login", (req, res) => {
+    console.log("Serving login");
+    return res.sendFile(
+      path.join(__dirname, "..", "student-front", "build", "index.html")
+    );
+  });
+
+  // only admin login is visible without login
+  app.get("/admin/login", (req, res) => {
     console.log("Serving login");
     return res.sendFile(
       path.join(__dirname, "..", "admin-front", "build", "index.html")
     );
   });
 
-  app.get("/*", verifyAdmin, (req, res) => {
+  // admin protected routes
+  app.get("/admin/*", verifyAdmin, (req, res) => {
     console.log("Serving react app");
     return res.sendFile(
       path.join(__dirname, "..", "admin-front", "build", "index.html")
+    );
+  });
+
+  // student protected routes
+  app.get("/*", verifyStudent, (req, res) => {
+    console.log("Serving react app");
+    return res.sendFile(
+      path.join(__dirname, "..", "student-front", "build", "index.html")
     );
   });
 }
@@ -90,7 +114,7 @@ mongoose
   .catch((error) => console.log("error >> ", error));
 
 // starting server
-const port = process.env.PORT | 5000;
+const port = process.env.PORT || 5000;
 app.listen(port, () => {
   console.log("listening on port  : " + port);
 });

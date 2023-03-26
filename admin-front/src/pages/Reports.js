@@ -9,12 +9,6 @@ import YearlyNotPlaced from "../components/reports/YearlyNotPlaced";
 import DownloadReport from "../components/reports/DownloadReport";
 import PlacementComparision from "../components/reports/PlacementComparision";
 
-// Year wise placement reposts
-// company wise + year wise placement
-// year wise registered and pending students
-// top 10 placements this year
-// download placement report of perticular year
-
 const Reports = () => {
   const [isLoading, setIsLoading] = useState(false);
 

@@ -2,100 +2,54 @@ import { Navbar } from "../Navbar/Navbar";
 // import data from'./Input.json'
 import { React, useEffect, useState } from "react";
 import axios from "axios";
-import { json, useParams } from "react-router-dom";
-import crypto from "crypto-js";
-import { Pre_loading_page } from "../Pre-Loading/Pre_loading_page";
 import { ToastContainer, toast } from "react-toastify";
 import getStuId from "../../utils/getStuId";
+import { useQuery } from "react-query";
+import { ClipLoader } from "react-spinners";
 
 export const Company_page = ({ fetched_url }) => {
-  let url = "http://127.0.0.1:5000/api";
   var student_id = getStuId();
-  const [_data, set_data] = useState({});
-  const [isLoading, setIsLoading] = useState(true);
-  const [isElligible, setisElligible] = useState([
-    {
-      _value: true,
-    },
-  ]);
 
   const handleApply = async (e, index, companyId, roleId, stuId) => {
-    // alert("hello there from handleApply")
-    // const newApplications = _data.roles;
-
-    // console.log("before array : ",newApplications[index].applications)
-    // newApplications[index].applications.push(student_id);
-    // console.log("after array : ",newApplications[index].applications)
-    // set_data(prevState =>({...prevState, roles : newApplications}))
-
-    // newApplications.push(student_id);
-
-    // set_data(prevState =>({...prevState, roles: newApplications}))
-
     try {
       const data = await axios.put(
-        `${url}/company/apply-to/${companyId}/for/${roleId}/${student_id}`
+        `/api/company/apply-to/${companyId}/for/${roleId}/${student_id}`
       );
-
-      console.log(data.data);
       if (data.data.success === true) {
-        alert("successfully applied!!");
+        toast.success("Applied ✅");
       }
     } catch (err) {
       toast.error("Could not apply");
-      console.log("error from handleApply", err);
     }
   };
-  useEffect(() => {
-    console.log("hello from company page");
-    const id1 = "63fda9a0dc1e2307a2ec7b84";
-    const id = fetched_url.id1;
-    console.log("id from props : ", id);
-    const getValues = async () => {
-      try {
-        // getId()
-        // const data = await axios.get(`${url}/Company/${id}`)
-        const { data } = await axios.get(
-          `/api/company/?id=${id}&stuId=${getStuId()}`
-        );
-        console.log("Data from company page: ", data);
-        set_data(data.data);
-        setIsLoading(false);
-        data.data.roles.forEach((item) => {
-          const newObj = {
-            _value: true,
-          };
-          setisElligible((prevState) => [...prevState, newObj]);
-        });
-        console.log("Data stored in useState: ", _data);
-      } catch (err) {
-        console.log("error1111: ", err);
-      }
-    };
 
-    getValues();
+  const id = fetched_url.id1;
+  const getValues = async () => {
+    return axios
+      .get(`/api/company/?id=${id}&stuId=${getStuId()}`)
+      .then(({ data }) => {
+        return data.data;
+      });
+  };
 
-    return () => {};
-  }, []);
+  const {
+    data: _data,
+    isLoading,
+    isError,
+  } = useQuery(["company", id], getValues, {
+    keepPreviousData: true,
+  });
 
   return (
     <>
       <div>
-        {isLoading ? (
-          <Pre_loading_page />
-        ) : (
-          <div style={{ backgroundColor: "#0B0E2A" }}>
-            <Navbar />
-            <ToastContainer
-              position="bottom-left"
-              autoClose={4000}
-              hideProgressBar={false}
-              closeOnClic={true}
-              pauseOnHover={true}
-              draggable={true}
-              progress={undefined}
-              theme="dark"
-            />
+        <div className="min-h-screen" style={{ backgroundColor: "#0B0E2A" }}>
+          <Navbar />
+          {isLoading || isError ? (
+            <div className="mt-5 text-center">
+              <ClipLoader color="white" size={45} />
+            </div>
+          ) : (
             <div
               style={{ backgroundColor: "#0B0E2A" }}
               className="text-white pt-28 "
@@ -349,7 +303,6 @@ export const Company_page = ({ fetched_url }) => {
                             </div>
                           </div>
                           <br />
-                          {/* ********************************* */}
                         </div>
                       ) : null}
 
@@ -377,7 +330,6 @@ export const Company_page = ({ fetched_url }) => {
                                 </div>
                               </div>
                               <br />
-                              {/* ********************************* */}
                             </div>
                           ) : null}
 
@@ -399,29 +351,15 @@ export const Company_page = ({ fetched_url }) => {
                                 </div>
                               </div>
                               <br />
-                              {/* ********************************* */}
                             </div>
                           ) : null}
 
                           {item.requirements.competitiveCoding ? (
                             <div>
-                              {/* {console.log(item.requirements.competitiveCoding)} */}
                               {item.requirements.competitiveCoding.map(
                                 (item1) => {
                                   return (
                                     <div className="mx-30">
-                                      {console.log(item, ": ", item1.platform)}
-                                      {/* <div className='flex flex-row align-middle justify-center'>
-                              <div className='basis-1/3 mx-2'>
-                                <label htmlFor="">Platform</label>
-                              </div>
-                              
-                              <div className='mx-2 w-full'>
-                                <input type="text" className='px-3 py-2 flex rounded-lg pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none w-full' value={item1.platform} autoComplete='false' readOnly={true}></input>
-                              </div>
-                            </div>
-                            <br /> */}
-
                                       <div className="flex flex-row align-middle justify-center">
                                         <div className="basis-1/3 mx-2">
                                           <label htmlFor="">Platform</label>
@@ -523,15 +461,8 @@ export const Company_page = ({ fetched_url }) => {
                             </button>
                           </div>
                         )}
-
-                        {/* <div  className='w-2/12 grid justify-items-center m-2 p-2 hover:bg-blue-700 bg-indigo-900 disabled:bg-slate-500'>
-                      <a href="www.google.com"><button className='text-white disabled:bg-slate-500' key={index} onClick = {handleApply} disabled = {item.isElligible} 
-                       >Apply + {item.isElligible ? "ell" : "not"}</button></a>
-                    </div> */}
                       </div>
-                      {console.log(index, " <---> ", isElligible[index]._value)}
                       <br />
-                      {/* ************************************* */}
                       <hr />
                       <br />
                     </div>
@@ -686,9 +617,19 @@ export const Company_page = ({ fetched_url }) => {
               <br />
               <br />
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
+      <ToastContainer
+        position="bottom-left"
+        autoClose={4000}
+        hideProgressBar={false}
+        closeOnClic={true}
+        pauseOnHover={true}
+        draggable={true}
+        progress={undefined}
+        theme="dark"
+      />
     </>
   );
 };

@@ -172,8 +172,13 @@ router.get("/of/:studentId", async (req, res) => {
   const student = await Student.findOne({ _id: studentId });
   if (!student) return res.json({ success: false, msg: "No student found" });
 
-  const companies = await Company.find({ forBatch: student.passingYear });
+  const companies = await Company.find({
+    forBatch: student.passingYear,
+    isActive: true,
+  });
+
   let resCompanies = [];
+
   companies.forEach((c) => {
     let roles = c.roles.map((role) => {
       console.log("role... > ", { ...role });

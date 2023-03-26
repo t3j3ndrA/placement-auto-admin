@@ -1,1094 +1,513 @@
-import React from 'react'
-import axios from 'axios';
-import { useState , useEffect} from 'react'
-import { Link , useNavigate} from "react-router-dom";
-import { Homepage } from '../Homepage/Homepage';
-import myImage from './person.jpg'
-import { Navbar } from '../Navbar/Navbar';
-import { Pre_loading_page } from '../Pre-Loading/Pre_loading_page';
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { ClipLoader, HashLoader } from "react-spinners";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { Navbar } from "../Navbar/Navbar";
+
+import {
+  AiOutlineUsergroupAdd,
+  AiOutlineUsergroupDelete,
+} from "react-icons/ai";
+
+import { useForm } from "react-hook-form";
+import FormInputField from "./FormInputField";
+import { handleAddCP, handleRemoveCP } from "./handleCP";
+import { handleAddRole, handleRemoveRole } from "./handleRole";
+import { ErrorMessage } from "@hookform/error-message";
+import { toast } from "react-toastify";
 import getStuId from "../../utils/getStuId";
-import styled from '@emotion/styled';
 
-export const Profile = () => {
+const Profile = () => {
+  const { id } = useParams();
+  const [company, setCompany] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
+  const [isUpdating, setIsUpdating] = useState(false);
+  const [refetchFlag, setRefetchFlag] = useState(false);
+  const navigate = useNavigate();
 
-    const [firstName, setfirstName] = useState('')
-    const [lastName, setlastName] = useState('')
-    const [rollNumber, setrollNumber] = useState('')
-    const [email, setemail] = useState("abcde@gmail.com")
-    const [password, setpassword] = useState('12345')
-    const [key, setKey] = useState(Math.random());
-    const Gender = ["Male", "Female"];
-    const InternshipSelected = ["yes", "no"];
-    const CompanySelected = ["yes", "no"];
-    const InternshipMode = ["remote", "on-site"];
-    const CompanypMode = ["remote", "on-site"];
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    getValues,
+    setValue,
 
-    const[student, setstudent] = useState({
-      _id : "",
-      firstName: "",
-      lastName: "",
-      middleName: "",
-      password: "",
-      rollNumber: "",
-      collegeId: "",
-      // gender: [options[0]],
-      gender: "",
-      branch: "",
-      passingYear: "",
-      trainingCompanyStatus: "",
-      salary: "",
-      homeAddress: "",
+    watch,
+  } = useForm({});
 
-      result : {
-      sem1SPI: "", 
-      sem2SPI: "", 
-      sem3SPI: "", 
-      sem4SPI: "", 
-      sem5SPI: "", 
-      sem6SPI: "", 
-      sem7SPI: "", 
-      sem8SPI: "",
-      cpi: "",
-      twelfthPerc: "",
-      tenthPerc: "",
-      diplomaPerc: "",
-      },
+  const updateStudent = async (student) => {
+    setIsUpdating(true);
+    const { data } = await axios.put(`/api/student/update`, student, {
+      withCredentials: true,
+    });
 
-      dateOfBirth: "",
-      personalPhoneNumber: "",
-      parentsPhoneNumber: "",
-
-
-      city: "",
-      pincode: "",
-      registrationStatus : "",
-      collegEmail : "",
-      personalEmail: "",
-
-      competitiveCoding: 
-        [
-          {
-            platform: "",
-            stars: "",
-            ratings: "",
-            profile: "" ,
-          }
-        ],
-
-        address: {
-        city: "" ,
-        district: "",
-        subDistrict: "",
-        state: "",
-        postalCode: "",
-        completeAddress: "",
-        },
-
-        placementStatus: {
-        selected: "",
-        companyName: "",
-        duration: "",
-        package: "",
-        joiningDate: "",
-        mode: "",
-        },
-
-        internshipStatus: {
-          selected: "",
-          companyName: "",
-          duration: "",
-          stipend: "",
-          joiningDate: "",
-          mode: "",
-        },
-
-        result: {
-          sem1: 0,
-          sem2: 0,
-          sem3: 0,
-          sem4: 0,
-          sem5: 0,
-          sem6: 0,
-          sem7: 0,
-          sem8: 0,
-          twelfthPerc: 0,
-          tenthPerc: 0,
-          diplomaPerc: 0,
-          cpi: 0
-        },
-
-        competitiveCoding : []
-    })
-    const [isLoading, setIsLoading] = useState(true);
-    let url = "http://127.0.0.1:5000/api"
-
-    // let id = Email;  //Email is const to a user, so we can use it as a primary key
-
-    let middle1 = (req, res, next) =>{
-      res.headerSent = false;
-      res.sendResponse = res.send;
-      res.send = function(data) {
-        if (res.headerSent) return;
-        res.headerSent = true;
-        res.sendResponse(data);
-      };
-      next();
+    setRefetchFlag(!refetchFlag);
+    if (data?.success === false) {
+      toast.error("Student does not exist");
     }
+    setIsUpdating(false);
+  };
 
-    function convertToDate(dateString){
-      const date = new Date(dateString);
-      const day = date.getDate().toString().padStart(2, '0');
-      const month = (date.getMonth() + 1).toString().padStart(2, '0');
-      const year = date.getFullYear().toString();
-      const formattedDate = `${day}-${month}-${year}`;
-      return formattedDate;
-    }
-
-    const handleAddProfile = (e) =>{    // Add new Coding profile
-      e.preventDefault();
-      const newObject = {
-          platform: "",
-          stars: "",
-          ratings: "",
-          profile: "" ,
+  useEffect(() => {
+    setIsLoading(true);
+    axios
+      .get(`/api/student/?id=${getStuId()}`, { withCredentials: true })
+      .then(({ data }) => {
+        for (const [key, value] of Object.entries(data.data)) {
+          console.log(`${key}: ${value}`);
+          setValue(key, value);
         }
+      })
+      .catch((err) => console.log(err));
+    setIsLoading(false);
+  }, [refetchFlag]);
 
-        setstudent(prevState => ({
-          ...prevState,
-          competitiveCoding: [
-            ...prevState.competitiveCoding,
-            newObject
-          ]
-        }));
-    }
+  const nameWatch = watch("firstName");
+  const rolesWatch = watch("roles");
+  const isActiveWatch = watch("isActive");
+  const cpWatch = watch("competitiveCoding");
 
-    const handleDeleteProfile = (e) =>{
-      e.preventDefault();
-      const newCompititiveCoding = [...student.competitiveCoding];
-      newCompititiveCoding.pop();
-      setstudent(prevState =>({
-        ...prevState, competitiveCoding : newCompititiveCoding
-      }))
-    }
-    
-    const handlePlatformChange = (e,index) =>{
+  const handleDuplicate = () => {};
 
-      const newCompititiveCoding = [...student.competitiveCoding];
-      newCompititiveCoding[index].platform = e.target.value;
+  console.log(getValues("isActive"));
+  console.log("company", company);
 
-      setstudent(prevState => ({...prevState, competitiveCoding : newCompititiveCoding}))
-    }
-
-    const handleProfileChange = (e,index) =>{
-
-      const newCompititiveCoding = [...student.competitiveCoding];
-      newCompititiveCoding[index].profile = e.target.value;
-
-      setstudent(prevState => ({...prevState, competitiveCoding : newCompititiveCoding}))
-    }
-
-    const handleRatingChange = (e,index) =>{
-
-      const newCompititiveCoding = [...student.competitiveCoding];
-      newCompititiveCoding[index].ratings = e.target.value;
-      setstudent(prevState => ({...prevState, competitiveCoding : newCompititiveCoding}))
-    }
-
-    const handleStarschange = (e,index) =>{
-
-      const newCompititiveCoding = [...student.competitiveCoding];
-      newCompititiveCoding[index].stars = e.target.value;
-
-      setstudent(prevState => ({...prevState, competitiveCoding : newCompititiveCoding}))
-    }
-
-    const handleDate = (e) =>{
-      // const dateString = e;
-      const [day, month, year] = e.split('-');
-      const dateObject = new Date(`${year}-${month}-${day}`);
-      return dateObject;
-    }
-
-
-    const handleDeleteIndividualProfileChange = (index) =>{
-  
-      // e.preventDefault();
-      console.log("compititve programming before delete : ", student.competitiveCoding[index], " -- ", index)
-      const newCompititiveCoding = student.competitiveCoding;
-      newCompititiveCoding.splice(index, 1);
-      setstudent(prevState =>({...prevState, competitiveCoding: newCompititiveCoding}))
-      console.log("compititve programming after delete : ", student.competitiveCoding)
-    }
-
-    const handleGenderChange = (e) =>{
-      var newGender = student.gender;
-      newGender = e.target.value;
-      // console.group("gender: ",newGender, "  -- actual gender before: ", student.gender);
-      setstudent(prevState => ({...prevState, gender: newGender}));
-      // console.group("gender after change  : ",student.gender);
-    }
-
-
-    const handleInternshipStatusChange = (e) =>{
-      var newInternshipStatus = student.internshipStatus;
-      newInternshipStatus.selected = e.target.value;
-      // console.log("e.t.v >> " , e.target.value);
-      // console.log("nis >> " , newInternshipStatus)
-      // setstudent(prevState => ({...prevState, internshipStatus: newInternshipStatus}))
-      setstudent({...student, internshipStatus : newInternshipStatus})
-      setKey(Math.random())
-    }
-
-    const handleInternShipModeChange = (e) =>{
-
-      var newInternshipStatus = student.internshipStatus;
-      console.group("internship mode  before  change: ",student.internshipStatus.mode);
-      newInternshipStatus.mode = e.target.value;
-      setstudent(prevState => ({...prevState, internshipStatus: newInternshipStatus}));
-      console.group("internship mode  after change: ",student.internshipStatus.mode);
-    }
-
-    const handleStipendChange = (e) =>{
-      const newInternship = student.internshipStatus
-      newInternship.stipend = e.target.value;
-      setstudent(prevState =>({...prevState, internshipStatus: newInternship}))
-    }
-
-
-    const handleInternShipDurationChange = (e) =>{
-      const newInternship = student.internshipStatus
-      newInternship.duration = e.target.value;
-
-      setstudent(prevState =>({...prevState, internshipStatus: newInternship}))
-    }   
-    
-    const handleInternShipCompanyNameChange = (e) =>{
-      const newInternship = student.internshipStatus
-      newInternship.companyName = e.target.value;
-      setstudent(prevState =>({...prevState, internshipStatus: newInternship}))
-    }
-
-    const handleInternShipDateChange = (e) =>{
-      // const dateString = e;
-      const [day, month, year] = e.split('-');
-      const dateObject = new Date(`${year}-${month}-${day}`);
-      return dateObject;
-    }
-
-    const handleCompanyDateChange = (e) =>{
-      // const dateString = e;
-      const [day, month, year] = e.split('-');
-      const dateObject = new Date(`${year}-${month}-${day}`);
-      return dateObject;
-    }  
-
-    // console.log("s.insta >> " , student.internshipStatus)
-
-    const handlePlacementCompanyNameChange = (e) =>{
-      const newPlacement = student.placementStatus
-      newPlacement.companyName = e.target.value;
-      setstudent(prevState =>({...prevState, placementStatus: newPlacement}))
-    }
-
-
-    const handleCompanyStatusChange = (e) =>{
-      var newplacementStatus = student.placementStatus
-      newplacementStatus.selected = e.target.value;
-      setstudent(prevState => ({...prevState, placementStatus: newplacementStatus}))
-    }
-
-    const handleCompanyModeChange = (e) =>{
-      var newplacementStatus = student.placementStatus
-      newplacementStatus.mode = e.target.value;
-      setstudent(prevState => ({...prevState, placementStatus: newplacementStatus}))
-    }
-
-    const handlePackageChange = (e) =>{
-      const newPlacement = student.placementStatus
-      newPlacement.package = e.target.value;
-      setstudent(prevState =>({...prevState, placementStatus: newPlacement}))
-    }
-
-    const handleCompanyBondChange = (e) =>{
-      const newPlacement = student.placementStatus
-      newPlacement.duration = e.target.value;
-      setstudent(prevState =>({...prevState, placementStatus: newPlacement}))
-    }
-
-    const handleCityChange = (e) =>{
-      var newAddress = student.address
-      newAddress.city = e.target.value;
-      setstudent(prevState =>({...prevState, address: newAddress}))
-    }
-
-    const handleStateChange = (e) =>{
-      var newAddress = student.address
-      newAddress.state = e.target.value;
-      setstudent(prevState =>({...prevState, address: newAddress}))
-    }
-
-    const handlePostalCodeChange = (e) =>{
-      var newAddress = student.address
-      newAddress.postalCode = e.target.value;
-      setstudent(prevState =>({...prevState, address: newAddress}))
-    }
-
-    const handlesubDistrictChange = (e) =>{
-      var newAddress = student.address
-      newAddress.subDistrict = e.target.value;
-      setstudent(prevState =>({...prevState, address: newAddress}))
-    }
-
-    const handlecompleteAddressChange = (e) =>{
-      var newAddress = student.address
-      newAddress.completeAddress = e.target.value;
-      setstudent(prevState =>({...prevState, address: newAddress}))
-    }
-
-
-    useEffect(() =>{
-      const getValues  = async() =>{
-        try{
-          console.log("getValues function implemented")
-          const post = {
-            personalEmail : email
-            }
-          // console.log("Patch request from useEffect: ")
-          
-          console.log("from client to server ", post)
-            const {data} = await axios.get(`/api/student/?id=${getStuId()}` , post, {withCredentials : true})
-            // const task = await fetch(`http://127.0.0.1:5000/api/student/profile`).then(response => response.json())
-            // const {data} = await axios.get(`${url}/profile/${id}`);
-
-            // const requestOptions = {
-            //   method: 'POST',
-            //   headers: { 'Content-Type': 'application/json' },
-            //   body: JSON.stringify(post)
-            // };
-            
-            // console.log("body : ", JSON.stringify(post))
-            // const task = await fetch("http://127.0.0.1:5000/api/student/profile", requestOptions)
-            //   .then(response => response.json())
-            //   .then(data => console.log(data))
-            //   .catch(error => console.error(error));
-
-            console.log("data >> ", data.task);
-            // setEmail(data.task.email)
-            setstudent(data.data);
-            // setstudent({
-            //   _id : data.task._id,
-            //   firstName: data.task.firstName,
-            //   lastName: data.task.lastName,
-            //   middleName: data.task.middleName ,
-            //   password: data.task.password ,
-            //   rollNumber: data.task.rollNumber ,
-            //   collegeId: data.task.collegeId ,
-            //   gender: data.task.gender ,
-            //   branch: data.task.branch ,
-            //   passingYear: data.task.passingYear ,
-            //   trainingCompanyStatus: data.task.trainingCompanyStatus,
-            //   salary: data.task.salary,
-            //   dateOfBirth: convertToDate(data.task.dateOfBirth),
-
-            //   result : {
-            //     sem1: data.task.result.sem1,
-            //     sem2: data.task.result.sem2,
-            //     sem3: data.task.result.sem3,
-            //     sem4: data.task.result.sem4,
-            //     sem5: data.task.result.sem5,
-            //     sem6: data.task.result.sem6,
-            //     sem7: data.task.result.sem7,
-            //     sem8: data.task.result.sem8,
-            //     twelfthPerc: data.task.result.twelfthPerc,
-            //     tenthPerc: data.task.result.tenthPerc,
-            //     diplomaPerc: data.task.result.diplomaPerc,
-            //     cpi : data.task.result.cpi
-            //   },
-
-            //   collegeEmail: data.task.collegeEmail,
-            //   personalEmail: data.task.personalEmail,
-            //   personalPhoneNumber: data.task.personalPhoneNumber,
-            //   parentsPhoneNumber: data.task.parentsPhoneNumber,
-
-            //   competitiveCoding: data.task.competitiveCoding
-
-            //   // address: {
-            //   // city:  data.task.address.city | null,
-            //   // district: data.task.address.district | null,
-            //   // subDistrict: data.task.address.subDistrict | null,
-            //   // state: data.task.address.state | null,
-            //   // postalCode: data.task.address.postalCode | null,
-            //   // completeAddress: data.task.address.completeAddress | null,
-            //   // },
-      
-            //   // placementStatus: {
-            //   // selected: data.task.placementStatusselected,
-            //   // companyName: data.task.placementStatus.companyName,
-            //   // duration: data.task.placementStatus.duration,
-            //   // package: data.task.placementStatus.package,
-            //   // joiningDate: data.task.placementStatus.joiningDate,
-            //   // mode: data.task.placementStatus.mode,
-            //   // },
-      
-            //   // internshipStatus: {
-            //   //   selected: data.task.internshipStatus.selected,
-            //   //   companyName: data.task.internshipStatus.companyName,
-            //   //   duration: data.task.internshipStatus.duration,
-            //   //   stipend: data.task.internshipStatus.stipend,
-            //   //   joiningDate: data.task.internshipStatus.joiningDate,
-            //   //   mode: data.task.internshipStatus.mode,
-            //   // },
-            // })
-
-            console.log("usestate after update: ", student)
-            setIsLoading(false)
-        }catch(err){
-            console.log("error: " + err)
-        }
-    };
-    // axios.patch("http://localhost:5000/api/profile").then((resp) => console.log("resp" ,resp.data)).catch((err)=>{console.log("erro" + err)});
-
-    getValues();
-    return () =>{
-
-    };
-  }, [])
-
-
-    let navigate = useNavigate()
-    const handleInputs = () =>{
-
-    }
-
-    const postEntry = async(e) =>{
-        // e.preventDefault();
-        console.log("hello from postEntry is profile.jsx")
-        try{
-
-          // converting date from user to Date object in javascript
-          // const dateObject = handleDate(student.dateOfBirth.toString())
-          // {setstudent(prevState => ({...prevState,dateOfBirth: dateObj ect}))}
-
-          // console.log("updated date : ", dateObject)
-          const post = student
-          console.log("Post request from postEntry: ")
-          console.log(post)
-          // const res = axios.get(`${url}/Login`)
-          axios.withCredentials = true;
-          // const res = await axios.patch(`/profile/${id}`, post, {withCredentials : true })
-          // const res = await axios.get(`http://localhost:5000/get-session`, {withCredentials : true })
-
-          const res = await axios.put(`/api/student/update`, post, {withCredentials : true })
-
-          console.log("after making changes: ", res.data)
-          location.reload()
-          // console.log(res.status)
-          // console.log("res = ", res.data)
-          // if(res.status == 200){
-          //   // navigate('/Homepage')
-          // }else{
-            
-          // }
-    
-        }catch(e){
-          console.log("error: ", e)
-          alert("Incorrect email")
-        }
-    
-      }
   return (
-
-    <div>
-      { isLoading ? <Pre_loading_page/> :
-    <div style={{ backgroundColor: '#0B0E2A' }}>
-    <Navbar/>
-    <div style={{ backgroundColor: '#0B0E2A' }} className="text-white pt-16">
-    <div style={{ backgroundColor: "#1A1C33" }} className="mx-72 grid ">
-
-      <div className='flex w-full justify-center items-center my-3'>
-        <img src={myImage} className="rounded-full w-[200px] h-auto"/>
-      </div>
-
-      <form>
-        {/* ************************* row 1 *********************** */}
-        <div className='flex justify-between mx-8'>
-          <div>
-            <label className='flex'>Firstname</label>
-            <div>
-              <input type="text" className=' px-3 py-2 flex rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none' autoComplete='false' value={student.firstName}  onChange = {(e) =>{setstudent(prevState => ({...prevState,firstName: e.target.value}))}}></input>
-            </div>
+    <div className="bg-[#0B0E2A] min-h-screen text-white">
+      {/* Navbar */}
+      <Navbar focusOn="companies" />
+      {/* Wrapper div */}
+      <div className="px-2 py-5 flex flex-col gap-8 md:px-8 lg:px-12">
+        {isLoading ? (
+          <div className="flex flex-row justify-center mt-12">
+            <HashLoader color="white" />
           </div>
-          
-          <div>
-            <label className='flex'>Middlename</label>
-            <div>
-              <input type="text" className=' px-3 py-2 flex rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none' autoComplete='false' value={student.middleName}  onChange = {(e) =>{setstudent(prevState => ({...prevState,middleName: e.target.value}))}}></input>
-            </div>
-          </div>
+        ) : (
+          <div className="bg-[#1c1434] mx-auto px-4 py-4 lg:w-2/3">
+            <h1
+              className={`text-3xl font-bold ${
+                isActiveWatch ? "text-success" : "text-red"
+              }`}
+            >
+              {nameWatch}
+            </h1>
 
-          <div>
-            <label className='flex'>Lastname</label>
-            <div>
-              <input type="text" className=' px-3 py-2 flex rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none' autoComplete='false'  value={student.lastName}  onChange = {(e) =>{setstudent(prevState => ({...prevState,lastName: e.target.value}))}}></input>
-            </div>
-          </div>
-        </div>
+            <div className="flex flx-row justify-end mt-2 ">
+              <div className="flex flex-row gap-4">
+                <button
+                  className="text-section  bg-blue-500 rounded-md px-4 py-2 disabled:bg-section"
+                  onClick={handleSubmit(updateStudent)}
+                  disabled={isUpdating}
+                >
+                  {/* <ClipLoader color="white" size={22} /> */}
 
-
-        {/* ********************* row 2 ************************* */}
-        <br />
-
-        <div className='flex justify-between mx-8'>
-          <div>
-            <label className='flex'>Personal Email</label>
-            <div>
-              <input type="text" className=' px-3 py-2 flex rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none' autoComplete='false' value={student.personalEmail}  onChange = {(e) =>{setstudent(prevState => ({...prevState,personalEmail: e.target.value}))}}></input>
-            </div>
-          </div>
-
-          <div>
-            <label className='flex'>Date of Birth</label>
-            <div>
-              <input type="date" className=' px-3 py-2 flex rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none' autoComplete='false' value={new Date()}  onChange = {(e) => {setstudent(prevState => ({...prevState,dateOfBirth: e.target.value}))}}></input>
-            </div>
-          </div>
-        </div>
-
-        {/* ********************* row 2 ************************* */}
-        <br />
-
-        <div className='flex justify-between mx-8'>
-          <div>
-            <label className='flex'>College Mail</label>
-            <div>
-              <input type="text" className=' px-3 py-2 flex rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none' autoComplete='false' value={student.collegeEmail}  onChange = {(e) =>{setstudent(prevState => ({...prevState, collegeEmail: e.target.value}))}}></input>
-            </div>
-          </div>
-
-          <div>
-            <label className='flex'>Address 2</label>
-            <div>
-              <input type="text" className=' px-3 py-2 flex rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none' autoComplete='false'></input>
-            </div>
-          </div>
-        </div>
-
-        {/* ******************* row 3 ********************** */}
-
-        <br />
-        <div className='mx-8'>
-        <label className='flex'>Address</label>
-            <div>
-              <input type="text" className='w-full px-3 py-2 flex rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none' autoComplete='false' value={student.address.completeAddress}  onChange = {(e) =>handlecompleteAddressChange(e)}></input>
-            </div>
-        </div>
-
-        {/* *********************** row 4 ************************ */}
-        <br />
-
-        <div className='flex justify-between mx-8'>
-          <div>
-            <label className='flex'>Sub District</label>
-            <div>
-              <input value={student?.address?.subDistrict} type="text" className=' px-3 py-2 flex rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none' autoComplete='false'   onChange = {(e) =>handlesubDistrictChange(e)}></input>
-            </div>
-          </div>
-
-
-          <div>
-            <label className='flex'>City</label>
-            <div>
-              <input type="text" value={student?.address?.city} className=' px-3 py-2 flex rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none' autoComplete='false' onChange = {(e) => handleCityChange(e)}></input>
-            </div>
-          </div>
-        </div>
-
-        {/* ********************** row 5 ************************ */}
-        <br />
-
-        <div className='flex justify-between mx-8'>
-          <div>
-            <label className='flex'>Pincode</label>
-            <div>
-              <input type="text" value={student?.address?.postalCode} className=' px-3 py-2 flex rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none' autoComplete='false' onChange = {(e) =>handlePostalCodeChange(e)}></input>
-            </div>
-          </div>
-
-          <div>
-            <label className='flex'>State</label>
-            <div>
-              <input type="text" value={student?.address?.state} className=' px-3 py-2 flex rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none' autoComplete='false' onChange = {(e) =>handleStateChange(e)}></input>
-            </div>
-          </div>
-        </div>
-
-        {/* *************************** row 6 ************************* */}
-
-        <br />
-
-        <div className='flex justify-between mx-8'>
-          {/* <div>
-            <label className='flex'>Age</label>
-            <div>
-              <input type="text" className=' px-3 py-2 flex rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none' autoComplete='false'></input>
-            </div>
-          </div> */}
-
-
-          <div>
-            <label className='flex'>Gender</label>
-            <div className='text-black'>
-            <select name="internship_status" id="internship_status" className='text-white p-1' style={{ backgroundColor: '#0B0E2A' }} value = {student.gender} onChange = {(e) => handleGenderChange(e)}>
-              {
-                Gender.map((item) =>(
-                  <option value={item} key= {item} className='text-white p-1' style={{ backgroundColor: '#0B0E2A' }}>{item}</option>
-                ))
-              }
-            </select>
+                  {!isUpdating ? (
+                    "Update"
+                  ) : (
+                    <ClipLoader color="white" size={22} />
+                  )}
+                </button>
+              </div>
             </div>
 
-          </div>
+            {/* Student details */}
+            <form className="flex flex-row justify-between gap-2 flex-wrap mt-5">
+              <FormInputField
+                name="firstName"
+                title={"First Name"}
+                errors={errors}
+                register={register}
+                isRequired={true}
+              />
+              <FormInputField
+                name="middleName"
+                title={"Middle Name"}
+                errors={errors}
+                register={register}
+                isRequired={true}
+              />
 
-        </div>
+              <FormInputField
+                name="lastName"
+                title={"Last Name"}
+                errors={errors}
+                register={register}
+                isRequired={true}
+              />
 
-        {/* ******************************* row 7 ************************* */}
-        <br />
-
-        <div className='flex justify-between mx-8'>
-          <div>
-            <label className='flex'>Personal Contact Number</label>
-            <div>
-              <input type="text" className=' px-3 py-2 flex rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none' autoComplete='false' value={student.personalPhoneNumber}  onChange = {(e) =>{setstudent(prevState => ({...prevState,personalPhoneNumber: e.target.value}))}}></input>
-            </div>
-          </div>
-
-
-          <div className=' break-before-all'>
-            <label className='flex'>Guardian/Parent Contact Number</label>
-            <div>
-              <input type="text" className=' px-3 py-2 flex rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none' autoComplete='false' value={student.parentsPhoneNumber}  onChange = {(e) =>{setstudent(prevState => ({...prevState,parentsPhoneNumber: e.target.value}))}}></input>
-            </div>
-          </div>
-        </div>
-
-
-        {/* ********************* row 8 ********************** */}
-
-        <br />
-        <div className='flex justify-between mx-8'>
-          <div>
-            <label className='flex'>Student Resume</label>
-          </div>
-
-          <div>
-            <button style={{ backgroundColor: '#3040D6' }} className = 'p-3 rounded-full'>Upload Resume</button>
-          </div>
-        </div>
-
-        {/* ********************* row 9 ************************* */}
-        <br />
-
-        <div className='flex justify-between mx-8'>
-          <div>
-            <label className='flex'>Branch</label>
-            <div>
-              <input type="text" className=' px-3 py-2 flex rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none' autoComplete='false' value={student.branch}  onChange = {(e) =>{setstudent(prevState => ({...prevState,branch: e.target.value}))}}></input>
-            </div>
-          </div>
-
-          <div>
-            <label className='flex'>Passing Year</label>
-            <div>
-              <input type="text" className=' px-3 py-2 flex rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none' autoComplete='false' value={student.passingYear}  onChange = {(e) =>{setstudent(prevState => ({...prevState,passingYear: e.target.value}))}}></input>
-            </div>
-          </div>
-        </div>
-
-        {/* ********************* row 10 ************************* */}
-        <br />
-
-        <div className='flex justify-between mx-8'>
-          <div>
-            <label className='flex'>Password</label>
-            <div>
-              <input type="text" className=' px-3 py-2 flex rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none' autoComplete='false' value={student.password}  onChange = {(e) =>{setstudent(prevState => ({...prevState,password: e.target.value}))}}></input>
-            </div>
-          </div>
-
-          {/* <div>
-            <label className='flex'>Confirm Password</label>
-            <div>
-              <input type="text" className=' px-3 py-2 flex rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none' autoComplete='false'></input>
-            </div>
-          </div> */}
-        </div>
-
-        <br />
-          <div className=''>
-            <h3 className='flex mx-8'>SPI</h3>
-          </div>
-        <br />
-
-        {/* ********************* row 11 ************************* */}
-
-        <div className='flex justify-between mx-8'>
-          <div>
-            <label className='flex'>1st Semester</label>
-            <div>
-              <input type="text" className=' px-3 py-2 flex rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none w-1/3' autoComplete='false' name="sem1" value={student.result.sem1}  onChange = {(e) =>{setstudent(prevState => ({...prevState,result : {...prevState.result, sem1 : e.target.value}}))}}></input>
-            </div>
-          </div>
-
-          <div>
-            <label className='flex'>2nd Semester</label>
-            <div>
-              <input type="text" className=' px-3 py-2 flex rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none w-1/3'  autoComplete='false' value={student.result.sem2}  onChange = {(e) =>{setstudent(prevState => ({...prevState,result : {...prevState.result, sem2 : e.target.value}}))}}></input>
-            </div>
-          </div>
-
-          <div>
-            <label className='flex'>3rd Semester</label>
-            <div>
-              <input type="text" className=' px-3 py-2 flex-shrink rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none w-1/3' autoComplete='false' value={student.result.sem3}  onChange = {(e) =>{setstudent(prevState => ({...prevState,result : {...prevState.result, sem3 : e.target.value}}))}}></input>
-            </div>
-          </div>
-
-          <div>
-            <label className='flex'>4th Semester</label>
-            <div>
-              <input type="text" className=' px-3 py-2 flex-shrink rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none w-1/3' autoComplete='false' value={student.result.sem4}  onChange = {(e) =>{setstudent(prevState => ({...prevState,result : {...prevState.result, sem4 : e.target.value}}))}}></input>
-            </div>
-          </div>
-        </div>
-
-        {/* ********************* row 12 ************************* */}
-        <br />
-
-        <div className='flex justify-between mx-8'>
-          <div>
-            <label className='flex'>5th Semester</label>
-            <div>
-              <input type="text" className=' px-3 py-2 flex rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none w-1/3' autoComplete='false' value={student.result.sem5}  onChange = {(e) =>{setstudent(prevState => ({...prevState,result : {...prevState.result, sem5 : e.target.value}}))}}></input>
-            </div>
-          </div>
-
-          <div>
-            <label className='flex'>6th Semester</label>
-            <div>
-              <input type="text" className=' px-3 py-2 flex rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none w-1/3'  autoComplete='false' value={student.result.sem6}  onChange = {(e) =>{setstudent(prevState => ({...prevState,result : {...prevState.result, sem6 : e.target.value}}))}}></input>
-            </div>
-          </div>
-
-          <div>
-            <label className='flex'>7th Semester</label>
-            <div>
-              <input type="text" className=' px-3 py-2 flex-shrink rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none w-1/3' autoComplete='false' value={student.result.sem7}  onChange = {(e) =>{setstudent(prevState => ({...prevState,result : {...prevState.result, sem7 : e.target.value}}))}}></input>
-            </div>
-          </div>
-
-          <div>
-            <label className='flex'>8th Semester</label>
-            <div>
-              <input type="text" className=' px-3 py-2 flex-shrink rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none w-1/3' autoComplete='false' value={student.result.sem8}  onChange = {(e) =>{setstudent(prevState => ({...prevState,result : {...prevState.result, sem8 : e.target.value}}))}}></input>
-            </div>
-          </div>
-        </div>
-
-      
-      {/* ********************* row 13 ********************** */}
-
-      <br />
-        <div className='flex justify-between mx-8 '>
-          <div>
-            <label className='flex'>CPI (to be updated by Institute)</label>
-          </div>
-          <div>
-          <input type="text" className=' px-3 py-2 flex rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none' autoComplete='false' value={student.result.cpi}  onChange = {(e) =>{setstudent(prevState => ({...prevState,cpi: e.target.value}))}}></input>
-          <div>
-          </div>
-          </div>
-        </div>
-
-        {/* ********************* row 14 ************************* */}
-        <br />
-
-        <div className='flex justify-between mx-8'>
-          <div>
-            <label className='flex'>SSC/Diploma Percentage</label>
-            <div>
-              <label className='flex'>
-              <input type="text" className=' px-3 py-2 flex rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none' autoComplete='false' value={student.result.twelfthPerc}  onChange = {(e) =>{setstudent(prevState => ({...prevState,result : {...prevState.result, twelfthPerc : e.target.value}}))}}></input>%</label>
-            </div>
-          </div>
-            <div>
-            <button style={{ backgroundColor: '#3040D6' }} className = 'p-3 rounded-full'>Upload Marksheet</button>
-            </div>
-        </div>
-
-        {/* ********************* row 14 ************************* */}
-        <br />
-
-        <div className='flex justify-between mx-8'>
-          <div>
-            <label className='flex'>HSC Percentage</label>
-            <div>
-              <label className='flex'>
-              <input type="text" className=' px-3 py-2 flex rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none' autoComplete='false' value={student.result.tenthPerc}  onChange = {(e) =>{setstudent(prevState => ({...prevState,result : {...prevState.result, tenthPerc : e.target.value}}))}}></input>%</label>
-            </div>
-          </div>
-            <div>
-            <button style={{ backgroundColor: '#3040D6' }} className = 'p-3 rounded-full'>Upload Marksheet</button>
-            </div>
-        </div>
-
-        {/* ********************* row 15 ********************** */}
-
-        <br />
-        <div className='flex justify-between mx-8'>
-          <div>
-            <label className='flex'>Coding Profile</label>
-          </div>
-
-          <div className='flex flex-row justify-between'>
-          <div className='mx-8'>
-            <button style={{ backgroundColor: '#3040D6' }} className = 'p-3 rounded-full' onClick={handleAddProfile}>Add Profile</button>
-          </div>
-          
-          </div>
-        </div>
-
-        <br />
-        {
-          student.competitiveCoding ? <div>
-            {
-              student.competitiveCoding.map((item,index) =>{
-                return(<div>
-                <div className='flex justify-between mx-8'>
-                <div>
-                  <label className='flex'>Platform</label>
-                  <div>
-                    <input type="text" className=' px-3 py-2 flex rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none' autoComplete='false' key={index} value={student.competitiveCoding[index].platform}  onChange = {(e) => handlePlatformChange(e,index)}></input>
-                  </div>
-                </div>
-      
-                <div>
-                  <label className='flex'>Profile</label>
-                  <div>
-                    <input type="text" className=' px-3 py-2 flex rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none' autoComplete='false' key={index} value={student.competitiveCoding[index].profile} onChange = {(e) => handleProfileChange(e,index)}></input>
-                  </div>
-                </div>
+              {/* Gender Remaining */}
+              <div className="flex  flex-col gap-1 w-full md:w-2/5">
+                <span className="text-white">Gender *</span>
+                <ErrorMessage
+                  errors={errors}
+                  name={`gender`}
+                  render={({ message }) => (
+                    <span className="text-danger">{message}</span>
+                  )}
+                />
+                <select
+                  {...register(`gender`, {
+                    required: "Gender is required",
+                    minLength: 1,
+                  })}
+                  className="outline-none px-4 py-1 rounded-md bg-gray-700"
+                >
+                  <option value="male"> Male</option>
+                  <option value="female"> Female</option>
+                </select>
               </div>
 
-              <br />
+              <FormInputField
+                type="date"
+                name="dateOfBirth"
+                title={"DOB"}
+                errors={errors}
+                register={register}
+                isRequired={true}
+              />
+              <h2 className="mt-3 w-full font-semibold text-2xl">
+                College Details
+              </h2>
+              <FormInputField
+                name="collegeID"
+                title={"COllege ID"}
+                errors={errors}
+                register={register}
+                isRequired={true}
+              />
+              <FormInputField
+                name="collegeEmail"
+                title={"COllege Email"}
+                isRequired={true}
+                errors={errors}
+                register={register}
+              />
+              <FormInputField
+                name="rollNumber"
+                isRequired={true}
+                title={"Roll No."}
+                errors={errors}
+                register={register}
+              />
 
-              <div className='flex justify-between mx-8'>
-                <div>
-                  <label className='flex'>Stars</label>
-                  <div>
-                    <input type="text" className=' px-3 py-2 flex rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none' autoComplete='false' key={index} value={student.competitiveCoding[index].stars} onChange = {(e) => handleStarschange(e,index)}></input>
-                  </div>
-                </div>
-      
-                <div>
-                  <label className='flex'>Ratings</label>
-                  <div>
-                    <input type="text" className=' px-3 py-2 flex rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none' autoComplete='false' key={index} value={student.competitiveCoding[index].ratings} onChange = {(e) => handleRatingChange(e,index)}></input>
-                  </div>
-                </div>
+              <FormInputField
+                name="passingYear"
+                title={"Passing Year"}
+                errors={errors}
+                type="number"
+                isRequired={true}
+                register={register}
+              />
+              {/* CONTACT DETAIL */}
+              <FormInputField
+                name="personalPhoneNumber"
+                title={"Personal Phone"}
+                errors={errors}
+                register={register}
+                isRequired={true}
+              />
+
+              <FormInputField
+                name="parentsPhoneNumber"
+                title={"Parent's Phone"}
+                errors={errors}
+                register={register}
+              />
+
+              <FormInputField
+                name="personalEmail"
+                title={"Personal Email"}
+                errors={errors}
+                isRequired={true}
+                register={register}
+              />
+
+              <h2 className="mt-3 w-full font-semibold text-2xl">Result</h2>
+              <FormInputField
+                name="result.sem1"
+                type="number"
+                title={"Sem1"}
+                errors={errors}
+                register={register}
+              />
+              <FormInputField
+                type="number"
+                name="result.sem2"
+                title={"Sem2"}
+                errors={errors}
+                register={register}
+              />
+
+              <FormInputField
+                name="result.sem3"
+                type="number"
+                title={"Sem3"}
+                errors={errors}
+                register={register}
+              />
+              <FormInputField
+                name="result.sem4"
+                type="number"
+                title={"Sem4"}
+                errors={errors}
+                register={register}
+              />
+              <FormInputField
+                name="result.sem5"
+                type="number"
+                title={"Sem5"}
+                errors={errors}
+                register={register}
+              />
+              <FormInputField
+                name="result.sem6"
+                type="number"
+                title={"Sem6"}
+                errors={errors}
+                register={register}
+              />
+              <FormInputField
+                name="result.sem7"
+                type="number"
+                title={"Sem7"}
+                errors={errors}
+                register={register}
+              />
+              <FormInputField
+                name="result.sem8"
+                title={"Sem8"}
+                type="number"
+                errors={errors}
+                register={register}
+              />
+              <FormInputField
+                name="result.cpi"
+                title={"CPI"}
+                type="number"
+                errors={errors}
+                register={register}
+                isRequired={true}
+              />
+              <FormInputField
+                name="result.twelfthPerc"
+                isRequired={true}
+                title={"12th %"}
+                type="number"
+                errors={errors}
+                register={register}
+              />
+              <FormInputField
+                name="result.tenthPerc"
+                title={"10th %"}
+                isRequired={true}
+                type="number"
+                errors={errors}
+                register={register}
+              />
+              <FormInputField
+                name="result.diplomaPerc"
+                title={"Diploma %"}
+                isRequired={true}
+                type="number"
+                errors={errors}
+                register={register}
+              />
+
+              {/* Competitive programming */}
+              <h2 className="mt-3 w-full font-semibold text-2xl">
+                Competitive Coding
+              </h2>
+
+              <div className="flex flex-row flex-wrap w-full justify-between">
+                {cpWatch?.map((cpItem, cpIndex) => {
+                  return (
+                    <>
+                      {/* Platform */}
+
+                      <FormInputField
+                        name={`competitiveCoding.${cpIndex}.platform`}
+                        title={"Platform"}
+                        errors={errors}
+                        register={register}
+                        isRequired={true}
+                      />
+                      {/* Profile */}
+
+                      <FormInputField
+                        name={`competitiveCoding.${cpIndex}.profile`}
+                        title={"Profile"}
+                        profile
+                        errors={errors}
+                        register={register}
+                        isRequired={true}
+                      />
+                      {/* Stars */}
+                      <FormInputField
+                        name={`competitiveCoding.${cpIndex}.stars`}
+                        title={"Stars"}
+                        errors={errors}
+                        register={register}
+                      />
+                      {/* Ratings */}
+                      <FormInputField
+                        name={`competitiveCoding.${cpIndex}.ratings`}
+                        title={"Ratings"}
+                        errors={errors}
+                        register={register}
+                      />
+                      <div className="flex flex-col mt-3 justify-end gap-1 w-full md:w-2/5">
+                        <button
+                          className="flex flex-row  gap-2 justify-center bg-[#a62f2f] px-2 py-1 rounded-md"
+                          onClick={(e) =>
+                            handleRemoveCP(e, cpIndex, cpWatch, setValue)
+                          }
+                        >
+                          <span className=""> Delete Platform</span>
+                          <AiOutlineUsergroupDelete size={24} />
+                        </button>{" "}
+                      </div>
+                      <div className="w-full bg-lightHover h-[1px]"></div>
+                    </>
+                  );
+                })}
+                <button
+                  className="flex mt-3 flex-row gap-2 justify-center bg-[#3040D6] px-2 py-1 rounded-md"
+                  onClick={(e) => handleAddCP(e, cpWatch, setValue)}
+                >
+                  <span className=""> Add Platform</span>
+                  <AiOutlineUsergroupAdd size={24} />
+                </button>
+                {/* divider */}
+                <div className="h-[1px] w-full border-dashed border-b-[2px] border-placeholder opacity-60  my-2"></div>
               </div>
-              <br />
 
-              <div>
-                <button type='button' style={{ backgroundColor: '#3040D6' }} className = 'p-3 rounded-full' onClick={() => handleDeleteIndividualProfileChange(index)}>Delete Profile</button>
+              <h2 className="w-full font-semibold text-2xl mt-3">
+                Placement Status
+              </h2>
+
+              {/* Placement Status */}
+              <div className="flex  flex-col gap-1 w-full md:w-2/5">
+                <span className="text-white">Selected ?</span>
+                {/* <ErrorMessage
+                  errors={errors}
+                  name={`roles.${roleIndex}.type`}
+                  render={({ message }) => (
+                    <span className="text-danger">{message}</span>
+                  )}
+                /> */}
+                <select
+                  {...register(`placementStatus.selected`, {
+                    required: "Type is required",
+                    minLength: 1,
+                  })}
+                  className="outline-none px-4 py-1 rounded-md bg-gray-700"
+                >
+                  <option value="yes"> Yes</option>
+                  <option value="no"> No</option>
+                </select>
               </div>
-                <br />
-              <hr />
-              <br />
-              </div>)
-              })
+              {/* Company Name */}
+              <FormInputField
+                name="placementStatus.companyName"
+                title={"Company"}
+                errors={errors}
+                register={register}
+              />
+              <FormInputField
+                name="placementStatus.package"
+                title={"Package (in LPA)"}
+                type="number"
+                errors={errors}
+                register={register}
+              />
+              <FormInputField
+                name="placementStatus.duration"
+                title={"Bond (in months)"}
+                type="number"
+                errors={errors}
+                register={register}
+              />
+              <FormInputField
+                name="placementStatus.joiningDate"
+                title={"Joining Date"}
+                type="date"
+                errors={errors}
+                register={register}
+              />
 
-              
-            }
-          </div> : null
-        }
-        <br />
+              {/* Mode of job */}
+              <div className="flex  flex-col gap-1 w-full md:w-2/5">
+                <span className="text-white">Mode</span>
+                {/* <ErrorMessage
+                  errors={errors}
+                  name={`roles.${roleIndex}.type`}
+                  render={({ message }) => (
+                    <span className="text-danger">{message}</span>
+                  )}
+                /> */}
+                <select
+                  {...register(`placementStatus.selected`)}
+                  className="outline-none px-4 py-1 rounded-md bg-gray-700"
+                >
+                  <option value="remote"> Remote</option>
+                  <option value="on-site"> On Site</option>
+                  <option value="hybrid"> Hybrid</option>
+                </select>
+              </div>
+              {/* Internship Status*/}
+              <h2 className="w-full font-semibold text-2xl mt-3">
+                Internship Status
+              </h2>
+              {/* ADDRESS */}
+              <h2 className="mt-2 w-full font-semibold text-2xl">Address</h2>
+              {/* address.city */}
+              <FormInputField
+                name={`address.city`}
+                title={"City"}
+                isRequired={true}
+                errors={errors}
+                register={register}
+              />
+              {/* address.districts */}
+              <FormInputField
+                name={`address.district`}
+                title={"District"}
+                errors={errors}
+                isRequired={true}
+                register={register}
+              />
 
-        <br />
-          <div className=''>
-            <h3 className='flex mx-8'><b>Placement/Internship status</b></h3>
+              {/* address.state */}
+              <FormInputField
+                name={`address.state`}
+                title={"State"}
+                errors={errors}
+                register={register}
+                isRequired={true}
+              />
+              {/* address.postalcode */}
+              <FormInputField
+                name={`address.postalCode`}
+                title={"Postalcode"}
+                errors={errors}
+                register={register}
+                type="number"
+                isRequired={true}
+              />
+              {/* address.completeAddress */}
+              <FormInputField
+                name={`address.completeAddress`}
+                title={"Complete Address"}
+                errors={errors}
+                register={register}
+                isRequired={true}
+              />
+            </form>
           </div>
-        <br />
-
-        <br />
-          <div className=''>
-            <h3 className='flex mx-8'>Internship</h3>
-          </div>
-        <br />
-
-        <div className='flex justify-between mx-8'>
-          <div>
-            <label className='flex'>Selected for Internship</label>
-          </div>
-
-          {/* <div>
-            <select value={student?.internshipStatus?.selected} name="internship_status" id="internship_status" className='text-white p-1' style={{ backgroundColor: '#0B0E2A' }}>
-              <option value="--Select--" className='text-white p-1' style={{ backgroundColor: '#0B0E2A' }} defaultValue={true}>--Select--</option>
-            <option value="yes" className='text-white p-1' style={{ backgroundColor: '#0B0E2A' }}>Yes</option>
-            <option value="no" className='text-white p-1' style={{ backgroundColor: '#0B0E2A' }}>No</option>
-            </select>
-          </div> */}
-
-          <div className='text-black' key={key}>
-            <select value={student?.internshipStatus?.selected} name="internship_status" id="internship_status" className='text-white p-1' style={{ backgroundColor: '#0B0E2A' }}  onChange = {(e) => handleInternshipStatusChange(e)}>
-                <option value={"yes"} >Yes</option>
-                <option value={"no"} >No</option>
-                {/* { 
-                  InternshipSelected.map((item) => (
-                    <option value={item} className='text-white p-1' style={{ backgroundColor: '#0B0E2A' }} key={item}>{item}</option>
-                  ))
-                } */}
-            </select>
-            </div>
-
-          <div>
-          <label className='flex'>Company Name</label>
-        <input type="text" value={student?.internshipStatus?.companyName} className='px-3 py-2 flex rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none' autoComplete='false' onChange={(e) => handleInternShipCompanyNameChange(e)}></input>
-        </div>
+        )}
       </div>
-
-        {/* ********************* row - 16  ************************* */}
-
-        <br />
-        <div className='flex justify-between mx-8'>
-        <div>
-            <label className='flex'>Joining Date</label>
-            <div>
-              <input type="text" value={student?.internshipStatus?.joiningDate} className=' px-3 py-2 flex rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none' autoComplete='false'></input>
-            </div>
-          </div>
-
-          <div>
-            <label className='flex'>Internship Duration (in Months)</label>
-            <div>
-              <input type="text" value={student?.internshipStatus?.duration} className=' px-3 py-2 flex rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none' autoComplete='false' onChange={(e) => handleInternShipDurationChange(e)}></input>
-            </div>
-          </div>
-        </div>
-
-        {/* ************************ row - 17  ************************* */}
-        <br />
-
-        <div className='flex justify-between mx-8'>
-
-          <div>
-          <label className='flex'>Stipend (In thousand Rupees)</label>
-            <div>
-              <input type="text" value={student?.internshipStatus?.stipend} className=' px-3 py-2 flex rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none' autoComplete='false' onChange={(e) => handleStipendChange(e)}></input>
-            </div>
-          </div>
-
-          <div>
-            <label className='flex'>Mode</label>
-            <div className='text-black'>
-            <select value={student?.internshipStatus?.mode} name="internship_status" id="internship_status" className='text-white p-1' style={{ backgroundColor: '#0B0E2A' }}  onChange = {(e) => handleInternShipModeChange(e)}>
-                {
-                  InternshipMode.map((item) => (
-                    <option value={item} className='text-white p-1' style={{ backgroundColor: '#0B0E2A' }} key={item}>{item}</option>
-                  ))
-                }
-            </select>
-            </div>
-          </div>
-        </div>
-
-        <br />
-
-        <br />
-          <div className=''>
-            <h3 className='flex mx-8'>Placement</h3>
-          </div>
-        <br />
-
-        {/* ********************* row - 18  ************************* */}
-
-        <div className='flex justify-between mx-8'>
-          <div>
-            <label className='flex'>Selected for Placement</label>
-          </div>
-
-          <div>
-            <select name="internship_status" id="internship_status" className='text-white p-1' style={{ backgroundColor: '#0B0E2A' }} value={student.placementStatus.selected} onChange = {(e) => handleCompanyStatusChange(e)}>
-              <option value="yes" className='text-white p-1' style={{ backgroundColor: '#0B0E2A' }}>Yes</option>
-              <option value="no" className='text-white p-1' style={{ backgroundColor: '#0B0E2A' }}>No</option>
-            </select>
-          </div>
-
-          <div>
-          <label className='flex'>Company Name</label>
-        <input type="text" className='px-3 py-2 flex rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none' autoComplete='false' value={student.placementStatus.companyName} onChange = {(e) => handlePlacementCompanyNameChange(e)}></input>
-        </div>
-      </div>
-
-        {/* ********************* row - 19  ************************* */}
-
-        <br />
-        <div className='flex justify-between mx-8'>
-        <div>
-            <label className='flex'>Joining Date</label>
-            <div>
-              <input type="text" className=' px-3 py-2 flex rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none' autoComplete='false'></input>
-            </div>
-          </div>
-
-          <div>
-            <label className='flex'>Job Bond (in Months)</label>
-            <div>
-              <input type="text" className=' px-3 py-2 flex rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none' autoComplete='false' value={student.placementStatus.duration} onChange = {(e) => handleCompanyBondChange(e)}></input>
-            </div>
-          </div>
-        </div>
-
-        {/* ************************ row - 20  ************************* */}
-        <br />
-
-        <div className='flex justify-between mx-8'>
-
-          <div>
-          <label className='flex'>Annual Package (In Lakhs)</label>
-            <div>
-              <input type="text" className=' px-3 py-2 flex rounded-lg mt-2 pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none' autoComplete='false' value={student.placementStatus.package} onChange = {(e) => handlePackageChange(e)}></input>
-            </div>
-          </div>
-
-          <div>
-            <label className='flex'>Mode</label>
-            <div className='text-black'>
-            <select name="internship_status" id="internship_status" className='text-white p-1' style={{ backgroundColor: '#0B0E2A' }} value = {student.placementStatus.mode} onChange = {(e) => handleCompanyModeChange(e)}>
-            <option value="yes" className='text-white p-1' style={{ backgroundColor: '#0B0E2A' }}>Remote</option>
-            <option value="no" className='text-white p-1' style={{ backgroundColor: '#0B0E2A' }}>Work from Home</option>
-            </select>
-            </div>
-          </div>
-        </div>
-
-      </form>
-      <br /><br /><br />
-
-      <div className='flex justify-around mx-8'>
-        <div>
-            <button style={{ backgroundColor: '#3040D6' }} className = 'p-3 rounded-full w-40' onClick={postEntry}>Save Changes</button>
-          </div>
-
-          <div>
-            <button style={{ backgroundColor: '#3040D6' }} className = 'p-3 rounded-full w-40'>Cancel</button>
-          </div>
-        </div>
-        <br /><br />
     </div>
-    <br /><br /><br />
-  </div>
-  </div>
-}
-  </div>
-  )
-}
+  );
+};
+
+export default Profile;

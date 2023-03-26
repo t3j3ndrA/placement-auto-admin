@@ -8,7 +8,7 @@ import RatioPieChart from "./RatioPieChart";
 
 const PlacementRatio = () => {
   const [filter, setFilter] = useState({
-    year: new Date().getFullYear() + 1,
+    year: localStorage.getItem("year"),
     limit: 10,
   });
 
@@ -18,7 +18,11 @@ const PlacementRatio = () => {
     } else {
       e.target.style.border = "";
     }
+
     setFilter({ ...filter, [e.target.name]: e.target.value });
+    if (e.target.name === "year") {
+      localStorage.setItem("year", e.target.value);
+    }
   };
 
   const fetchStudents = async () => {
@@ -30,7 +34,7 @@ const PlacementRatio = () => {
     console.log(filterURL);
 
     return axios
-      .get(`api/reports/placed-ratio?${filterURL}`, {
+      .get(`/api/reports/placed-ratio?${filterURL}`, {
         withCredentials: true,
       })
       .then((response) => response.data)

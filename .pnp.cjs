@@ -28,47 +28,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         [null, {\
           "packageLocation": "./",\
           "packageDependencies": [\
-            ["@hookform/error-message", "virtual:3fe26ecb3574d712285cf2df32868f25a736de96d0e6a1207237add4f1ab997fd2bbb46ce676250212f31eb2bb9e43019477e2562cb3f6679fea86312e2e8e0d#npm:2.0.1"]\
           ],\
           "linkType": "SOFT"\
-        }]\
-      ]],\
-      ["@hookform/error-message", [\
-        ["npm:2.0.1", {\
-          "packageLocation": "./.yarn/cache/@hookform-error-message-npm-2.0.1-f3d86a1ac0-eb3c33ab3f.zip/node_modules/@hookform/error-message/",\
-          "packageDependencies": [\
-            ["@hookform/error-message", "npm:2.0.1"]\
-          ],\
-          "linkType": "SOFT"\
-        }],\
-        ["virtual:3fe26ecb3574d712285cf2df32868f25a736de96d0e6a1207237add4f1ab997fd2bbb46ce676250212f31eb2bb9e43019477e2562cb3f6679fea86312e2e8e0d#npm:2.0.1", {\
-          "packageLocation": "./.yarn/__virtual__/@hookform-error-message-virtual-4b53e4e6a7/0/cache/@hookform-error-message-npm-2.0.1-f3d86a1ac0-eb3c33ab3f.zip/node_modules/@hookform/error-message/",\
-          "packageDependencies": [\
-            ["@hookform/error-message", "virtual:3fe26ecb3574d712285cf2df32868f25a736de96d0e6a1207237add4f1ab997fd2bbb46ce676250212f31eb2bb9e43019477e2562cb3f6679fea86312e2e8e0d#npm:2.0.1"],\
-            ["@types/react", null],\
-            ["@types/react-dom", null],\
-            ["@types/react-hook-form", null],\
-            ["react", null],\
-            ["react-dom", null],\
-            ["react-hook-form", null]\
-          ],\
-          "packagePeers": [\
-            "@types/react-dom",\
-            "@types/react-hook-form",\
-            "@types/react",\
-            "react-dom",\
-            "react-hook-form",\
-            "react"\
-          ],\
-          "linkType": "HARD"\
         }]\
       ]],\
       ["admin-panel", [\
         ["workspace:.", {\
           "packageLocation": "./",\
           "packageDependencies": [\
-            ["admin-panel", "workspace:."],\
-            ["@hookform/error-message", "virtual:3fe26ecb3574d712285cf2df32868f25a736de96d0e6a1207237add4f1ab997fd2bbb46ce676250212f31eb2bb9e43019477e2562cb3f6679fea86312e2e8e0d#npm:2.0.1"]\
+            ["admin-panel", "workspace:."]\
           ],\
           "linkType": "SOFT"\
         }]\

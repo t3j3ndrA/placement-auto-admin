@@ -30,6 +30,9 @@ const YearlyPlaced = () => {
       e.target.style.border = "";
     }
     setFilter({ ...filter, [e.target.name]: e.target.value });
+    if (e.target.name === "year") {
+      localStorage.setItem("year", e.target.value);
+    }
   };
 
   const fetchStudents = async () => {
@@ -41,7 +44,7 @@ const YearlyPlaced = () => {
     console.log(filterURL);
 
     return axios
-      .get(`api/reports/yearly-placed?${filterURL}`, {
+      .get(`/api/reports/yearly-placed?${filterURL}`, {
         withCredentials: true,
       })
       .then((response) => response.data)
@@ -105,7 +108,7 @@ const YearlyPlaced = () => {
               <tr
                 className="border-b-[1px] border-b-white bg-subSection hover:bg-lightHover hover:cursor-pointer even:bg-alternate"
                 onClick={() => {
-                  navigate(`/students/student-view/${item._id}`, {
+                  navigate(`/admin/students/student-view/${item._id}`, {
                     state: item,
                   });
                 }}

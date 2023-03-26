@@ -17,7 +17,7 @@ import FilterInputWithValue from "../FilterInputWithValue";
 
 const Top10Placements = () => {
   const [filter, setFilter] = useState({
-    year: new Date().getFullYear() + 1,
+    year: localStorage.getItem("year"),
     limit: 10,
   });
   const navigate = useNavigate();
@@ -29,6 +29,9 @@ const Top10Placements = () => {
       e.target.style.border = "";
     }
     setFilter({ ...filter, [e.target.name]: e.target.value });
+    if (e.target.name === "year") {
+      localStorage.setItem("year", e.target.value);
+    }
   };
 
   const fetchStudents = async () => {
@@ -40,7 +43,7 @@ const Top10Placements = () => {
     console.log(filterURL);
 
     return axios
-      .get(`api/reports/placed?${filterURL}`, {
+      .get(`/api/reports/placed?${filterURL}`, {
         withCredentials: true,
       })
       .then((response) => response.data)
@@ -103,7 +106,7 @@ const Top10Placements = () => {
               <tr
                 className="border-b-[1px] border-b-white bg-subSection hover:bg-lightHover hover:cursor-pointer even:bg-alternate"
                 onClick={() => {
-                  navigate(`/students/student-view/${item._id}`, {
+                  navigate(`/admin/students/student-view/${item._id}`, {
                     state: item,
                   });
                 }}

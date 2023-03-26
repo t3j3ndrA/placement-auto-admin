@@ -107,7 +107,7 @@ const CompanyView = () => {
 
             <div className="flex flx-row justify-end mt-2 ">
               <div className="flex flex-row gap-4">
-                <Link to={"/companies/create-post"} state={getValues()}>
+                <Link to={"/admin/companies/create-post"} state={getValues()}>
                   <button
                     disabled={isLoading || isUpdating}
                     className="text-section  bg-white rounded-md px-4 py-2"
@@ -183,7 +183,7 @@ const CompanyView = () => {
                     <div className="flex flex-row w-full justify-between">
                       <button className="text-section  bg-white rounded-md px-4 py-2">
                         <Link
-                          to={`/company/${id}/role/${role._id}/applications`}
+                          to={`/admin/company/${id}/role/${role._id}/applications`}
                         >
                           Applications
                         </Link>
