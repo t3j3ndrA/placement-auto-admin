@@ -7,6 +7,8 @@ import axios from "axios";
 import getStuId from "../../utils/getStuId";
 import { useQuery } from "react-query";
 import { ClipLoader } from "react-spinners";
+import encrypter from "../../utils/encrypter";
+import convertToDate from "../../utils/convertToDate";
 
 export const Homepage1 = () => {
   const getValues = async () => {
@@ -26,25 +28,6 @@ export const Homepage1 = () => {
     keepPreviousData: true,
   });
   console.log("_data >> ", _data);
-
-  function convertToDate(dateString) {
-    const date = new Date(dateString);
-    const day = date.getDate().toString().padStart(2, "0");
-    const month = (date.getMonth() + 1).toString().padStart(2, "0");
-    const year = date.getFullYear().toString();
-    const formattedDate = `${day}-${month}-${year}`;
-    return formattedDate;
-  }
-
-  function encrypter(data) {
-    const encodedWord = crypto.enc.Utf8.parse(data); // e
-    var encoded = crypto.enc.Base64.stringify(encodedWord);
-    encoded = encoded
-      .replace(/\+/g, "p23S")
-      .replace(/\//g, "sL3S4")
-      .replace(/=/g, "e2uAl");
-    return encoded;
-  }
 
   const renderItem1 = (item) => {
     return (
@@ -176,7 +159,13 @@ export const Homepage1 = () => {
         style={{ backgroundColor: "#0B0E2A" }}
       >
         <Navbar />
-        {isLoading || isError ? <ClipLoader /> : _data.map(renderItem1)}
+        {isLoading || isError ? (
+          <div className="mt-5 text-center">
+            <ClipLoader color="white" size={45} />
+          </div>
+        ) : (
+          _data.map(renderItem1)
+        )}
       </div>
     </>
   );

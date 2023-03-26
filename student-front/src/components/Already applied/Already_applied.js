@@ -1,15 +1,13 @@
 import React from "react";
-
 import { Navbar } from "../Navbar/Navbar";
-import { useEffect, useState } from "react";
 import crypto from "crypto-js";
-import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { Pre_loading_page } from "../Pre-Loading/Pre_loading_page";
 import axios from "axios";
 import getStuId from "../../utils/getStuId";
 import { useQuery } from "react-query";
 import { ClipLoader } from "react-spinners";
+import encrypter from "../../utils/encrypter";
+import convertToDate from "../../utils/convertToDate";
 
 export const Already_applied = () => {
   const studId = getStuId();
@@ -27,26 +25,6 @@ export const Already_applied = () => {
   } = useQuery(["applied-companies", "filter"], getValues, {
     keepPreviousData: true,
   });
-
-  function convertToDate(dateString) {
-    const date = new Date(dateString);
-    const day = date.getDate().toString().padStart(2, "0");
-    const month = (date.getMonth() + 1).toString().padStart(2, "0");
-    const year = date.getFullYear().toString();
-    const formattedDate = `${day}-${month}-${year}`;
-    return formattedDate;
-  }
-
-  function encrypter(data) {
-    const key = "RanDOM@12345";
-    var encrypted = crypto.AES.encrypt(data, key).toString();
-    encrypted = encrypted
-      .replace(/\+/g, "p1L2u3S")
-      .replace(/\//g, "s1L2a3S4h")
-      .replace(/=/g, "e1Q2u3A4l");
-    // encrypted = encrypted.toString().replace('+','xMl3Jk').replace('/','Por21Ld').replace('=','Ml32');
-    return encrypted;
-  }
 
   const renderItem1 = (item) => {
     return (
@@ -84,7 +62,7 @@ export const Already_applied = () => {
         <div className=" mx-auto container bg-white dark:bg-gray-800 shadow rounded">
           <table className="min-w-full bg-white dark:bg-gray-800">
             <thead>
-              <tr className="w-full h-16 border-gray-300 border-b py-8">
+              <tr className="w-full  border-gray-300 border-b ">
                 <th
                   role="columnheader"
                   className="px-5 py-3 text-gray-600 dark:text-gray-400 font-normal pr-6 text-left text-sm tracking-normal leading-4"
@@ -127,7 +105,7 @@ export const Already_applied = () => {
               {item.roles.map((item1) => {
                 return (
                   <React.Fragment>
-                    <tr className="h-24 border-gray-300 border-b">
+                    <tr className=" border-gray-300 border-b">
                       <td className="px-5 py-3 text-sm pr-6 whitespace-no-wrap text-gray-800 dark:text-gray-100 tracking-normal leading-4">
                         {item1.name}
                       </td>
@@ -174,7 +152,13 @@ export const Already_applied = () => {
   return (
     <div className="min-h-screen" style={{ backgroundColor: "#0B0E2A" }}>
       <Navbar />
-      {isLoading || isError ? <ClipLoader /> : _data.map(renderItem1)}
+      {isLoading || isError ? (
+        <div className="mt-5 text-center">
+          <ClipLoader color="white" size={45} />
+        </div>
+      ) : (
+        _data.map(renderItem1)
+      )}
     </div>
   );
 };
