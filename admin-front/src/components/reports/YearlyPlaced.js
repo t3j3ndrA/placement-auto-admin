@@ -30,6 +30,9 @@ const YearlyPlaced = () => {
       e.target.style.border = "";
     }
     setFilter({ ...filter, [e.target.name]: e.target.value });
+    if (e.target.name === "year") {
+      localStorage.setItem("year", e.target.value);
+    }
   };
 
   const fetchStudents = async () => {

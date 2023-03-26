@@ -17,7 +17,7 @@ import FilterInputWithValue from "../FilterInputWithValue";
 
 const Top10Placements = () => {
   const [filter, setFilter] = useState({
-    year: new Date().getFullYear() + 1,
+    year: localStorage.getItem("year"),
     limit: 10,
   });
   const navigate = useNavigate();
@@ -29,6 +29,9 @@ const Top10Placements = () => {
       e.target.style.border = "";
     }
     setFilter({ ...filter, [e.target.name]: e.target.value });
+    if (e.target.name === "year") {
+      localStorage.setItem("year", e.target.value);
+    }
   };
 
   const fetchStudents = async () => {

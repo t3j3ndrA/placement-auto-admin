@@ -137,7 +137,7 @@ const Profile1 = () => {
 
               {/* Gender Remaining */}
               <div className="flex  flex-col gap-1 w-full md:w-2/5">
-                <span className="text-white">Gender</span>
+                <span className="text-white">Gender *</span>
                 <ErrorMessage
                   errors={errors}
                   name={`gender`}
@@ -286,6 +286,7 @@ const Profile1 = () => {
                 type="number"
                 errors={errors}
                 register={register}
+                isRequired={true}
               />
               <FormInputField
                 name="result.twelfthPerc"
@@ -435,7 +436,24 @@ const Profile1 = () => {
               />
 
               {/* Mode of job */}
-
+              <div className="flex  flex-col gap-1 w-full md:w-2/5">
+                <span className="text-white">Mode</span>
+                {/* <ErrorMessage
+                  errors={errors}
+                  name={`roles.${roleIndex}.type`}
+                  render={({ message }) => (
+                    <span className="text-danger">{message}</span>
+                  )}
+                /> */}
+                <select
+                  {...register(`placementStatus.selected`)}
+                  className="outline-none px-4 py-1 rounded-md bg-gray-700"
+                >
+                  <option value="remote"> Remote</option>
+                  <option value="on-site"> On Site</option>
+                  <option value="hybrid"> Hybrid</option>
+                </select>
+              </div>
               {/* Internship Status*/}
               <h2 className="w-full font-semibold text-2xl mt-3">
                 Internship Status
@@ -446,6 +464,7 @@ const Profile1 = () => {
               <FormInputField
                 name={`address.city`}
                 title={"City"}
+                isRequired={true}
                 errors={errors}
                 register={register}
               />
@@ -454,6 +473,7 @@ const Profile1 = () => {
                 name={`address.district`}
                 title={"District"}
                 errors={errors}
+                isRequired={true}
                 register={register}
               />
 
@@ -463,6 +483,7 @@ const Profile1 = () => {
                 title={"State"}
                 errors={errors}
                 register={register}
+                isRequired={true}
               />
               {/* address.postalcode */}
               <FormInputField
@@ -471,6 +492,7 @@ const Profile1 = () => {
                 errors={errors}
                 register={register}
                 type="number"
+                isRequired={true}
               />
               {/* address.completeAddress */}
               <FormInputField
@@ -478,6 +500,7 @@ const Profile1 = () => {
                 title={"Complete Address"}
                 errors={errors}
                 register={register}
+                isRequired={true}
               />
             </form>
           </div>
