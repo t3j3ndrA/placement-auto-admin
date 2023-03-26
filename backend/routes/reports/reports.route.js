@@ -5,6 +5,7 @@ const reader = require("xlsx");
 const excel = require("exceljs");
 const moment = require("moment");
 const flat = require("flat");
+const path = require("path");
 
 router.get("/placed-ratio", async (req, res) => {
   const { year, limit } = req.query;
@@ -126,62 +127,47 @@ router.get("/yearly/download", async (req, res) => {
     };
   });
 
-  let workBook = reader.utils.book_new();
-  let title = [["Dharamsinh Desai University"]];
-  const workSheet = reader.utils.aoa_to_sheet([[]]);
+  try {
+    let workBook = reader.utils.book_new();
+    let title = [["Dharamsinh Desai University"]];
+    const workSheet = reader.utils.aoa_to_sheet([[]]);
 
-  reader.utils.sheet_add_aoa(workSheet, title, {
-    origin: "E1",
-  });
+    reader.utils.sheet_add_aoa(workSheet, title, {
+      origin: "E1",
+    });
 
-  reader.utils.sheet_add_aoa(workSheet, [["Placements Reports"]], {
-    origin: "E2",
-  });
-  reader.utils.sheet_add_aoa(workSheet, [["Year : " + year]], {
-    origin: "E3",
-  });
+    reader.utils.sheet_add_aoa(workSheet, [["Placements Reports"]], {
+      origin: "E2",
+    });
+    reader.utils.sheet_add_aoa(workSheet, [["Year : " + year]], {
+      origin: "E3",
+    });
 
-  reader.utils.sheet_add_aoa(workSheet, [["Branch : " + "IT"]], {
-    origin: "G3",
-  });
+    reader.utils.sheet_add_aoa(workSheet, [["Branch : " + "IT"]], {
+      origin: "G3",
+    });
 
-  reader.utils.sheet_add_json(workSheet, excdata, {
-    origin: "A5",
-    cellStyles: {},
-  });
-  // const workSheet = reader.utils.json_to_sheet(excdata);
-  reader.utils.book_append_sheet(workBook, workSheet);
+    reader.utils.sheet_add_json(workSheet, excdata, {
+      origin: "A5",
+      cellStyles: {},
+    });
+    // const workSheet = reader.utils.json_to_sheet(excdata);
+    reader.utils.book_append_sheet(workBook, workSheet);
+    let exportFileName = `sheets/Placement-Report-${year || "all"}.xls`;
+    reader.writeFile(workBook, exportFileName);
 
-  let exportFileName = `sheets/Placement-Report-${year || "all"}.xls`;
-  reader.writeFile(workBook, exportFileName);
-  return res.download(`sheets/Placement-Report-${year || "all"}.xls`);
-
-  // const workbook = new excel.Workbook();
-  // const worksheet = workbook.addWorksheet("My Sheet");
-
-  // worksheet.columns = [
-  //   { header: "Roll No.", key: "rollNumber", width: 10 },
-  //   { header: "First Name", key: "firstName", width: 18 },
-  //   { header: "Middle Name", key: "middleName", width: 18 },
-  //   { header: "Last Name", key: "lastName", width: 18 },
-  //   { header: "CPI", key: "result.cpi", width: 15 },
-  // ];
-
-  // const needed = students.map((d) => {
-  //   return { ...d._doc, appliedTo: "", competitiveCoding: "" };
-  // });
-
-  // return res.json({ needed: flat(needed[0]) });
-
-  // flatted.forEach((s) => {
-  //   worksheet.addRow(s);
-  // });
-
-  // // worksheet.addRow({ id: 1, name: "John Doe", dob: new Date(1970, 1, 1) });
-  // // worksheet.addRow({ id: 2, name: "Jane Doe", dob: new Date(1965, 1, 7) }); // save under export.xlsx
-  // await workbook.xlsx.writeFile("export.xlsx");
-
-  // res.download("export.xlsx");
+    return res.sendFile(
+      path.join(
+        __dirname,
+        "..",
+        "..",
+        `/sheets/Placement-Report-${year || "all"}.xls`
+      )
+    );
+  } catch (error) {
+    console.log("error >> ", error);
+    return res.json({ success: false, msg: error });
+  }
 });
 
 router.get("/comparision", async (req, res) => {

@@ -41,6 +41,8 @@ app.use(
   })
 );
 
+app.use(express.static(path.join(__dirname, "sheets"), { index: false }));
+
 app.get("/api", (req, res) => {
   res.json({ msg: "server is up and running!" });
 });
@@ -52,9 +54,6 @@ app.use("/api/admin", AdminRoute);
 app.use("/api/company", CompanyRoute);
 app.use("/api/reports", ReportsRoute);
 
-// trash routes only under developments
-// app.use("/api/trash", TrashRoute);
-///////////////////////////////////////
 app.get("/get-session", (req, res) => {
   res.json(req.session.isAuth);
 });
