@@ -35,7 +35,7 @@ export const Login = () => {
       if (data.success === true) {
         localStorage.setItem("stuId", data.data.studentId);
         if (data.data.isVerified) {
-          navigate("/Homepage");
+          navigate("/");
         } else {
           navigate("/Profile");
         }

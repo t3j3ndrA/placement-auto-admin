@@ -23,9 +23,9 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <Routes>
-          <Route exact path="/" element={<Login />} />
+          {/* <Route exact path="/" element={<Login />} /> */}
+          <Route exact path="/" element={<Homepage1 />} />
           <Route exact path="/Login" element={<Login />} />
-          <Route exact path="/Homepage" element={<Homepage1 />} />
           <Route exact path="/Register" element={<Register />} />
           <Route exact path="/Profile" element={<Profile />} />
           <Route exact path="/Company/:id" element={<Fetch_id />} />
