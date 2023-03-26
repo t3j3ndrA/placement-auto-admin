@@ -48,7 +48,7 @@ const Navbar = ({ focusOn }) => {
         }  mt-5  justify-center lg:flex lg:flex-row lg:mt-0 `}
       >
         {/* icon box - students */}
-        <Link to="/companies">
+        <Link to="/admin/companies">
           <div
             className={`flex gap-8 items-center ${
               focusOn === "companies" ? "bg-hover" : ""
@@ -58,7 +58,7 @@ const Navbar = ({ focusOn }) => {
             <span className="font-light text-xl">Companies</span>
           </div>
         </Link>
-        <Link to="/students">
+        <Link to="/admin/students">
           <div
             className={`flex gap-8 items-center  ${
               focusOn === "students" ? "bg-hover" : ""
@@ -68,7 +68,7 @@ const Navbar = ({ focusOn }) => {
             <span className="font-light text-xl">Students</span>
           </div>
         </Link>
-        <Link to="/reports">
+        <Link to="/admin/reports">
           <div
             className={`flex gap-8 items-center  ${
               focusOn === "reports" ? "bg-hover" : ""
@@ -78,7 +78,7 @@ const Navbar = ({ focusOn }) => {
             <span className="font-light text-xl">Reports</span>
           </div>
         </Link>
-        <Link to="/login">
+        <Link to="/admin/login">
           <div
             className={`flex gap-8 items-center  rounded-md px-2 py-1 hover:bg-hover`}
             onClick={handleLogout}

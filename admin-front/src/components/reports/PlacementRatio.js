@@ -34,7 +34,7 @@ const PlacementRatio = () => {
     console.log(filterURL);
 
     return axios
-      .get(`api/reports/placed-ratio?${filterURL}`, {
+      .get(`/api/reports/placed-ratio?${filterURL}`, {
         withCredentials: true,
       })
       .then((response) => response.data)

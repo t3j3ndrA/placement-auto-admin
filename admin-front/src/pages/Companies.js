@@ -80,7 +80,7 @@ const Companies = () => {
         {/* Create Post */}
         <div className="flex justify-between  items-center bg-tableHead p-3 rounded-md">
           <h1 className="text-2xl">New Company Announcement</h1>
-          <Link to="/companies/create-post">
+          <Link to="/admin/companies/create-post">
             <button className="text-section font-semibold bg-white rounded-md text-lg px-4 py-2">
               Create Post
             </button>
@@ -316,7 +316,7 @@ const Companies = () => {
                   })}
                 </table>
                 <Link
-                  to={`/companies/company-view/${item._id}`}
+                  to={`/admin/companies/company-view/${item._id}`}
                   state={{ comany: item }}
                 >
                   <button className="text-section bg-white rounded-sm  px-4 my-3">

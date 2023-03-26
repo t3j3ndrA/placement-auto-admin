@@ -336,12 +336,12 @@ const NotifyStudents = () => {
               Notify Selected
             </button>
             <button className="text-section  bg-white rounded-md px-4 py-2">
-              <Link to={`/company/${cid}/role/${rid}/applications`}>
+              <Link to={`/admin/company/${cid}/role/${rid}/applications`}>
                 View Applications
               </Link>
             </button>
             <button className="text-section  bg-white rounded-md px-4 py-2">
-              <Link to={`/company/${cid}/role/${rid}/elligibles`}>
+              <Link to={`/admin/company/${cid}/role/${rid}/elligibles`}>
                 View Elligibles
               </Link>
             </button>
@@ -399,7 +399,7 @@ const NotifyStudents = () => {
                       key={item._id}
                       className="border-b-[1px] border-b-white bg-subSection hover:bg-lightHover hover:cursor-pointer even:bg-alternate "
                       onClick={() => {
-                        navigate(`/students/student-view/${item._id}`, {
+                        navigate(`/admin/students/student-view/${item._id}`, {
                           state: item,
                         });
                       }}

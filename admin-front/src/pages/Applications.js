@@ -135,12 +135,12 @@ const Applications = () => {
         <div className="flex flx-row justify-end mt-2 ">
           <div className="flex flex-row gap-4">
             <button className="text-section  bg-white rounded-md px-4 py-2">
-              <Link to={`/company/${cid}/role/${rid}/elligibles`}>
+              <Link to={`/admin/company/${cid}/role/${rid}/elligibles`}>
                 View Elligibles
               </Link>
             </button>
             <button className="text-section  bg-white rounded-md px-4 py-2 disabled:bg-section">
-              <Link to={`/company/${cid}/role/${rid}/notify`}>
+              <Link to={`/admin/company/${cid}/role/${rid}/notify`}>
                 Notify Other
               </Link>
             </button>
@@ -342,7 +342,7 @@ const Applications = () => {
                     <tr
                       className="border-b-[1px] border-b-white bg-subSection hover:bg-lightHover hover:cursor-pointer even:bg-alternate"
                       onClick={() => {
-                        navigate(`/students/student-view/${item._id}`, {
+                        navigate(`/admin/students/student-view/${item._id}`, {
                           state: item,
                         });
                       }}

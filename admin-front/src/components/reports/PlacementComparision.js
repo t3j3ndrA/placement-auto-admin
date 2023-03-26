@@ -32,7 +32,7 @@ const PlacementComparision = () => {
     console.log(filterURL);
 
     return axios
-      .get(`api/reports/comparision?${filterURL}`, {
+      .get(`/api/reports/comparision?${filterURL}`, {
         withCredentials: true,
       })
       .then((response) => response.data)

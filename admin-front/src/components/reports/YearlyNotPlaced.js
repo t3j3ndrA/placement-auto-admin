@@ -33,7 +33,7 @@ const YearlyNotPlaced = () => {
     console.log(filterURL);
 
     return axios
-      .get(`api/reports/yearly-not-placed?${filterURL}`, {
+      .get(`/api/reports/yearly-not-placed?${filterURL}`, {
         withCredentials: true,
       })
       .then((response) => response.data)
@@ -97,7 +97,7 @@ const YearlyNotPlaced = () => {
               <tr
                 className="border-b-[1px] border-b-white bg-subSection hover:bg-lightHover hover:cursor-pointer even:bg-alternate"
                 onClick={() => {
-                  navigate(`/students/student-view/${item._id}`, {
+                  navigate(`/admin/students/student-view/${item._id}`, {
                     state: item,
                   });
                 }}
