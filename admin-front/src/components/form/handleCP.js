@@ -1,4 +1,4 @@
-export const handleAddCP = (e, roleIndex) => {
+export const handleAddCP = (e, roleIndex, rolesWatch, setValue) => {
   e.preventDefault();
 
   let newCP = {
@@ -13,7 +13,7 @@ export const handleAddCP = (e, roleIndex) => {
   setValue("roles", roles);
 };
 
-export const handleRemoveCP = (e, roleIndex, cpIndex) => {
+export const handleRemoveCP = (e, roleIndex, cpIndex, rolesWatch, setValue) => {
   e.preventDefault();
 
   let competitiveCoding = rolesWatch[

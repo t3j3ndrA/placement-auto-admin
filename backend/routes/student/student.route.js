@@ -104,9 +104,10 @@ router.get("/", (req, res) => {
           $options: "i",
         },
       },
-      // {
-      //   passingYear: passingYear,
-      // },
+      // passing year
+      {
+        passingYear: passingYear ? { $eq: passingYear } : { $gte: 0 },
+      },
       {
         personalPhoneNumber: {
           $regex: personalPhoneNumber ? personalPhoneNumber.toString() : ".*.",

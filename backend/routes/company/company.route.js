@@ -14,6 +14,7 @@ const {
   setStudentsElligibility,
   isElligible,
 } = require("../../utils/company.utils");
+
 const studentModel = require("../../models/student/student.model");
 
 router.get("/", async (req, res) => {
@@ -35,6 +36,8 @@ router.get("/", async (req, res) => {
     tenthPerc,
     diplomaPerc,
     expectedSkills,
+    isActive,
+    forBatch,
   } = req.query;
 
   // to find the companies with elligibilities
@@ -57,7 +60,12 @@ router.get("/", async (req, res) => {
 
   if (id) {
     const comapny = await Company.findOne({ _id: id });
-    return res.json({ success: true, data: comapny });
+    return res.json({
+      success: true,
+      data: {
+        ...comapny._doc,
+      },
+    });
   }
 
   // regex documentations -> https://www.mongodb.com/docs/manual/reference/operator/query/regex/
@@ -81,6 +89,12 @@ router.get("/", async (req, res) => {
           $regex: email ? email : ".*.",
           $options: "i",
         },
+      },
+      {
+        isActive: isActive ? isActive : { $in: [true, false] },
+      },
+      {
+        forBatch: forBatch ? { $eq: forBatch } : { $gte: 0 },
       },
       {
         "roles.name": {
@@ -212,8 +226,16 @@ router.put("/update", async (req, res) => {
     return res.json({ success: false, msg: "Company Id is required" });
   }
 
-  const { name, website, email, forBatch, description, address, roles } =
-    req.body;
+  const {
+    name,
+    website,
+    email,
+    forBatch,
+    description,
+    address,
+    roles,
+    isActive,
+  } = req.body;
 
   // if there is update in role then also update the corresponding elligibile students in a document
   if (forBatch && roles) {
@@ -238,6 +260,7 @@ router.put("/update", async (req, res) => {
       description,
       address,
       roles,
+      isActive,
     },
     { new: true }
   )

@@ -7,6 +7,7 @@ const CompanySchema = mongoose.Schema({
   email: { type: String, required: true },
   forBatch: { type: Number, required: true },
   description: { type: String },
+  isActive: { type: Boolean, default: false, required: true },
   roles: {
     type: [
       mongoose.Schema({
@@ -17,8 +18,8 @@ const CompanySchema = mongoose.Schema({
         mode: { type: String, enum: ["remote", "on-site", "hybrid"] },
         // in months
         bonds: { type: Number, required: true, default: 0 },
-        deadline: { type: Date, required: true },
-        interviewDate: { type: Date, required: true },
+        deadline: { type: String, required: true },
+        interviewDate: { type: String, required: true },
         interviewMode: { type: String, enum: ["online", "offline"] },
 
         requirements: {
@@ -41,15 +42,6 @@ const CompanySchema = mongoose.Schema({
         },
         applications: [mongoose.Types.ObjectId],
         elligibles: [mongoose.Types.ObjectId],
-        // key will be student id
-        // students: [
-        //   mongoose.Schema({
-        //     // student ID
-        //     _id: { type: mongoose.Types.ObjectId },
-        //     isElligible: { type: Boolean, default: false },
-        //     hasApplied: { type: Boolean, default: false },
-        //   }),
-        // ],
       }),
     ],
   },

@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const env = require("dotenv");
 const app = express();
+const path = require("path");
 var router = express.Router();
 const session = require("express-session");
 const StudentRoute = require("./routes/student/student.route");
@@ -58,6 +59,28 @@ app.get("/get-session", (req, res) => {
   res.json(req.session.isAuth);
 });
 
+if (process.env.ENV === "production") {
+  // serving admin builds
+  app.use(
+    express.static(path.join(__dirname, "..", "admin-front", "build"), {
+      index: false,
+    })
+  );
+
+  app.get("/login", (req, res) => {
+    console.log("Serving login");
+    return res.sendFile(
+      path.join(__dirname, "..", "admin-front", "build", "index.html")
+    );
+  });
+
+  app.get("/*", verifyAdmin, (req, res) => {
+    console.log("Serving react app");
+    return res.sendFile(
+      path.join(__dirname, "..", "admin-front", "build", "index.html")
+    );
+  });
+}
 // db connections
 mongoose
   .connect(process.env.MONGO_URI)

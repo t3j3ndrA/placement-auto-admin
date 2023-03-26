@@ -1,4 +1,4 @@
-export const handleAddRole = (e) => {
+export const handleAddRole = (e, rolesWatch, setValue) => {
   e.preventDefault();
   let role = {
     name: "",
@@ -17,11 +17,13 @@ export const handleAddRole = (e) => {
     },
   };
   let roles = rolesWatch;
+
   roles.push(role);
+  console.log("New roles >> ", roles);
   setValue("roles", roles);
 };
 
-export const handleRemoveRole = (e, roleIndex) => {
+export const handleRemoveRole = (e, roleIndex, rolesWatch, setValue) => {
   e.preventDefault();
 
   let roles = rolesWatch;

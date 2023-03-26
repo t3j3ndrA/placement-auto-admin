@@ -120,7 +120,9 @@ const CreateCompany1 = () => {
                   <div className="flex flex-row w-full justify-end">
                     <button
                       className="flex flex-row  gap-2 justify-center bg-lightHover px-2 py-1 rounded-md"
-                      onClick={(e) => handleRemoveRole(e, roleIndex)}
+                      onClick={(e) =>
+                        handleRemoveRole(e, roleIndex, rolesWatch, setValue)
+                      }
                     >
                       <span className=""> Delete Role</span>
                       <AiOutlineUsergroupDelete size={24} />
@@ -312,7 +314,13 @@ const CreateCompany1 = () => {
                               <button
                                 className="flex flex-row  gap-2 justify-center bg-lightHover px-2 py-1 rounded-md"
                                 onClick={(e) =>
-                                  handleRemoveCP(e, roleIndex, cpIndex)
+                                  handleRemoveCP(
+                                    e,
+                                    roleIndex,
+                                    cpIndex,
+                                    rolesWatch,
+                                    setValue
+                                  )
                                 }
                               >
                                 <span className=""> Delete Platform</span>
@@ -327,7 +335,9 @@ const CreateCompany1 = () => {
                     {/* Add new role */}
                     <button
                       className="flex flex-row gap-2 justify-center bg-lightHover px-2 py-1 rounded-md"
-                      onClick={(e) => handleAddCP(e, roleIndex)}
+                      onClick={(e) =>
+                        handleAddCP(e, roleIndex, rolesWatch, setValue)
+                      }
                     >
                       <span className=""> Add Platform</span>
                       <AiOutlineUsergroupAdd size={24} />
@@ -341,7 +351,7 @@ const CreateCompany1 = () => {
             {/* Add new role */}
             <button
               className="flex flex-row gap-2 justify-center bg-lightHover px-2 py-1 rounded-md"
-              onClick={(e) => handleAddRole(e)}
+              onClick={(e) => handleAddRole(e, rolesWatch, setValue)}
             >
               <span className="text-xl"> Add Role</span>
               <AiOutlineUsergroupAdd size={32} />

@@ -24,7 +24,7 @@ const setStudentsElligibility = async (roles, forBatch) => {
           student?.competitiveCoding?.forEach((stuItem) => {
             if (
               reqItem.platform.toLowerCase() ===
-                stuItem.platformtoLowerCase() &&
+                stuItem.platform.toLowerCase() &&
               stuItem.stars >= reqItem.stars &&
               stuItem.ratings >= reqItem.ratings
             ) {
