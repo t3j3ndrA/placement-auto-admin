@@ -396,10 +396,7 @@ const Profile = () => {
                   )}
                 /> */}
                 <select
-                  {...register(`placementStatus.selected`, {
-                    required: "Type is required",
-                    minLength: 1,
-                  })}
+                  {...register(`placementStatus.selected`)}
                   className="outline-none px-4 py-1 rounded-md bg-gray-700"
                 >
                   <option value="yes"> Yes</option>
@@ -469,10 +466,7 @@ const Profile = () => {
                   )}
                 /> */}
                 <select
-                  {...register(`internshipStatus.selected`, {
-                    required: "Type is required",
-                    minLength: 1,
-                  })}
+                  {...register(`internshipStatus.selected`)}
                   className="outline-none px-4 py-1 rounded-md bg-gray-700"
                 >
                   <option value="yes"> Yes</option>
