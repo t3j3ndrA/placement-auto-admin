@@ -458,6 +458,75 @@ const Profile = () => {
               <h2 className="w-full font-semibold text-2xl mt-3">
                 Internship Status
               </h2>
+              {/* Placement Status */}
+              <div className="flex  flex-col gap-1 w-full md:w-2/5">
+                <span className="text-white">Selected ?</span>
+                {/* <ErrorMessage
+                  errors={errors}
+                  name={`roles.${roleIndex}.type`}
+                  render={({ message }) => (
+                    <span className="text-danger">{message}</span>
+                  )}
+                /> */}
+                <select
+                  {...register(`internshipStatus.selected`, {
+                    required: "Type is required",
+                    minLength: 1,
+                  })}
+                  className="outline-none px-4 py-1 rounded-md bg-gray-700"
+                >
+                  <option value="yes"> Yes</option>
+                  <option value="no"> No</option>
+                </select>
+              </div>
+              {/* Company Name */}
+              <FormInputField
+                name="internshipStatus.companyName"
+                title={"Company"}
+                errors={errors}
+                register={register}
+              />
+              <FormInputField
+                name="internshipStatus.stipend"
+                title={"Package (in LPA)"}
+                type="number"
+                errors={errors}
+                register={register}
+              />
+              <FormInputField
+                name="internshipStatus.duration"
+                title={"Bond (in months)"}
+                type="number"
+                errors={errors}
+                register={register}
+              />
+              <FormInputField
+                name="internshipStatus.joiningDate"
+                title={"Joining Date"}
+                type="date"
+                errors={errors}
+                register={register}
+              />
+
+              {/* Mode of job */}
+              <div className="flex  flex-col gap-1 w-full md:w-2/5">
+                <span className="text-white">Mode</span>
+                {/* <ErrorMessage
+                  errors={errors}
+                  name={`roles.${roleIndex}.type`}
+                  render={({ message }) => (
+                    <span className="text-danger">{message}</span>
+                  )}
+                /> */}
+                <select
+                  {...register(`internshipStatus.selected`)}
+                  className="outline-none px-4 py-1 rounded-md bg-gray-700"
+                >
+                  <option value="remote"> Remote</option>
+                  <option value="on-site"> On Site</option>
+                  <option value="hybrid"> Hybrid</option>
+                </select>
+              </div>
               {/* ADDRESS */}
               <h2 className="mt-2 w-full font-semibold text-2xl">Address</h2>
               {/* address.city */}
