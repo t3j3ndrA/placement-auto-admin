@@ -13,7 +13,7 @@ import convertToDate from "../../utils/convertToDate";
 export const Homepage1 = () => {
   const getValues = async () => {
     return axios
-      .get(`/api/company/?isActive=true`, {
+      .get(`/api/company/of/${getStuId()}`, {
         withCredentials: true,
       })
       .then(({ data }) => {

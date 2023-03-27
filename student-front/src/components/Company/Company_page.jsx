@@ -589,7 +589,7 @@ export const Company_page = ({ fetched_url }) => {
                 ) : null}
                 <br />
                 <br />
-                <div className="flex justify-around mx-8">
+                {/* <div className="flex justify-around mx-8">
                   <div>
                     <button
                       style={{ backgroundColor: "#3040D6" }}
@@ -607,7 +607,7 @@ export const Company_page = ({ fetched_url }) => {
                       Cancel
                     </button>
                   </div>
-                </div>
+                </div> */}
 
                 <br />
                 <br />
