@@ -177,7 +177,7 @@ const Profile = () => {
               />
               <FormInputField
                 name="collegeEmail"
-                title={"COllege Email"}
+                title={"College Email"}
                 isRequired={true}
                 errors={errors}
                 register={register}
@@ -443,7 +443,7 @@ const Profile = () => {
                   )}
                 /> */}
                 <select
-                  {...register(`placementStatus.selected`)}
+                  {...register(`placementStatus.mode`)}
                   className="outline-none px-4 py-1 rounded-md bg-gray-700"
                 >
                   <option value="remote"> Remote</option>
@@ -513,7 +513,7 @@ const Profile = () => {
                   )}
                 /> */}
                 <select
-                  {...register(`internshipStatus.selected`)}
+                  {...register(`internshipStatus.mode`)}
                   className="outline-none px-4 py-1 rounded-md bg-gray-700"
                 >
                   <option value="remote"> Remote</option>
