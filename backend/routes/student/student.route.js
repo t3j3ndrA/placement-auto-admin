@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const Student = require("../../models/student/student.model");
 const Company = require("../../models/company/company.model");
-const generator = require("generate-password");
+
 const {
   NO_EMAIL,
   NO_UID,

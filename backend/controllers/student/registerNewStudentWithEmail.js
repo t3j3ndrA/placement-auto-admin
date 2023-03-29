@@ -1,5 +1,6 @@
 const Student = require("../../models/student/student.model");
 const { sendVerificationEmail } = require("../../utils/sendVerificationEmail");
+const generator = require("generate-password");
 
 const registerNewStudentWithEmail = async (req, res) => {
   const { collegeEmails } = req.body;
@@ -31,6 +32,10 @@ const registerNewStudentWithEmail = async (req, res) => {
           new Student({
             collegeEmail: collegeEmails[i],
             password,
+            address: {},
+            result: {},
+            placementStatus: {},
+            internshipStatus: {},
           })
         );
 
