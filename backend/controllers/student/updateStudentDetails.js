@@ -1,6 +1,10 @@
 const Student = require("../../models/student/student.model");
 const Company = require("../../models/company/company.model");
 const { default: mongoose } = require("mongoose");
+const {
+  INVALID_REQUEST_DATA_CODE,
+  INVALID_REQUEST_DATA,
+} = require("../../constants/constantsMessages");
 
 const updateStudentDetails = async (req, res) => {
   const {
@@ -26,7 +30,9 @@ const updateStudentDetails = async (req, res) => {
   } = req.body;
 
   if (!collegeEmail)
-    return res.json({ success: false, msg: "College Email is required" });
+    return res
+      .status(INVALID_REQUEST_DATA_CODE)
+      .json({ success: false, msg: INVALID_REQUEST_DATA });
 
   Student.findOneAndUpdate(
     { collegeEmail },
@@ -54,7 +60,11 @@ const updateStudentDetails = async (req, res) => {
     { new: true }
   )
     .then((updatedStudent) => res.json({ success: true, data: updatedStudent }))
-    .catch((error) => res.json({ success: false, error }));
+    .catch((err) => {
+      return res
+        .status(INTERNAL_SERVER_ERROR_CODE)
+        .json({ success: false, msg: INTERNAL_SERVER_ERROR, err });
+    });
 };
 
 module.exports = { updateStudentDetails };

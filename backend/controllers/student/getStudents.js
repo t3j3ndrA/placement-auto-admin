@@ -162,10 +162,10 @@ const getStudent = async (req, res) => {
     .then((foundStudents) => {
       return res.json({ success: true, data: foundStudents });
     })
-    .catch((error) => {
+    .catch((err) => {
       return res
         .status(INTERNAL_SERVER_ERROR_CODE)
-        .json({ success: false, msg: INTERNAL_SERVER_ERROR });
+        .json({ success: false, msg: INTERNAL_SERVER_ERROR, err });
     });
 };
 

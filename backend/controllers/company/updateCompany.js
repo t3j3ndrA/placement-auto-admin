@@ -1,3 +1,4 @@
+const { default: mongoose } = require("mongoose");
 const {
   INVALID_REQUEST_DATA_CODE,
   INVALID_REQUEST_DATA,

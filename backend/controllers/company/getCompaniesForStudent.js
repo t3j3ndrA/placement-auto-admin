@@ -5,6 +5,7 @@ const {
 } = require("../../constants/constantsMessages");
 const Company = require("../../models/company/company.model");
 const Student = require("../../models/student/student.model");
+const { default: mongoose } = require("mongoose");
 
 const getCompaniesForStudent = async (req, res) => {
   const { studentId } = req.params;

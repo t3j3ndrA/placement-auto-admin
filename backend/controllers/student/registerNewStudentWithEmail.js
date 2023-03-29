@@ -1,14 +1,20 @@
 const Student = require("../../models/student/student.model");
 const { sendVerificationEmail } = require("../../utils/sendVerificationEmail");
 const generator = require("generate-password");
+const {
+  INVALID_REQUEST_DATA_CODE,
+  INVALID_REQUEST_DATA,
+  INTERNAL_SERVER_ERROR_CODE,
+  INTERNAL_SERVER_ERROR,
+} = require("../../constants/constantsMessages");
 
 const registerNewStudentWithEmail = async (req, res) => {
   const { collegeEmails } = req.body;
 
   if (!collegeEmails) {
     return res
-      .status(400)
-      .json({ success: false, msg: "No emails were provided" });
+      .status(INVALID_REQUEST_DATA_CODE)
+      .json({ success: false, msg: INVALID_REQUEST_DATA });
   }
 
   let students = [];
@@ -46,8 +52,8 @@ const registerNewStudentWithEmail = async (req, res) => {
     } catch (err) {
       console.log("/new >> ", err);
       return res
-        .status(500)
-        .json({ success: false, msg: "DB searching error." });
+        .status(INTERNAL_SERVER_ERROR_CODE)
+        .json({ success: false, msg: INTERNAL_SERVER_ERROR, err });
     }
   }
 
@@ -57,8 +63,8 @@ const registerNewStudentWithEmail = async (req, res) => {
   } catch (err) {
     console.log("/new >> ", err);
     return res
-      .status(500)
-      .json({ success: false, msg: "Could not save students" });
+      .status(INTERNAL_SERVER_ERROR_CODE)
+      .json({ success: false, msg: INTERNAL_SERVER_ERROR, err });
   }
 };
 

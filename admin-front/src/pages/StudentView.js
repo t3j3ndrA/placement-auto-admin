@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { ClipLoader, HashLoader } from "react-spinners";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useParams, useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import companyViewValidator from "../form-validators/companyView.validator";
 
@@ -13,7 +13,7 @@ import {
 import { useQuery } from "react-query";
 const StudentView = () => {
   const { id } = useParams();
-
+  const navigate = useNavigate();
   const fetchStudentProfile = async () => {
     return axios
       .get(`/api/student?id=${id}`, { withCredentials: true })
@@ -29,6 +29,11 @@ const StudentView = () => {
   } = useQuery(["profile", id], fetchStudentProfile, {
     keepPreviousData: true,
   });
+
+  if (isError) {
+    navigate("/admin/invalid-student");
+    return <></>;
+  }
 
   return (
     <div className="bg-backg min-h-screen text-white">

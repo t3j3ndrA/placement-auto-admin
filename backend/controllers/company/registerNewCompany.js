@@ -4,6 +4,7 @@ const {
 } = require("../../constants/constantsMessages");
 const Company = require("../../models/company/company.model");
 const Student = require("../../models/student/student.model");
+const { default: mongoose } = require("mongoose");
 
 const registerNewCompany = async (req, res) => {
   const { name, website, email, forBatch, description, roles, address } =

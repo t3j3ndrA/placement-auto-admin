@@ -1,4 +1,4 @@
-const { default: mongoose, mongo } = require("mongoose");
+const { default: mongoose } = require("mongoose");
 const {
   INTERNAL_SERVER_ERROR_CODE,
   INTERNAL_SERVER_ERROR,
