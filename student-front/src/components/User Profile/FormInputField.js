@@ -15,7 +15,7 @@ const FormInputField = ({
 }) => {
   return (
     <div className="flex  flex-col gap-1 w-full md:w-2/5">
-      <span className="text-placeholder">
+      <span className="">
         {title} {isRequired === true ? " *" : ""}
       </span>
       <ErrorMessage

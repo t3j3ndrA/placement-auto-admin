@@ -24,15 +24,15 @@ const sendVerificationEmail = async (email, password) => {
     html,
   };
 
-  console.log("MAIL-OPTIONS >> ", mailOptions);
-
-  transporter.sendMail(mailOptions, (err, response) => {
-    if (err) {
-      console.log("error >> ", err);
-    } else {
-      console.log("response >> ", response);
-    }
-  });
+  try {
+    transporter.sendMail(mailOptions, (err, response) => {
+      if (err) {
+        console.log("in sending mail >> ", err);
+      }
+    });
+  } catch (err) {
+    console.log("in sending mail >> ", err);
+  }
 };
 
 module.exports = { sendVerificationEmail };

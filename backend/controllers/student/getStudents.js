@@ -1,5 +1,12 @@
 const Student = require("../../models/student/student.model");
 const Company = require("../../models/company/company.model");
+const { default: mongoose } = require("mongoose");
+const {
+  INVALID_REQUEST_DATA_CODE,
+  INVALID_REQUEST_DATA,
+  INTERNAL_SERVER_ERROR_CODE,
+  INTERNAL_SERVER_ERROR,
+} = require("../../constants/constantsMessages");
 
 const getStudent = async (req, res) => {
   const {
@@ -33,13 +40,20 @@ const getStudent = async (req, res) => {
   } = req.query;
 
   if (id) {
-    console.log("id found");
+    if (!mongoose.isValidObjectId(id)) {
+      return res
+        .status(INVALID_REQUEST_DATA_CODE)
+        .json({ success: false, msg: INVALID_REQUEST_DATA });
+    }
+
     Student.findOne({ _id: id })
       .then((foundStudent) => {
         return res.json({ success: true, data: foundStudent });
       })
-      .catch((error) => {
-        return res.json({ success: false, error });
+      .catch((err) => {
+        return res
+          .status(INTERNAL_SERVER_ERROR_CODE)
+          .json({ success: false, msg: INTERNAL_SERVER_ERROR, err });
       });
     return;
   }
@@ -149,7 +163,9 @@ const getStudent = async (req, res) => {
       return res.json({ success: true, data: foundStudents });
     })
     .catch((error) => {
-      return res.json({ success: false, error });
+      return res
+        .status(INTERNAL_SERVER_ERROR_CODE)
+        .json({ success: false, msg: INTERNAL_SERVER_ERROR });
     });
 };
 

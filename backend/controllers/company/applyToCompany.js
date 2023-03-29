@@ -1,3 +1,10 @@
+const { default: mongoose } = require("mongoose");
+const {
+  INTERNAL_SERVER_ERROR,
+  INTERNAL_SERVER_ERROR_CODE,
+  INVALID_REQUEST_DATA,
+  INVALID_REQUEST_DATA_CODE,
+} = require("../../constants/constantsMessages");
 const Company = require("../../models/company/company.model");
 const Student = require("../../models/student/student.model");
 const { isElligible } = require("../../utils/company.utils");
@@ -5,15 +12,18 @@ const { isElligible } = require("../../utils/company.utils");
 const applyToCompany = async (req, res) => {
   const { companyId, roleId, stuId } = req.params;
 
-  if (!companyId || !roleId || !stuId) {
-    console.log("companyId", companyId);
-    console.log("stuId", stuId);
-    console.log("roleId", roleId);
-    return res.json({ msg: "Insufficient data" });
+  if (
+    !mongoose.isValidObjectId(companyId) ||
+    !mongoose.isValidObjectId(roleId) ||
+    !mongoose.isValidObjectId(stuId)
+  ) {
+    return res
+      .status(INVALID_REQUEST_DATA_CODE)
+      .json({ success: false, msg: INVALID_REQUEST_DATA });
   }
 
   const check = await isElligible(companyId, roleId, stuId);
-  console.log("Check = ", check);
+
   if (!check) {
     return res.json({ success: false, msg: "You are not elligibel" });
   }
@@ -36,7 +46,9 @@ const applyToCompany = async (req, res) => {
       return res.json({ success: true, data: updatedCompany });
     })
     .catch((err) => {
-      console.log(err);
+      return res
+        .status(INTERNAL_SERVER_ERROR_CODE)
+        .json({ success: false, msg: INTERNAL_SERVER_ERROR, err });
     });
 };
 

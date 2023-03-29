@@ -1,12 +1,19 @@
+const {
+  INVALID_REQUEST_DATA_CODE,
+  INVALID_REQUEST_DATA,
+  INTERNAL_SERVER_ERROR_CODE,
+  INTERNAL_SERVER_ERROR,
+} = require("../../constants/constantsMessages");
 const Company = require("../../models/company/company.model");
 const Student = require("../../models/student/student.model");
 const { setStudentsElligibility } = require("../../utils/company.utils");
 
 const updateCompany = async (req, res) => {
   const { id } = req.body;
-
-  if (!id) {
-    return res.json({ success: false, msg: "Company Id is required" });
+  if (!mongoose.isValidObjectId(id)) {
+    return res
+      .status(INVALID_REQUEST_DATA_CODE)
+      .json({ success: false, msg: INVALID_REQUEST_DATA });
   }
 
   const {
@@ -50,8 +57,10 @@ const updateCompany = async (req, res) => {
     .then((updatedCompany) => {
       return res.json({ success: true, data: updatedCompany });
     })
-    .catch((error) => {
-      return res.json({ success: false, error });
+    .catch((err) => {
+      return res
+        .status(INTERNAL_SERVER_ERROR_CODE)
+        .json({ success: false, msg: INTERNAL_SERVER_ERROR, err });
     });
 };
 

@@ -26,7 +26,18 @@ const StudentSchema = mongoose.Schema({
   // academic performance
   result: {
     type: mongoose.Schema({
-      sem1: { type: Number, min: 0, max: 10, default: 0 },
+      sem1: {
+        type: Number,
+        min: 0,
+        max: 10,
+        default: function () {
+          console.log("this.res.s1 >>", this.result.sem1);
+          if (this.result.sem1) {
+            return this.result.sem1;
+          }
+          return 0;
+        },
+      },
       sem2: { type: Number, min: 0, max: 10, default: 0 },
       sem3: { type: Number, min: 0, max: 10, default: 0 },
       sem4: { type: Number, min: 0, max: 10, default: 0 },

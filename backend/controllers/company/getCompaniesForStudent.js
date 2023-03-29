@@ -1,10 +1,25 @@
+const { isValidObjectId } = require("mongoose");
+const {
+  INVALID_REQUEST_DATA,
+  INVALID_REQUEST_DATA_CODE,
+} = require("../../constants/constantsMessages");
 const Company = require("../../models/company/company.model");
 const Student = require("../../models/student/student.model");
 
 const getCompaniesForStudent = async (req, res) => {
   const { studentId } = req.params;
+  if (!isValidObjectId(studentId)) {
+    return res
+      .status(INVALID_REQUEST_DATA_CODE)
+      .json({ success: false, msg: INVALID_REQUEST_DATA });
+  }
+
   const student = await Student.findOne({ _id: studentId });
-  if (!student) return res.json({ success: false, msg: "No student found" });
+
+  if (!student)
+    return res
+      .status(INVALID_REQUEST_DATA_CODE)
+      .json({ success: false, msg: INVALID_REQUEST_DATA });
 
   const companies = await Company.find({
     forBatch: student.passingYear,

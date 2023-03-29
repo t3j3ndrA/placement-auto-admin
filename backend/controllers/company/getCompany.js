@@ -1,3 +1,10 @@
+const { default: mongoose, mongo } = require("mongoose");
+const {
+  INTERNAL_SERVER_ERROR_CODE,
+  INTERNAL_SERVER_ERROR,
+  INVALID_REQUEST_DATA_CODE,
+  INVALID_REQUEST_DATA,
+} = require("../../constants/constantsMessages");
 const Company = require("../../models/company/company.model");
 const Student = require("../../models/student/student.model");
 
@@ -26,7 +33,14 @@ const getCompany = async (req, res) => {
 
   // to find the companies with elligibilities
   if (id && stuId) {
+    if (!mongoose.isValidObjectId(id) || !mongoose.isValidObjectId(stuId)) {
+      return res
+        .status(INVALID_REQUEST_DATA_CODE)
+        .json({ success: false, msg: INVALID_REQUEST_DATA });
+    }
+
     const comapny = await Company.findOne({ _id: id });
+
     let roles = comapny.roles.map((role) => {
       if (role?.elligibles.includes(stuId) && role) {
         return {
@@ -43,6 +57,12 @@ const getCompany = async (req, res) => {
   }
 
   if (id) {
+    if (!mongoose.isValidObjectId(id)) {
+      return res
+        .status(INVALID_REQUEST_DATA_CODE)
+        .json({ success: false, msg: INVALID_REQUEST_DATA });
+    }
+
     const comapny = await Company.findOne({ _id: id });
     return res.json({
       success: true,
@@ -140,7 +160,9 @@ const getCompany = async (req, res) => {
       return res.json({ success: true, data: foundCompanies });
     })
     .catch((error) => {
-      return res.json({ success: false, error });
+      return res
+        .status(INTERNAL_SERVER_ERROR_CODE)
+        .json({ success: false, msg: INTERNAL_SERVER_ERROR, err });
     });
 };
 

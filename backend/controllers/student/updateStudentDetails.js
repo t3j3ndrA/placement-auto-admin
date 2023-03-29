@@ -1,5 +1,6 @@
 const Student = require("../../models/student/student.model");
 const Company = require("../../models/company/company.model");
+const { default: mongoose } = require("mongoose");
 
 const updateStudentDetails = async (req, res) => {
   const {

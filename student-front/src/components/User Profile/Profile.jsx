@@ -16,6 +16,7 @@ import { handleAddRole, handleRemoveRole } from "./handleRole";
 import { ErrorMessage } from "@hookform/error-message";
 import { toast } from "react-toastify";
 import getStuId from "../../utils/getStuId";
+import Info from "../Info";
 
 const Profile = () => {
   const { id } = useParams();
@@ -223,12 +224,16 @@ const Profile = () => {
               />
 
               <h2 className="mt-3 w-full font-semibold text-2xl">Result</h2>
+              <div className="w-full">
+                <Info msg={"Put 0 if  not applicable."} />
+              </div>
               <FormInputField
                 name="result.sem1"
                 type="number"
                 title={"Sem1"}
                 errors={errors}
                 register={register}
+                isRequired={true}
               />
               <FormInputField
                 type="number"
@@ -236,6 +241,7 @@ const Profile = () => {
                 title={"Sem2"}
                 errors={errors}
                 register={register}
+                isRequired={true}
               />
 
               <FormInputField
@@ -244,6 +250,7 @@ const Profile = () => {
                 title={"Sem3"}
                 errors={errors}
                 register={register}
+                isRequired={true}
               />
               <FormInputField
                 name="result.sem4"
@@ -251,6 +258,7 @@ const Profile = () => {
                 title={"Sem4"}
                 errors={errors}
                 register={register}
+                isRequired={true}
               />
               <FormInputField
                 name="result.sem5"
@@ -258,6 +266,7 @@ const Profile = () => {
                 title={"Sem5"}
                 errors={errors}
                 register={register}
+                isRequired={true}
               />
               <FormInputField
                 name="result.sem6"
@@ -265,6 +274,7 @@ const Profile = () => {
                 title={"Sem6"}
                 errors={errors}
                 register={register}
+                isRequired={true}
               />
               <FormInputField
                 name="result.sem7"
@@ -272,6 +282,7 @@ const Profile = () => {
                 title={"Sem7"}
                 errors={errors}
                 register={register}
+                isRequired={true}
               />
               <FormInputField
                 name="result.sem8"
@@ -279,6 +290,7 @@ const Profile = () => {
                 type="number"
                 errors={errors}
                 register={register}
+                isRequired={true}
               />
               <FormInputField
                 name="result.cpi"

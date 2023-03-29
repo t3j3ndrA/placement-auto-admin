@@ -1,3 +1,7 @@
+const {
+  INTERNAL_SERVER_ERROR_CODE,
+  INTERNAL_SERVER_ERROR,
+} = require("../../constants/constantsMessages");
 const Company = require("../../models/company/company.model");
 const Student = require("../../models/student/student.model");
 
@@ -22,8 +26,10 @@ const registerNewCompany = async (req, res) => {
     .then((savedCompany) => {
       res.json({ success: true, data: savedCompany });
     })
-    .catch((error) => {
-      res.json({ success: false, msg: "Could not register company" });
+    .catch((err) => {
+      return res
+        .status(INTERNAL_SERVER_ERROR_CODE)
+        .json({ success: false, msg: INTERNAL_SERVER_ERROR, err });
     });
 };
 
