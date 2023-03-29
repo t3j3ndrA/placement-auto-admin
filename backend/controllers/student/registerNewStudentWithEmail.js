@@ -1,4 +1,5 @@
 const Student = require("../../models/student/student.model");
+const { sendVerificationEmail } = require("../../utils/sendVerificationEmail");
 
 const registerNewStudentWithEmail = async (req, res) => {
   const { collegeEmails } = req.body;

@@ -1,3 +1,6 @@
+const Student = require("../../models/student/student.model");
+const Company = require("../../models/company/company.model");
+
 const updateStudentDetails = async (req, res) => {
   const {
     firstName,

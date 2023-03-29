@@ -1,4 +1,5 @@
 const Student = require("../../models/student/student.model");
+const Company = require("../../models/company/company.model");
 
 const getStudent = async (req, res) => {
   const {
