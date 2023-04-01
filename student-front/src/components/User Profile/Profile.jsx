@@ -14,7 +14,7 @@ import FormInputField from "./FormInputField";
 import { handleAddCP, handleRemoveCP } from "./handleCP";
 import { handleAddRole, handleRemoveRole } from "./handleRole";
 import { ErrorMessage } from "@hookform/error-message";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import getStuId from "../../utils/getStuId";
 import Info from "../Info";
 
@@ -29,7 +29,7 @@ const Profile = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isDirty },
     getValues,
     setValue,
 
@@ -38,15 +38,22 @@ const Profile = () => {
 
   const updateStudent = async (student) => {
     setIsUpdating(true);
-    const { data } = await axios.put(`/api/student/update`, student, {
-      withCredentials: true,
-    });
-
-    setRefetchFlag(!refetchFlag);
-    if (data?.success === false) {
-      toast.error("Student does not exist");
+    try {
+      const { data } = await axios.put(`/api/student/update`, student, {
+        withCredentials: true,
+      });
+      setRefetchFlag(!refetchFlag);
+      if (data?.success === true) {
+        toast.success("Updated successfully");
+      } else if (data?.success === false) {
+        toast.error("Student does not exist");
+      }
+    } catch (err) {
+      console.log("err >> ", err);
+      toast.error("📶 Low internet connection ");
+    } finally {
+      setIsUpdating(false);
     }
-    setIsUpdating(false);
   };
 
   useEffect(() => {
@@ -67,6 +74,8 @@ const Profile = () => {
   const rolesWatch = watch("roles");
   const isActiveWatch = watch("isActive");
   const cpWatch = watch("competitiveCoding");
+  const password = watch("password");
+  const confirmPassword = watch("confirmPassword");
 
   const handleDuplicate = () => {};
 
@@ -93,22 +102,26 @@ const Profile = () => {
               {nameWatch}
             </h1>
 
-            <div className="flex flx-row justify-end mt-2 ">
-              <div className="flex flex-row gap-4">
-                <button
-                  className="text-section  bg-blue-500 rounded-md px-4 py-2 disabled:bg-section"
-                  onClick={handleSubmit(updateStudent)}
-                  disabled={isUpdating}
-                >
-                  {/* <ClipLoader color="white" size={22} /> */}
+            {/* update buttons */}
+            <div className="flex flx-row justify-end mt-2 gap-2 ">
+              <button
+                className="text-section mt-5 bg-blue-500 rounded-md px-4 py-2 disabled:bg-section"
+                onClick={handleSubmit(updateStudent)}
+                disabled={isUpdating}
+              >
+                {/* <ClipLoader color="white" size={22} /> */}
 
-                  {!isUpdating ? (
-                    "Update"
-                  ) : (
-                    <ClipLoader color="white" size={22} />
-                  )}
+                {!isUpdating ? (
+                  "Update"
+                ) : (
+                  <ClipLoader color="white" size={22} />
+                )}
+              </button>
+              <Link to="/changepassword">
+                <button className="text-section mt-5 bg-blue-500 rounded-md px-4 py-2 disabled:bg-section">
+                  Change Password
                 </button>
-              </div>
+              </Link>
             </div>
 
             {/* Student details */}
@@ -167,11 +180,33 @@ const Profile = () => {
                 isRequired={true}
               />
               <h2 className="mt-3 w-full font-semibold text-2xl">
+                Change Password
+              </h2>
+              <FormInputField
+                name="password"
+                title={"New password"}
+                errors={errors}
+                register={register}
+                type={"password"}
+              />
+              <FormInputField
+                name="confirmPassword"
+                title={"Re-type New password"}
+                errors={errors}
+                register={register}
+                type={"password"}
+              />
+              {password && password != confirmPassword ? (
+                <p className="text-danger">Password does not match</p>
+              ) : (
+                <></>
+              )}
+              <h2 className="mt-3 w-full font-semibold text-2xl">
                 College Details
               </h2>
               <FormInputField
                 name="collegeID"
-                title={"COllege ID"}
+                title={"College ID"}
                 errors={errors}
                 register={register}
                 isRequired={true}

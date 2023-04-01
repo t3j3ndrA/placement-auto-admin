@@ -19,6 +19,7 @@ const { getStudent } = require("../../controllers/student/getStudents");
 const {
   getStudentApplications,
 } = require("../../controllers/student/getStudentApplications");
+const { updatePassword } = require("../../controllers/student/updatePassword");
 
 router.get("/", getStudent);
 
@@ -27,6 +28,9 @@ router.post("/new", registerNewStudentWithEmail);
 
 // update the existing user
 router.put("/update", updateStudentDetails);
+
+// update password
+router.put("/updatePassword", updatePassword);
 
 // get student's applications with roles
 router.get("/:stuId/applications", getStudentApplications);

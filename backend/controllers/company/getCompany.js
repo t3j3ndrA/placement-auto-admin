@@ -40,6 +40,11 @@ const getCompany = async (req, res) => {
     }
 
     const comapny = await Company.findOne({ _id: id });
+    if (!comapny) {
+      return res
+        .status(INVALID_REQUEST_DATA_CODE)
+        .json({ success: false, msg: INVALID_REQUEST_DATA });
+    }
 
     let roles = comapny.roles.map((role) => {
       if (role?.elligibles.includes(stuId) && role) {
