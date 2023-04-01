@@ -18,7 +18,7 @@ import Elligibles from "./pages/Elligibles";
 import NotifyStudents from "./pages/NotifyStudents";
 import RegisterStudent from "./pages/RegisterStudent";
 import CreateCompany1 from "./pages/CreateCompany1";
-
+import { ToastContainer } from "react-toastify";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 const router = createBrowserRouter([
@@ -82,6 +82,16 @@ root.render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
       <RouterProvider router={router} />
+      <ToastContainer
+        position="bottom-left"
+        autoClose={4000}
+        hideProgressBar={false}
+        closeOnClic={true}
+        pauseOnHover={true}
+        draggable={true}
+        progress={undefined}
+        theme="dark"
+      />
     </QueryClientProvider>
   </React.StrictMode>
 );

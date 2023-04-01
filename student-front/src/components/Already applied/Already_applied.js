@@ -8,6 +8,7 @@ import { useQuery } from "react-query";
 import { ClipLoader } from "react-spinners";
 import encrypter from "../../utils/encrypter";
 import convertToDate from "../../utils/convertToDate";
+import { toast } from "react-toastify";
 
 export const Already_applied = () => {
   const studId = getStuId();
@@ -25,6 +26,10 @@ export const Already_applied = () => {
   } = useQuery(["applied-companies", "filter"], getValues, {
     keepPreviousData: true,
   });
+
+  if (isError) {
+    toast.error("📶 Low internet connection ");
+  }
 
   const renderItem1 = (item) => {
     return (

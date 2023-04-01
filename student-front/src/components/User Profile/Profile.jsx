@@ -14,8 +14,9 @@ import FormInputField from "./FormInputField";
 import { handleAddCP, handleRemoveCP } from "./handleCP";
 import { handleAddRole, handleRemoveRole } from "./handleRole";
 import { ErrorMessage } from "@hookform/error-message";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import getStuId from "../../utils/getStuId";
+import Info from "../Info";
 
 const Profile = () => {
   const { id } = useParams();
@@ -28,7 +29,7 @@ const Profile = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isDirty },
     getValues,
     setValue,
 
@@ -37,15 +38,22 @@ const Profile = () => {
 
   const updateStudent = async (student) => {
     setIsUpdating(true);
-    const { data } = await axios.put(`/api/student/update`, student, {
-      withCredentials: true,
-    });
-
-    setRefetchFlag(!refetchFlag);
-    if (data?.success === false) {
-      toast.error("Student does not exist");
+    try {
+      const { data } = await axios.put(`/api/student/update`, student, {
+        withCredentials: true,
+      });
+      setRefetchFlag(!refetchFlag);
+      if (data?.success === true) {
+        toast.success("Updated successfully");
+      } else if (data?.success === false) {
+        toast.error("Student does not exist");
+      }
+    } catch (err) {
+      console.log("err >> ", err);
+      toast.error("📶 Low internet connection ");
+    } finally {
+      setIsUpdating(false);
     }
-    setIsUpdating(false);
   };
 
   useEffect(() => {
@@ -66,6 +74,8 @@ const Profile = () => {
   const rolesWatch = watch("roles");
   const isActiveWatch = watch("isActive");
   const cpWatch = watch("competitiveCoding");
+  const password = watch("password");
+  const confirmPassword = watch("confirmPassword");
 
   const handleDuplicate = () => {};
 
@@ -92,22 +102,26 @@ const Profile = () => {
               {nameWatch}
             </h1>
 
-            <div className="flex flx-row justify-end mt-2 ">
-              <div className="flex flex-row gap-4">
-                <button
-                  className="text-section  bg-blue-500 rounded-md px-4 py-2 disabled:bg-section"
-                  onClick={handleSubmit(updateStudent)}
-                  disabled={isUpdating}
-                >
-                  {/* <ClipLoader color="white" size={22} /> */}
+            {/* update buttons */}
+            <div className="flex flx-row justify-end mt-2 gap-2 ">
+              <button
+                className="text-section mt-5 bg-blue-500 rounded-md px-4 py-2 disabled:bg-section"
+                onClick={handleSubmit(updateStudent)}
+                disabled={isUpdating}
+              >
+                {/* <ClipLoader color="white" size={22} /> */}
 
-                  {!isUpdating ? (
-                    "Update"
-                  ) : (
-                    <ClipLoader color="white" size={22} />
-                  )}
+                {!isUpdating ? (
+                  "Update"
+                ) : (
+                  <ClipLoader color="white" size={22} />
+                )}
+              </button>
+              <Link to="/changepassword">
+                <button className="text-section mt-5 bg-blue-500 rounded-md px-4 py-2 disabled:bg-section">
+                  Change Password
                 </button>
-              </div>
+              </Link>
             </div>
 
             {/* Student details */}
@@ -165,19 +179,20 @@ const Profile = () => {
                 register={register}
                 isRequired={true}
               />
+
               <h2 className="mt-3 w-full font-semibold text-2xl">
                 College Details
               </h2>
               <FormInputField
                 name="collegeID"
-                title={"COllege ID"}
+                title={"College ID"}
                 errors={errors}
                 register={register}
                 isRequired={true}
               />
               <FormInputField
                 name="collegeEmail"
-                title={"COllege Email"}
+                title={"College Email"}
                 isRequired={true}
                 errors={errors}
                 register={register}
@@ -223,12 +238,16 @@ const Profile = () => {
               />
 
               <h2 className="mt-3 w-full font-semibold text-2xl">Result</h2>
+              <div className="w-full">
+                <Info msg={"Put 0 if  not applicable."} />
+              </div>
               <FormInputField
                 name="result.sem1"
                 type="number"
                 title={"Sem1"}
                 errors={errors}
                 register={register}
+                isRequired={true}
               />
               <FormInputField
                 type="number"
@@ -236,6 +255,7 @@ const Profile = () => {
                 title={"Sem2"}
                 errors={errors}
                 register={register}
+                isRequired={true}
               />
 
               <FormInputField
@@ -244,6 +264,7 @@ const Profile = () => {
                 title={"Sem3"}
                 errors={errors}
                 register={register}
+                isRequired={true}
               />
               <FormInputField
                 name="result.sem4"
@@ -251,6 +272,7 @@ const Profile = () => {
                 title={"Sem4"}
                 errors={errors}
                 register={register}
+                isRequired={true}
               />
               <FormInputField
                 name="result.sem5"
@@ -258,6 +280,7 @@ const Profile = () => {
                 title={"Sem5"}
                 errors={errors}
                 register={register}
+                isRequired={true}
               />
               <FormInputField
                 name="result.sem6"
@@ -265,6 +288,7 @@ const Profile = () => {
                 title={"Sem6"}
                 errors={errors}
                 register={register}
+                isRequired={true}
               />
               <FormInputField
                 name="result.sem7"
@@ -272,6 +296,7 @@ const Profile = () => {
                 title={"Sem7"}
                 errors={errors}
                 register={register}
+                isRequired={true}
               />
               <FormInputField
                 name="result.sem8"
@@ -279,6 +304,7 @@ const Profile = () => {
                 type="number"
                 errors={errors}
                 register={register}
+                isRequired={true}
               />
               <FormInputField
                 name="result.cpi"
@@ -443,7 +469,7 @@ const Profile = () => {
                   )}
                 /> */}
                 <select
-                  {...register(`placementStatus.selected`)}
+                  {...register(`placementStatus.mode`)}
                   className="outline-none px-4 py-1 rounded-md bg-gray-700"
                 >
                   <option value="remote"> Remote</option>
@@ -513,7 +539,7 @@ const Profile = () => {
                   )}
                 /> */}
                 <select
-                  {...register(`internshipStatus.selected`)}
+                  {...register(`internshipStatus.mode`)}
                   className="outline-none px-4 py-1 rounded-md bg-gray-700"
                 >
                   <option value="remote"> Remote</option>

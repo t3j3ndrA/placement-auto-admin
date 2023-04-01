@@ -1,5 +1,10 @@
 import { ErrorMessage } from "@hookform/error-message";
 
+const getDefaultValue = (type) => {
+  if (type === "number") return 0;
+  return "";
+};
+
 const FormInputField = ({
   title,
   name,
@@ -10,7 +15,7 @@ const FormInputField = ({
 }) => {
   return (
     <div className="flex  flex-col gap-1 w-full md:w-2/5">
-      <span className="text-placeholder">
+      <span className="">
         {title} {isRequired === true ? " *" : ""}
       </span>
       <ErrorMessage
@@ -22,6 +27,7 @@ const FormInputField = ({
       />
       <input
         type={type || "text"}
+        defaultValue={getDefaultValue(type)}
         {...register(
           name,
           isRequired === true

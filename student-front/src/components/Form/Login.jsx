@@ -37,7 +37,7 @@ export const Login = () => {
         if (data.data.isVerified) {
           navigate("/");
         } else {
-          navigate("/Profile");
+          navigate("/changepassword");
         }
       } else {
         toast.error("Invalid credentials");
@@ -52,6 +52,9 @@ export const Login = () => {
     <>
       <div className="grid grid-cols-1 sm:grid-cols-2 h-screen w-full">
         <div className="bg-gray-800 flex flex-col justify-center">
+          <h1 className="text-white text-3xl text-center font-bold mb-10">
+            DDU Plaement Portal
+          </h1>
           <form
             className="max-w-[400px] w-full mx-auto bg-gray-900 p-8 px-8 rounded-lg"
             action={addEntry}
@@ -116,16 +119,6 @@ export const Login = () => {
           ></img>
         </div>
       </div>
-      <ToastContainer
-        position="bottom-left"
-        autoClose={4000}
-        hideProgressBar={false}
-        closeOnClic={true}
-        pauseOnHover={true}
-        draggable={true}
-        progress={undefined}
-        theme="dark"
-      />
     </>
   );
 };

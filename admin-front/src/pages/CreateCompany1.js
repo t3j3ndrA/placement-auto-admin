@@ -40,17 +40,22 @@ const CreateCompany1 = () => {
 
   const createCompany = async (company) => {
     setIsCreating(true);
-    const response = await axios.post(`/api/company/new`, company, {
-      withCredentials: true,
-    });
-    // console.log("resp.data >> ", response.data);
-    if (response.data?.success == true) {
-      toast.success("Comany Registed ✅");
-    } else {
-      // console.log("err >> ", response.data);
-      toast.error("Insufficiente data ❌");
+    try {
+      const { data } = await axios.post(`/api/company/new`, company, {
+        withCredentials: true,
+      });
+
+      if (data?.success === true) {
+        toast.success("Company Created ✅");
+      } else if (data?.success === false) {
+        toast.error("Invalid data");
+      }
+    } catch (err) {
+      console.log("err >> ", err);
+      toast.error("📶 Low internet connection ");
+    } finally {
+      setIsCreating(false);
     }
-    setIsCreating(false);
   };
 
   return (
@@ -412,16 +417,6 @@ const CreateCompany1 = () => {
               {/* </div> */}
             </div>
           </form>
-          <ToastContainer
-            position="bottom-left"
-            autoClose={4000}
-            hideProgressBar={false}
-            closeOnClic={true}
-            pauseOnHover={true}
-            draggable={true}
-            progress={undefined}
-            theme="dark"
-          />
         </div>
       </div>
     </div>

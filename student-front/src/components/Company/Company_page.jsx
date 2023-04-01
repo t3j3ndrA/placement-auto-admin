@@ -17,9 +17,11 @@ export const Company_page = ({ fetched_url }) => {
       );
       if (data.data.success === true) {
         toast.success("Applied ✅");
+      } else if (data.data.success === false) {
+        toast.error("You are not elligible ❌");
       }
     } catch (err) {
-      toast.error("Could not apply");
+      toast.error("📶 Low internet connection ");
     }
   };
 
@@ -36,10 +38,15 @@ export const Company_page = ({ fetched_url }) => {
     data: _data,
     isLoading,
     isError,
+    error,
   } = useQuery(["company", id], getValues, {
     keepPreviousData: true,
   });
 
+  if (isError) {
+    console.log("Err >> ", error);
+    toast.error("📶 Low internet connection ");
+  }
   return (
     <>
       <div>

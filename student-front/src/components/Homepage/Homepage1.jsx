@@ -9,6 +9,7 @@ import { useQuery } from "react-query";
 import { ClipLoader } from "react-spinners";
 import encrypter from "../../utils/encrypter";
 import convertToDate from "../../utils/convertToDate";
+import { toast } from "react-toastify";
 
 export const Homepage1 = () => {
   const getValues = async () => {
@@ -20,6 +21,7 @@ export const Homepage1 = () => {
         return data.data;
       });
   };
+
   const {
     data: _data,
     isLoading,
@@ -27,6 +29,10 @@ export const Homepage1 = () => {
   } = useQuery(["companies", "filter"], getValues, {
     keepPreviousData: true,
   });
+
+  if (isError) {
+    toast.error("📶 Low internet connection ");
+  }
 
   const renderItem1 = (item) => {
     return (

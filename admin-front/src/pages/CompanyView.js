@@ -27,25 +27,24 @@ const CompanyView = () => {
     formState: { errors },
     getValues,
     setValue,
-
     watch,
   } = useForm({});
 
   const updateCompany = async (company) => {
     setIsUpdating(true);
-    const { data } = await axios.put(
-      `/api/company/update?id=${id}`,
-      { id, ...company },
-      {
-        withCredentials: true,
-      }
-    );
-
-    setRefetchFlag(!refetchFlag);
-    if (data?.success === false) {
-      toast.error("😿 Company does not exists");
+    try {
+      const { data } = await axios.put(
+        `/api/company/update?id=${id}`,
+        { id, ...company },
+        {
+          withCredentials: true,
+        }
+      );
+      setIsUpdating(false);
+      setRefetchFlag(!refetchFlag);
+    } catch (err) {
+      setIsUpdating(false);
     }
-    setIsUpdating(false);
   };
 
   useEffect(() => {
@@ -58,7 +57,7 @@ const CompanyView = () => {
           setValue(key, value);
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => navigate("/admin/invalid-company"));
     setIsLoading(false);
   }, [refetchFlag]);
   const nameWatch = watch("name");

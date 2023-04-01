@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Navbar from "../components/Navbar";
 import { Link, redirect, useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "react-query";
-import { HashLoader } from "react-spinners";
+import { HashLoader, ClipLoader } from "react-spinners";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import {
@@ -11,6 +11,7 @@ import {
   AiOutlineFilter,
 } from "react-icons/ai";
 import FilterInput from "../components/FilterInput";
+import { toast, ToastContainer } from "react-toastify";
 
 const NotifyStudents = () => {
   const { cid, rid } = useParams();
@@ -18,6 +19,7 @@ const NotifyStudents = () => {
   const [filter, setFilter] = useState({});
   const [showFilter, setShowFilter] = useState(false);
   const navigate = useNavigate();
+  const [isNotifying, setIsNotifying] = useState(false);
 
   const [selectedStudents, setSelectedStudents] = useState(new Set());
   const [checkKey, setCheckKey] = useState(Math.random());
@@ -77,14 +79,25 @@ const NotifyStudents = () => {
 
   const handleNotify = async (e) => {
     e.preventDefault();
-    // const { companyId, roleId, selectedStudents } = req.body;
-    const body = {
-      companyId: cid,
-      roleId: rid,
-      selectedStudents: Array.from(selectedStudents),
-    };
-    const { data } = await axios.put("/api/company/notify", body);
-    console.log("data >> ", data);
+
+    try {
+      const body = {
+        companyId: cid,
+        roleId: rid,
+        selectedStudents: Array.from(selectedStudents),
+      };
+      const { data } = await axios.put("/api/company/notify", body);
+      if (data?.success === true) {
+        toast.success("Notified ✅");
+      } else if (data?.success === false) {
+        toast.error("Invalid data");
+      }
+    } catch (err) {
+      console.log("err >> ", err);
+      toast.error("📶 Low internet connection ");
+    } finally {
+      setIsNotifying(false);
+    }
   };
 
   const { data, isLoading, isError } = useQuery(
@@ -333,7 +346,7 @@ const NotifyStudents = () => {
               className="text-section  bg-white rounded-md px-4 py-2"
               onClick={handleNotify}
             >
-              Notify Selected
+              {isNotifying ? <ClipLoader size={20} /> : "Notify Selected"}
             </button>
             <button className="text-section  bg-white rounded-md px-4 py-2">
               <Link to={`/admin/company/${cid}/role/${rid}/applications`}>

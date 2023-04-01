@@ -28,19 +28,6 @@ export const Register = () => {
   const postEntry = async (e) => {
     e.preventDefault();
     try {
-      // const res = await fetch("Register", {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-type" : "application/json"
-      //   },
-
-      //   body: JSON.stringify({
-      //     firstname : Firstname,
-      //     lastname : Lastname
-      //   }),
-
-      // })
-
       const post = {
         firstname: Firstname,
         lastname: Lastname,
@@ -49,13 +36,10 @@ export const Register = () => {
         confirmpassword: Confirmpassword,
       };
 
-      console.log(Firstname + "  " + Lastname + "  " + Email + "  " + Password);
-      console.log("hello from method in register.jsx");
-      // const _path = path.join(url, '/Register')
-      console.log(post);
       const res = await axios.post(`/api/Register`, post, {
         withCredentials: true,
       });
+
       console.log(res.status);
       if (res.status === 201) {
         console.log("hello from status 201");
@@ -63,23 +47,6 @@ export const Register = () => {
       } else if (res.status === 500) {
         console.log("hello from status 500");
       }
-      // console.log("path : " + _path)
-      // const data = await res.json();
-
-      // axios.get("https://api.publicapis.org/entries").then((res) =>{
-      //   console.log(res.data)
-      // })
-
-      // axios.post()
-
-      // if(!data){
-      //   window.alert("registration not successfull")
-      //   console.log("registration not successfull")
-      // }else{
-      //   window.alert("registration successfull")
-      //   console.log("registration successfull")
-      //   // navigate.push("/Login");
-      // }
     } catch (e) {
       console.log("error: ");
       window.alert("registration unsuccessful");
