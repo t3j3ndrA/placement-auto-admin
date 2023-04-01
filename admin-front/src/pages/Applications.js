@@ -4,6 +4,7 @@ import { Link, redirect, useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "react-query";
 import { HashLoader } from "react-spinners";
 import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 import axios from "axios";
 import {
   AiOutlineClear,
@@ -72,7 +73,10 @@ const Applications = () => {
     }
   );
 
-  console.log("data", data);
+  if (isError) {
+    toast.error("📶 Low internet connection ");
+  }
+
   return (
     <div className="bg-backg min-h-screen text-white">
       {/* Navbar */}

@@ -10,8 +10,6 @@ import DownloadReport from "../components/reports/DownloadReport";
 import PlacementComparision from "../components/reports/PlacementComparision";
 
 const Reports = () => {
-  const [isLoading, setIsLoading] = useState(false);
-
   return (
     <div className="bg-backg min-h-screen text-white">
       {/* Navbar */}

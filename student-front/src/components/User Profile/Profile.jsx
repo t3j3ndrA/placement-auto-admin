@@ -179,28 +179,7 @@ const Profile = () => {
                 register={register}
                 isRequired={true}
               />
-              <h2 className="mt-3 w-full font-semibold text-2xl">
-                Change Password
-              </h2>
-              <FormInputField
-                name="password"
-                title={"New password"}
-                errors={errors}
-                register={register}
-                type={"password"}
-              />
-              <FormInputField
-                name="confirmPassword"
-                title={"Re-type New password"}
-                errors={errors}
-                register={register}
-                type={"password"}
-              />
-              {password && password != confirmPassword ? (
-                <p className="text-danger">Password does not match</p>
-              ) : (
-                <></>
-              )}
+
               <h2 className="mt-3 w-full font-semibold text-2xl">
                 College Details
               </h2>

@@ -126,16 +126,6 @@ const Login = () => {
                   </a>
                 </p>
               </div>
-              <ToastContainer
-                position="bottom-left"
-                autoClose={4000}
-                hideProgressBar={false}
-                closeOnClic={true}
-                pauseOnHover={true}
-                draggable={true}
-                progress={undefined}
-                theme="dark"
-              />
             </div>
           </div>
           <div className="w-1/2 shadow-2xl">

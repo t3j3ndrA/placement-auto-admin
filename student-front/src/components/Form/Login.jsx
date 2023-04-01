@@ -37,7 +37,7 @@ export const Login = () => {
         if (data.data.isVerified) {
           navigate("/");
         } else {
-          navigate("/Profile");
+          navigate("/changepassword");
         }
       } else {
         toast.error("Invalid credentials");

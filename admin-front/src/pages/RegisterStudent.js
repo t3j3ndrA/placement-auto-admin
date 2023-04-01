@@ -25,12 +25,21 @@ const RegisterStudent = () => {
   const handleSubmit = async (e) => {
     setIsLoading(true);
     e.preventDefault();
-    const { data } = await axios.post("/api/student/new", {
-      collegeEmails: studentsArr,
-    });
-    console.log(data);
-    toast.success("All students registred", { position: "bottom-left" });
-    setIsLoading(false);
+    try {
+      const { data } = await axios.post("/api/student/new", {
+        collegeEmails: studentsArr,
+      });
+      if (data?.success === true) {
+        toast.success("Students Registered ✅");
+      } else if (data?.success === false) {
+        toast.error("Invalid data");
+      }
+    } catch (err) {
+      console.log("err >> ", err);
+      toast.error("📶 Low internet connection ");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -75,7 +84,6 @@ const RegisterStudent = () => {
               "Register"
             )}
           </button>
-          <ToastContainer />
         </div>
       </div>
     </div>
