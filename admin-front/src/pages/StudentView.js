@@ -6,6 +6,7 @@ import Navbar from "../components/Navbar";
 import companyViewValidator from "../form-validators/companyView.validator";
 
 import {
+  AiOutlineDelete,
   AiOutlineUsergroupAdd,
   AiOutlineUsergroupDelete,
 } from "react-icons/ai";
@@ -14,6 +15,8 @@ import { useQuery } from "react-query";
 const StudentView = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [showDeleteModel, setShowDeleteModel] = useState(false);
+
   const fetchStudentProfile = async () => {
     return axios
       .get(`/api/student?id=${id}`, { withCredentials: true })
@@ -35,6 +38,11 @@ const StudentView = () => {
     return <></>;
   }
 
+  const handleStudentDelete = async () => {
+    axios.delete(`/api/student/${id}`, { withCredentials: true });
+    navigate("/admin/students");
+  };
+
   return (
     <div className="bg-backg min-h-screen text-white">
       {/* Navbar */}
@@ -51,10 +59,43 @@ const StudentView = () => {
               <h1 className="text-3xl font-bold">
                 {stu.firstName + " " + stu.lastName}
               </h1>
-
-              <button className="text-section  bg-white rounded-md px-4 ">
-                Download Resume
-              </button>
+            </div>
+            <div className="flex flx-row justify-end mt-2 ">
+              <div className="flex flex-row gap-4">
+                <div className="flex flex-col">
+                  <button
+                    className="text-section  bg-placeholder rounded-full px-2 py-2 self-end"
+                    onClick={() => {
+                      setShowDeleteModel(true);
+                    }}
+                  >
+                    <AiOutlineDelete color="red" size={24} />
+                  </button>
+                  <div
+                    className={`bg-white text-subSection px-4 py-2 rounded-lg ${
+                      showDeleteModel ? "" : "hidden"
+                    }`}
+                  >
+                    <p>Are You sure you want to delete ?</p>
+                    <div className="flex flex-row gap-8 my-2">
+                      <button
+                        className="px-2 py-1 bg-danger text-white rounded-md"
+                        onClick={handleStudentDelete}
+                      >
+                        Yes
+                      </button>
+                      <button
+                        className="px-2 py-1 bg-success text-white rounded-md"
+                        onClick={() => {
+                          setShowDeleteModel(false);
+                        }}
+                      >
+                        No
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
 
             {/* COMPANY DETAILS */}
