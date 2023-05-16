@@ -27,8 +27,6 @@ const Applications = () => {
       filterURL += `${query}=${filter[query]}&`;
     }
 
-    console.log("FilterURL", filterURL);
-
     return axios
       .get(`/api/company/${cid}/role/${rid}?${filterURL}`, {
         withCredentials: true,
@@ -53,7 +51,6 @@ const Applications = () => {
     setFilter("");
     const allInputs = document.body.getElementsByTagName("input");
     const allSelects = document.body.getElementsByTagName("select");
-    console.log(allSelects);
     for (let i = 0; i < allInputs.length; ++i) {
       allInputs.item(i).style.border = "";
     }

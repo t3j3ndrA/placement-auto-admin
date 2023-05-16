@@ -31,7 +31,6 @@ const getCompaniesForStudent = async (req, res) => {
 
   companies.forEach((c) => {
     let roles = c.roles.map((role) => {
-      console.log("role... > ", { ...role });
       if (role?.elligibles.includes(studentId)) {
         return { ...role._doc, isElligible: true };
       } else {

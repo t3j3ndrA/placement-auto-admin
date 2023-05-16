@@ -11,7 +11,6 @@ const RegisterStudent = () => {
   const [studentsArr, setStudentsArr] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const handleChange = (e) => {
-    console.log(students);
     const val = e.target.value;
     setStudents(val);
     setStudentsArr(

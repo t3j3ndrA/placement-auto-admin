@@ -36,7 +36,6 @@ const updateCompany = async (req, res) => {
     await setStudentsElligibility(foundCompany.roles, forBatch);
   } else if (roles) {
     const foundCompany = await Company.findOne({ _id: id });
-    console.log("for-batch", foundCompany.forBatch);
     if (foundCompany.forBatch)
       await setStudentsElligibility(roles, foundCompany.forBatch);
   }

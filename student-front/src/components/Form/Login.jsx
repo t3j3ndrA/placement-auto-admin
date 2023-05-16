@@ -27,7 +27,6 @@ export const Login = () => {
         email: Email,
         password: Password,
       };
-      console.log(post);
 
       const { data } = await axios.post(`/api/auth/student/login`, post, {
         withCredentials: true,

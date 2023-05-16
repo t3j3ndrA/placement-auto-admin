@@ -25,8 +25,15 @@ const {
 const {
   notifySpecifiedStudents,
 } = require("../../controllers/company/notifySpecifiedStudents");
+const {
+  deleteCompanyById,
+} = require("../../controllers/company/deleteCompanyById");
+const {
+  downloadApplications,
+} = require("../../controllers/company/downloadApplications");
 
 router.get("/", getCompany);
+router.delete("/:cid", deleteCompanyById);
 
 router.get("/of/:studentId", getCompaniesForStudent);
 
@@ -44,6 +51,9 @@ router.get("/:companyId/role/:roleId/basic", getRoleDetails);
 
 // get applications & elligibles students
 router.get("/:companyId/role/:roleId", getApplicationsAndElligibles);
+
+// download applications sheet
+router.get("/:companyId/applications", downloadApplications);
 
 router.put("/notify", verifyAdmin, notifySpecifiedStudents);
 

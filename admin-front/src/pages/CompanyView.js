@@ -6,6 +6,8 @@ import Navbar from "../components/Navbar";
 import {
   AiOutlineUsergroupAdd,
   AiOutlineUsergroupDelete,
+  AiOutlineDelete,
+  AiOutlineDownload,
 } from "react-icons/ai";
 import { useForm } from "react-hook-form";
 import FormInputField from "../components/form/FormInputField";
@@ -13,6 +15,7 @@ import { handleAddCP, handleRemoveCP } from "../components/form/handleCP";
 import { handleAddRole, handleRemoveRole } from "../components/form/handleRole";
 import { ErrorMessage } from "@hookform/error-message";
 import { toast } from "react-toastify";
+import download from "downloadjs";
 
 const CompanyView = () => {
   const { id } = useParams();
@@ -20,6 +23,7 @@ const CompanyView = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isUpdating, setIsUpdating] = useState(false);
   const [refetchFlag, setRefetchFlag] = useState(false);
+  const [showDeleteModel, setShowDeleteModel] = useState(false);
   const navigate = useNavigate();
   const {
     register,
@@ -53,7 +57,6 @@ const CompanyView = () => {
       .get(`/api/company?id=${id}`, { withCredentials: true })
       .then(({ data }) => {
         for (const [key, value] of Object.entries(data.data)) {
-          console.log(`${key}: ${value}`);
           setValue(key, value);
         }
       })
@@ -64,13 +67,31 @@ const CompanyView = () => {
   const rolesWatch = watch("roles");
   const isActiveWatch = watch("isActive");
   const handleDuplicate = () => {};
-  console.log(getValues("isActive"));
-  console.log("company", company);
+
+  const handleCompanyDelete = async () => {
+    axios.delete(`/api/company/${id}`, { withCredentials: true });
+    navigate("/admin/companies");
+  };
+
+  const handleApplicationsDownload = async () => {
+    toast.success("Download will begin shortly...");
+    const { data, status } = await axios.get(
+      `/api/company/${id}/applications`,
+      {
+        withCredentials: true,
+        responseType: "blob",
+      }
+    );
+    download(data, `${nameWatch}-Applications.xls`);
+  };
+
   return (
     <div className="bg-backg min-h-screen text-white">
       {/* Navbar */}
       <Navbar focusOn="companies" />
+
       {/* Wrapper div */}
+
       <div className="px-2 py-5 flex flex-col gap-8 md:px-8 lg:px-12">
         {isLoading ? (
           <div className="flex flex-row justify-center mt-12">
@@ -104,18 +125,18 @@ const CompanyView = () => {
               </label>
             </div>
 
-            <div className="flex flx-row justify-end mt-2 ">
-              <div className="flex flex-row gap-4">
-                <Link to={"/admin/companies/create-post"} state={getValues()}>
-                  <button
-                    disabled={isLoading || isUpdating}
-                    className="text-section  bg-white rounded-md px-4 py-2"
-                  >
-                    Duplicate
-                  </button>
-                </Link>
+            <div className="flex flx-row justify-end my-2 ">
+              <div className="flex flex-row gap-4 ">
                 <button
-                  className="text-section  bg-white rounded-md px-4 py-2 disabled:bg-section"
+                  className="text-section flex flex-row flex-wrap gap-3  bg-white rounded-md px-4 py-2"
+                  onClick={handleApplicationsDownload}
+                >
+                  <AiOutlineDownload size={20} />
+                  <span>Applications</span>
+                </button>
+                <button
+                  className="text-section self-start bg-white rounded-md px-4 py-2"
+                  // className="text-section  bg-white rounded-md px-4 py-2 disabled:bg-section"
                   onClick={handleSubmit(updateCompany)}
                   disabled={isUpdating}
                 >
@@ -125,6 +146,48 @@ const CompanyView = () => {
                     <ClipLoader color="white" size={22} />
                   )}
                 </button>
+                <Link to={"/admin/companies/create-post"} state={getValues()}>
+                  <button
+                    disabled={isLoading || isUpdating}
+                    className="text-section  bg-white rounded-md px-4 py-2"
+                  >
+                    Clone
+                  </button>
+                </Link>
+                <div className="flex flex-col">
+                  <button
+                    disabled={isLoading || isUpdating}
+                    className="text-section  bg-placeholder rounded-full px-2 py-2 self-end"
+                    onClick={() => {
+                      setShowDeleteModel(true);
+                    }}
+                  >
+                    <AiOutlineDelete color="red" size={24} />
+                  </button>
+                  <div
+                    className={`bg-white text-subSection px-4 py-2 rounded-lg ${
+                      showDeleteModel ? "" : "hidden"
+                    }`}
+                  >
+                    <p>Are You sure you want to delete ?</p>
+                    <div className="flex flex-row gap-8 my-2">
+                      <button
+                        className="px-2 py-1 bg-danger text-white rounded-md"
+                        onClick={handleCompanyDelete}
+                      >
+                        Yes
+                      </button>
+                      <button
+                        className="px-2 py-1 bg-success text-white rounded-md"
+                        onClick={() => {
+                          setShowDeleteModel(false);
+                        }}
+                      >
+                        No
+                      </button>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -175,6 +238,7 @@ const CompanyView = () => {
               </div>
 
               <h2 className="w-full font-semibold text-2xl">Roles</h2>
+
               {rolesWatch?.map((role, roleIndex) => {
                 return (
                   <>
@@ -184,7 +248,7 @@ const CompanyView = () => {
                         <Link
                           to={`/admin/company/${id}/role/${role._id}/applications`}
                         >
-                          Applications
+                          View Applications
                         </Link>
                       </button>
                       <button

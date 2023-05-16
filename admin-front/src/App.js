@@ -13,7 +13,6 @@ function App() {
   useEffect(() => {
     if (!cookies.user) navigate("/login");
   }, []);
-  console.log(count);
   const increase = () => {
     setCount(count + 1);
   };
@@ -24,9 +23,7 @@ function App() {
       .then((response) => {
         return response.data;
       })
-      .then((data) => {
-        console.log(data);
-      })
+      .then((data) => {})
       .catch((error) => {
         console.log(error);
       });

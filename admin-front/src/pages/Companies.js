@@ -42,7 +42,6 @@ const Companies = () => {
     setFilter({ ...filter, [e.target.name]: e.target.value });
     if (e.target.name === "forBatch") {
       localStorage.setItem("year", e.target.value);
-      console.log("local year >> ", localStorage.getItem("year"));
     }
   };
 
@@ -50,7 +49,6 @@ const Companies = () => {
     setFilter("");
     const allInputs = document.body.getElementsByTagName("input");
     const allSelects = document.body.getElementsByTagName("select");
-    console.log(allSelects);
     for (let i = 0; i < allInputs.length; ++i) {
       allInputs.item(i).style.border = "";
     }
@@ -70,7 +68,6 @@ const Companies = () => {
     }
   );
 
-  console.log("data", data);
   return (
     <div className="bg-backg min-h-screen text-white">
       {/* Navbar */}

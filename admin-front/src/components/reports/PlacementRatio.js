@@ -31,8 +31,6 @@ const PlacementRatio = () => {
       filterURL += `${query}=${filter[query]}&`;
     }
 
-    console.log(filterURL);
-
     return axios
       .get(`/api/reports/placed-ratio?${filterURL}`, {
         withCredentials: true,

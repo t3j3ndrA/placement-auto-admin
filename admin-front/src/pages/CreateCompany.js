@@ -54,7 +54,6 @@ const CreateCompany = () => {
     const response = await axios.post(`/api/company/new`, company, {
       withCredentials: true,
     });
-    console.log("resp.data >> ", response.data);
     if (response.data?.success == true) {
       toast.success("Comany Registed ✅");
     } else {
@@ -65,7 +64,6 @@ const CreateCompany = () => {
   };
 
   const handleBasicChange = (e) => {
-    console.log("Handle basic change");
     setCompany({ ...company, [e.target.name]: e.target.value });
   };
 
@@ -129,7 +127,6 @@ const CreateCompany = () => {
 
     let roles = company.roles;
     roles[roleIndex]?.requirements.competitiveCoding.push(newCP);
-    console.log("added cp ", roles[roleIndex]);
     setCompany({ ...company, roles });
   };
 
@@ -174,8 +171,6 @@ const CreateCompany = () => {
   }, []);
 
   const handleFormSubmit = () => {};
-
-  console.log("company", company);
 
   return (
     <div className="bg-backg min-h-screen text-white">

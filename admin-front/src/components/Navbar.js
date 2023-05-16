@@ -17,7 +17,6 @@ const Navbar = ({ focusOn }) => {
 
   const handleLogout = async () => {
     const { data } = await axios.post("/api/auth/logout");
-    console.log("Logout request >> ", data);
   };
 
   return (
