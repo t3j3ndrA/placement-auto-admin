@@ -6,6 +6,7 @@ import Navbar from "../components/Navbar";
 import {
   AiOutlineUsergroupAdd,
   AiOutlineUsergroupDelete,
+  AiOutlineDelete,
 } from "react-icons/ai";
 import { useForm } from "react-hook-form";
 import FormInputField from "../components/form/FormInputField";
@@ -20,6 +21,7 @@ const CompanyView = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isUpdating, setIsUpdating] = useState(false);
   const [refetchFlag, setRefetchFlag] = useState(false);
+  const [showDeleteModel, setShowDeleteModel] = useState(false);
   const navigate = useNavigate();
   const {
     register,
@@ -64,13 +66,19 @@ const CompanyView = () => {
   const rolesWatch = watch("roles");
   const isActiveWatch = watch("isActive");
   const handleDuplicate = () => {};
-  console.log(getValues("isActive"));
-  console.log("company", company);
+
+  const handleCompanyDelete = async () => {
+    axios.delete(`/api/company/${id}`, { withCredentials: true });
+    navigate("/admin/companies");
+  };
+
   return (
     <div className="bg-backg min-h-screen text-white">
       {/* Navbar */}
       <Navbar focusOn="companies" />
+
       {/* Wrapper div */}
+
       <div className="px-2 py-5 flex flex-col gap-8 md:px-8 lg:px-12">
         {isLoading ? (
           <div className="flex flex-row justify-center mt-12">
@@ -106,16 +114,9 @@ const CompanyView = () => {
 
             <div className="flex flx-row justify-end mt-2 ">
               <div className="flex flex-row gap-4">
-                <Link to={"/admin/companies/create-post"} state={getValues()}>
-                  <button
-                    disabled={isLoading || isUpdating}
-                    className="text-section  bg-white rounded-md px-4 py-2"
-                  >
-                    Duplicate
-                  </button>
-                </Link>
                 <button
-                  className="text-section  bg-white rounded-md px-4 py-2 disabled:bg-section"
+                  className="text-section self-start bg-white rounded-md px-4 py-2"
+                  // className="text-section  bg-white rounded-md px-4 py-2 disabled:bg-section"
                   onClick={handleSubmit(updateCompany)}
                   disabled={isUpdating}
                 >
@@ -125,6 +126,48 @@ const CompanyView = () => {
                     <ClipLoader color="white" size={22} />
                   )}
                 </button>
+                <Link to={"/admin/companies/create-post"} state={getValues()}>
+                  <button
+                    disabled={isLoading || isUpdating}
+                    className="text-section  bg-white rounded-md px-4 py-2"
+                  >
+                    Clone
+                  </button>
+                </Link>
+                <div className="flex flex-col">
+                  <button
+                    disabled={isLoading || isUpdating}
+                    className="text-section  bg-placeholder rounded-full px-2 py-2 self-end"
+                    onClick={() => {
+                      setShowDeleteModel(true);
+                    }}
+                  >
+                    <AiOutlineDelete color="red" size={24} />
+                  </button>
+                  <div
+                    className={`bg-white text-subSection px-4 py-2 rounded-lg ${
+                      showDeleteModel ? "" : "hidden"
+                    }`}
+                  >
+                    <p>Are You sure you want to delete ?</p>
+                    <div className="flex flex-row gap-8 my-2">
+                      <button
+                        className="px-2 py-1 bg-danger text-white rounded-md"
+                        onClick={handleCompanyDelete}
+                      >
+                        Yes
+                      </button>
+                      <button
+                        className="px-2 py-1 bg-success text-white rounded-md"
+                        onClick={() => {
+                          setShowDeleteModel(false);
+                        }}
+                      >
+                        No
+                      </button>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
 
