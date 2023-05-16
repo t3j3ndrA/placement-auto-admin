@@ -51,7 +51,6 @@ const CreateCompany1 = () => {
         toast.error("Invalid data");
       }
     } catch (err) {
-      console.log("err >> ", err);
       toast.error("📶 Low internet connection ");
     } finally {
       setIsCreating(false);

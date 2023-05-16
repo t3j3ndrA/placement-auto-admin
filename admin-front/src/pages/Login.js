@@ -41,7 +41,6 @@ const Login = () => {
           toast.error(data.msg);
           return;
         }
-        console.log(data);
         localStorage.setItem("year", new Date().getFullYear());
         localStorage.setItem("minYear", new Date().getFullYear() - 1);
         localStorage.setItem("maxYear", new Date().getFullYear() + 1);

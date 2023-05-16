@@ -41,11 +41,8 @@ const ChangePassword = () => {
   };
 
   const handleChange = (e) => {
-    console.log("e >> ", e);
-    console.log("name >> ", e.target.name, "pass >> ", e.target.value);
     // setPassword({ ...password, [e.target.name]: e.taget.value });
   };
-  console.log("pass >> ", password);
   return (
     <div className="bg-[#0B0E2A] min-h-screen text-white">
       {/* Navbar */}

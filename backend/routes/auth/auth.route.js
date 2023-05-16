@@ -46,7 +46,6 @@ router.post("/student/login", async (req, res) => {
       if (!foundStudent)
         return res.json({ success: false, msg: WRONG_CREDENTIALS });
       // destroy the prev session
-      console.log("foundStudent >> ", foundStudent.collegeEmail);
       // req.session.destroy();
       // req.session = null;
       req.session.email = foundStudent.collegeEmail;

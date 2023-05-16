@@ -26,8 +26,6 @@ const Students = () => {
       filterURL += `${query}=${filter[query]}&`;
     }
 
-    console.log(filterURL);
-
     return axios
       .get(`/api/student?${filterURL}`, {
         withCredentials: true,
@@ -55,7 +53,6 @@ const Students = () => {
     setFilter("");
     const allInputs = document.body.getElementsByTagName("input");
     const allSelects = document.body.getElementsByTagName("select");
-    console.log(allSelects);
     for (let i = 0; i < allInputs.length; ++i) {
       allInputs.item(i).style.border = "";
     }
@@ -75,7 +72,6 @@ const Students = () => {
     }
   );
 
-  // console.log("data", data);
   return (
     <div className="bg-backg min-h-screen text-white">
       {/* Navbar */}

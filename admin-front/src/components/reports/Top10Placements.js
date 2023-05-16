@@ -40,8 +40,6 @@ const Top10Placements = () => {
       filterURL += `${query}=${filter[query]}&`;
     }
 
-    console.log(filterURL);
-
     return axios
       .get(`/api/reports/placed?${filterURL}`, {
         withCredentials: true,

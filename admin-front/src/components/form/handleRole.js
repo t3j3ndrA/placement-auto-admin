@@ -19,7 +19,6 @@ export const handleAddRole = (e, rolesWatch, setValue) => {
   let roles = rolesWatch;
 
   roles.push(role);
-  console.log("New roles >> ", roles);
   setValue("roles", roles);
 };
 

@@ -74,7 +74,6 @@ if (process.env.NODE_ENV === "production") {
 
   // only student login is visible without login
   app.get("/Login", (req, res) => {
-    console.log("Serving login");
     return res.sendFile(
       path.join(__dirname, "..", "student-front", "build", "index.html")
     );
@@ -82,7 +81,6 @@ if (process.env.NODE_ENV === "production") {
 
   // only admin login is visible without login
   app.get("/admin/login", (req, res) => {
-    console.log("Serving login");
     return res.sendFile(
       path.join(__dirname, "..", "admin-front", "build", "index.html")
     );
@@ -90,7 +88,6 @@ if (process.env.NODE_ENV === "production") {
 
   // admin protected routes
   app.get("/admin/*", verifyAdmin, (req, res) => {
-    console.log("Serving react app");
     return res.sendFile(
       path.join(__dirname, "..", "admin-front", "build", "index.html")
     );
@@ -98,7 +95,6 @@ if (process.env.NODE_ENV === "production") {
 
   // student protected routes
   app.get("/*", verifyStudent, (req, res) => {
-    console.log("Serving react app");
     return res.sendFile(
       path.join(__dirname, "..", "student-front", "build", "index.html")
     );

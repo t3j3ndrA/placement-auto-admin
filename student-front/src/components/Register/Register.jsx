@@ -42,15 +42,11 @@ export const Register = () => {
 
       console.log(res.status);
       if (res.status === 201) {
-        console.log("hello from status 201");
         navigate("/Login");
       } else if (res.status === 500) {
-        console.log("hello from status 500");
       }
     } catch (e) {
-      console.log("error: ");
       window.alert("registration unsuccessful");
-      console.log("registration not successfull");
     }
   };
 

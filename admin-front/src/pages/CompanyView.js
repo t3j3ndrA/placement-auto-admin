@@ -7,6 +7,7 @@ import {
   AiOutlineUsergroupAdd,
   AiOutlineUsergroupDelete,
   AiOutlineDelete,
+  AiOutlineDownload,
 } from "react-icons/ai";
 import { useForm } from "react-hook-form";
 import FormInputField from "../components/form/FormInputField";
@@ -14,6 +15,7 @@ import { handleAddCP, handleRemoveCP } from "../components/form/handleCP";
 import { handleAddRole, handleRemoveRole } from "../components/form/handleRole";
 import { ErrorMessage } from "@hookform/error-message";
 import { toast } from "react-toastify";
+import download from "downloadjs";
 
 const CompanyView = () => {
   const { id } = useParams();
@@ -55,7 +57,6 @@ const CompanyView = () => {
       .get(`/api/company?id=${id}`, { withCredentials: true })
       .then(({ data }) => {
         for (const [key, value] of Object.entries(data.data)) {
-          console.log(`${key}: ${value}`);
           setValue(key, value);
         }
       })
@@ -70,6 +71,18 @@ const CompanyView = () => {
   const handleCompanyDelete = async () => {
     axios.delete(`/api/company/${id}`, { withCredentials: true });
     navigate("/admin/companies");
+  };
+
+  const handleApplicationsDownload = async () => {
+    toast.success("Download will begin shortly...");
+    const { data, status } = await axios.get(
+      `/api/company/${id}/applications`,
+      {
+        withCredentials: true,
+        responseType: "blob",
+      }
+    );
+    download(data, `${nameWatch}-Applications.xls`);
   };
 
   return (
@@ -112,8 +125,15 @@ const CompanyView = () => {
               </label>
             </div>
 
-            <div className="flex flx-row justify-end mt-2 ">
-              <div className="flex flex-row gap-4">
+            <div className="flex flx-row justify-end my-2 ">
+              <div className="flex flex-row gap-4 ">
+                <button
+                  className="text-section flex flex-row flex-wrap gap-3  bg-white rounded-md px-4 py-2"
+                  onClick={handleApplicationsDownload}
+                >
+                  <AiOutlineDownload size={20} />
+                  <span>Applications</span>
+                </button>
                 <button
                   className="text-section self-start bg-white rounded-md px-4 py-2"
                   // className="text-section  bg-white rounded-md px-4 py-2 disabled:bg-section"
@@ -218,6 +238,7 @@ const CompanyView = () => {
               </div>
 
               <h2 className="w-full font-semibold text-2xl">Roles</h2>
+
               {rolesWatch?.map((role, roleIndex) => {
                 return (
                   <>
@@ -227,7 +248,7 @@ const CompanyView = () => {
                         <Link
                           to={`/admin/company/${id}/role/${role._id}/applications`}
                         >
-                          Applications
+                          View Applications
                         </Link>
                       </button>
                       <button

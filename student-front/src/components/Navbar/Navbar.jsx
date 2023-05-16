@@ -12,7 +12,6 @@ export const Navbar = () => {
   const handleLogOut = async () => {
     removeStuId();
     const { data } = await axios.post("/api/auth/logout");
-    console.log("Logout request >> ", data);
     navigate("/Login");
   };
 

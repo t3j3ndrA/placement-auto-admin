@@ -8,7 +8,7 @@ const {
 
 const updatePassword = async (req, res) => {
   const { password, stuId } = req.body;
-  console.log("req.body >> ", req.body);
+
   if (!mongoose.isValidObjectId(stuId) || !password) {
     return res
       .status(INVALID_REQUEST_DATA_CODE)

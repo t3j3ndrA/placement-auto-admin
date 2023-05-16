@@ -30,17 +30,13 @@ const YearlyNotPlaced = () => {
       filterURL += `${query}=${filter[query]}&`;
     }
 
-    console.log(filterURL);
-
     return axios
       .get(`/api/reports/yearly-not-placed?${filterURL}`, {
         withCredentials: true,
       })
       .then((response) => response.data)
       .then((data) => data)
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   };
 
   const { data, isLoading, isError } = useQuery(

@@ -156,7 +156,6 @@ export const Company_page = ({ fetched_url }) => {
                   <h2>Roles</h2>
                 </div>
                 <br />
-                {console.log(_data.roles)}
                 {_data.roles.map((item, index) => {
                   return (
                     <div>
@@ -436,7 +435,6 @@ export const Company_page = ({ fetched_url }) => {
 
                       <br />
 
-                      {/* {console.log(item.roles," ### ", item.roles.isElligible)} */}
                       <div className="flex justify-center">
                         {item.isElligible === true ? (
                           <div className="w-2/12 grid justify-items-center m-2 p-2 hover:bg-blue-700 bg-indigo-900">

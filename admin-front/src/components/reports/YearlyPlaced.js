@@ -41,8 +41,6 @@ const YearlyPlaced = () => {
       filterURL += `${query}=${filter[query]}&`;
     }
 
-    console.log(filterURL);
-
     return axios
       .get(`/api/reports/yearly-placed?${filterURL}`, {
         withCredentials: true,

@@ -62,7 +62,6 @@ const Profile = () => {
       .get(`/api/student/?id=${getStuId()}`, { withCredentials: true })
       .then(({ data }) => {
         for (const [key, value] of Object.entries(data.data)) {
-          console.log(`${key}: ${value}`);
           setValue(key, value);
         }
       })
@@ -78,9 +77,6 @@ const Profile = () => {
   const confirmPassword = watch("confirmPassword");
 
   const handleDuplicate = () => {};
-
-  console.log(getValues("isActive"));
-  console.log("company", company);
 
   return (
     <div className="bg-[#0B0E2A] min-h-screen text-white">
