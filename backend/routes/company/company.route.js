@@ -25,8 +25,12 @@ const {
 const {
   notifySpecifiedStudents,
 } = require("../../controllers/company/notifySpecifiedStudents");
+const {
+  deleteCompanyById,
+} = require("../../controllers/company/deleteCompanyById");
 
 router.get("/", getCompany);
+router.delete("/:cid", deleteCompanyById);
 
 router.get("/of/:studentId", getCompaniesForStudent);
 

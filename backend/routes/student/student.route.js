@@ -20,8 +20,12 @@ const {
   getStudentApplications,
 } = require("../../controllers/student/getStudentApplications");
 const { updatePassword } = require("../../controllers/student/updatePassword");
+const {
+  deleteStudentById,
+} = require("../../controllers/student/deleteStudentById");
 
 router.get("/", getStudent);
+router.delete("/:stuId", deleteStudentById);
 
 // register new student with email
 router.post("/new", registerNewStudentWithEmail);

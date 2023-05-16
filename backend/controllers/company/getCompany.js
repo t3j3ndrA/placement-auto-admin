@@ -167,7 +167,7 @@ const getCompany = async (req, res) => {
     .catch((error) => {
       return res
         .status(INTERNAL_SERVER_ERROR_CODE)
-        .json({ success: false, msg: INTERNAL_SERVER_ERROR, err });
+        .json({ success: false, msg: INTERNAL_SERVER_ERROR, error });
     });
 };
 
