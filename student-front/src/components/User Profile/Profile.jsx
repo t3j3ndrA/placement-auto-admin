@@ -237,6 +237,8 @@ const Profile = () => {
               <div className="w-full">
                 <Info msg={"Put 0 if  not applicable."} />
               </div>
+              <h2 className="mt-3 w-full font-semibold text-lg">College</h2>
+
               <FormInputField
                 name="result.sem1"
                 type="number"
@@ -310,6 +312,8 @@ const Profile = () => {
                 register={register}
                 isRequired={true}
               />
+              <h2 className="mt-3 w-full font-semibold text-lg">HSC</h2>
+
               <FormInputField
                 name="result.twelfthPerc"
                 isRequired={true}
@@ -318,6 +322,36 @@ const Profile = () => {
                 errors={errors}
                 register={register}
               />
+
+              <div className="flex  flex-col gap-1 w-full md:w-2/5">
+                <span className="text-white">12th Board Type</span>
+                <ErrorMessage
+                  errors={errors}
+                  name={`result.twelfthBoardType`}
+                  render={({ message }) => (
+                    <span className="text-red-700">{message}</span>
+                  )}
+                />
+                <select
+                  {...register(`result.twelfthBoardType`)}
+                  className="outline-none px-4 py-1 rounded-md bg-gray-700"
+                >
+                  <option value="gseb"> GSEB</option>
+                  <option value="cbse"> CBSE</option>
+                  <option value="other"> Other</option>
+                </select>
+              </div>
+
+              <FormInputField
+                name="result.twelfthBoardPassingYear"
+                isRequired={true}
+                title={"12th Passing year"}
+                errors={errors}
+                register={register}
+                type="number"
+              />
+
+              <h2 className="mt-3 w-full font-semibold text-lg">SSC</h2>
               <FormInputField
                 name="result.tenthPerc"
                 title={"10th %"}
@@ -326,6 +360,35 @@ const Profile = () => {
                 errors={errors}
                 register={register}
               />
+
+              <div className="flex  flex-col gap-1 w-full md:w-2/5">
+                <span className="text-white">10th Board Type</span>
+                <ErrorMessage
+                  errors={errors}
+                  name={`result.tenthBoardType`}
+                  render={({ message }) => (
+                    <span className="text-red-700">{message}</span>
+                  )}
+                />
+                <select
+                  {...register(`result.tenthBoardType`)}
+                  className="outline-none px-4 py-1 rounded-md bg-gray-700"
+                >
+                  <option value="gseb"> GSEB</option>
+                  <option value="cbse"> CBSE</option>
+                  <option value="other"> Other</option>
+                </select>
+              </div>
+              <FormInputField
+                name="result.tenthBoardPassingYear"
+                title={"10th Passing Year"}
+                isRequired={true}
+                type="number"
+                errors={errors}
+                register={register}
+              />
+              <h2 className="mt-3 w-full font-semibold text-lg">Diploma</h2>
+
               <FormInputField
                 name="result.diplomaPerc"
                 title={"Diploma %"}
@@ -334,6 +397,74 @@ const Profile = () => {
                 errors={errors}
                 register={register}
               />
+
+              <div className="flex  flex-col gap-1 w-full md:w-2/5">
+                <span className="text-white">Diploma Board Type</span>
+                <ErrorMessage
+                  errors={errors}
+                  name={`result.diplomaBoardType`}
+                  render={({ message }) => (
+                    <span className="text-red-700">{message}</span>
+                  )}
+                />
+                <select
+                  {...register(`result.diplomaBoardType`)}
+                  className="outline-none px-4 py-1 rounded-md bg-gray-700"
+                >
+                  <option value="gseb"> GSEB</option>
+                  <option value="cbse"> CBSE</option>
+                  <option value="other"> Other</option>
+                </select>
+              </div>
+              <FormInputField
+                name="result.diplomaBoardPassingYear"
+                title={"Diploma Passing Year"}
+                isRequired={true}
+                errors={errors}
+                register={register}
+                type="number"
+              />
+
+              {/* Technical Skills */}
+              <h2 className="mt-3 w-full font-semibold text-2xl">
+                Technical Skills
+              </h2>
+              <div className="w-full">
+                <Info msg={"AWS cloud, AI, etc. ( Comma seperated )"} />
+              </div>
+              <div className="flex  flex-col gap-1 w-full">
+                <ErrorMessage
+                  errors={errors}
+                  name={`technicalSkills`}
+                  render={({ message }) => (
+                    <span className="text-red-700">{message}</span>
+                  )}
+                />
+                <textarea
+                  {...register(`technicalSkills`)}
+                  className=" outline-none px-4 py-1 rounded-md bg-gray-700"
+                />
+              </div>
+
+              <h2 className="mt-3 w-full font-semibold text-2xl">Hobby</h2>
+              <div className="w-full">
+                <Info
+                  msg={"Dancing, Cinemetography, etc. ( Comma seperated )"}
+                />
+              </div>
+              <div className="flex  flex-col gap-1 w-full">
+                <ErrorMessage
+                  errors={errors}
+                  name={`hobbies`}
+                  render={({ message }) => (
+                    <span className="text-red-700">{message}</span>
+                  )}
+                />
+                <textarea
+                  {...register(`hobbies`)}
+                  className=" outline-none px-4 py-1 rounded-md bg-gray-700"
+                />
+              </div>
 
               {/* Competitive programming */}
               <h2 className="mt-3 w-full font-semibold text-2xl">
