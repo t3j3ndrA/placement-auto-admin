@@ -10,6 +10,7 @@ const generateEmailTemplate = (email, password) => {
 	<p> Please use following credentials to login to ddu placement portal </p>
 	<p> Email : ${email} </p>
 	<p> Password : ${password} </p>
+	<a href="https://ddu-placements.onrender.com/login" target="_blank">Login here </a>
 	<p> Please do not share this credentials with anyone. </p>
 	<br>
 	

@@ -2,6 +2,13 @@ const mongoose = require("mongoose");
 
 const StudentSchema = mongoose.Schema({
   // personal information
+  profilePic: {
+    type: String,
+    default: "https://cdn.onlinewebfonts.com/svg/img_516635.png",
+  },
+  resume: {
+    type: String,
+  },
   firstName: { type: String, default: "" },
   middleName: { type: String, default: "" },
   lastName: { type: String, default: "" },
