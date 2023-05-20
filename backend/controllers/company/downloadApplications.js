@@ -11,6 +11,7 @@ const downloadApplications = async (req, res) => {
   const company = await Company.findOne({ _id: companyId });
 
   let excdata = [];
+  let srNo = 1;
   for (let i = 0; i < company.roles.length; ++i) {
     const applications = company.roles[i].applications;
 
@@ -20,41 +21,31 @@ const downloadApplications = async (req, res) => {
 
     let roleExcData = students.map((s) => {
       return {
-        "Role Name": company.roles[i].name,
-        "First Name": s.firstName,
-        "Last Name": s.lastName,
+        "Sr. No": srNo++,
+        "Roll No": s.rollNumber?.toUpperCase(),
+        "Student ID": s.collegeID?.toUpperCase(),
+        Name: s?.firstName + " " + s?.middleName + " " + s?.lastName,
         Gender: s.gender,
+        "SSC Result in Percentage (%)": s.result.tenthPerc,
+        "SSC Board": s.result.tenthBoardType,
+        "HSC Result in Percentage (%)": s.result.twelfthPerc,
+        "HSC Board": s.result.twelfthBoardType,
+        "Diploma Result in Percentage (%)": s.result.diplomaPerc,
+        "Sem 1 (SPI)": s.result.sem1,
+        "Sem 2 (SPI)": s.result.sem2,
+        "Sem 3 (SPI)": s.result.sem3,
+        "Sem 4 (SPI)": s.result.sem4,
+        "Sem 5 (SPI)": s.result.sem5,
+        "Sem 6 (SPI)": s.result.sem6,
+        "Sem 7 (SPI)": s.result.sem7,
+        "Sem 8 (SPI)": s.result.sem8,
+        CPI: s.result.cpi,
         DOB: moment(s.dateOfBirth).calendar(),
-        "College ID": s.collegeID?.toUpperCase(),
-        "Roll No.": s.rollNumber?.toUpperCase(),
         "College Email": s.collegeEmail,
         "Personal Email": s.personalEmail,
         "Personal Phone": s.personalPhoneNumber,
-        "Parent's Phone": s.parentsPhoneNumber,
-        "Sem-1": s.result.sem1,
-        "Sem-2": s.result.sem2,
-        "Sem-3": s.result.sem3,
-        "Sem-4": s.result.sem4,
-        "Sem-5": s.result.sem5,
-        "Sem-6": s.result.sem6,
-        "Sem-7": s.result.sem7,
-        "Sem-8": s.result.sem8,
-        CPI: s.result.cpi,
-        "12th %": s.result.twelfthPerc,
-        "10th %": s.result.tenthPerc,
-        "Diploma %": s.result.diplomaPerc,
-        "Placement Selected": s.placementStatus.selected?.toUpperCase(),
-        "Placement Company": s.placementStatus.companyName,
-        "Job Duration (in months)": s.placementStatus.duration,
-        Package: s.placementStatus.package,
-        "Joining Date": moment(s.placementStatus.joiningDate).calendar(),
-        "Job Mode": s.placementStatus.mode?.toUpperCase(),
-        "Internship Selected": s.internshipStatus.selected?.toUpperCase(),
-        "Internship Company": s.internshipStatus.company,
-        "Internship Duration (in months)": s.internshipStatus.duration,
-        "Internship Stipend": s.internshipStatus.stipend,
-        "Internship Joining Date": s.internshipStatus.joiningDate,
-        "Internship Mode": s.internshipStatus.mode?.toUpperCase(),
+        City: s.address.city,
+        "Applied for": company.roles[i].name,
       };
     });
 

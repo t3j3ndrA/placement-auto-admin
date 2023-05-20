@@ -456,6 +456,28 @@ const StudentView = () => {
                   className="outline-none px-4 py-1 rounded-md bg-subSection"
                 />
               </div>
+              {/* Technical Skills */}
+              <h2 className="mt-3 w-full font-semibold text-2xl">
+                Technical Skills
+              </h2>
+
+              <div className="flex  flex-col gap-1 w-full">
+                <textarea
+                  disabled={true}
+                  value={stu?.technicalSkills}
+                  className=" outline-none px-4 py-1 rounded-md bg-subSection"
+                />
+              </div>
+
+              <h2 className="mt-3 w-full font-semibold text-2xl">Hobbies</h2>
+              <div className="flex  flex-col gap-1 w-full">
+                <textarea
+                  disabled={true}
+                  value={stu?.hobbies}
+                  className=" outline-none px-4 py-1 rounded-md bg-subSection"
+                />
+              </div>
+
               {/* Competitive programming */}
               <h2 className="mt-3 w-full font-semibold text-2xl">
                 Competitive Coding
