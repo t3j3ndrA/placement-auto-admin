@@ -46,6 +46,7 @@ const CompanyView = () => {
       );
       setIsUpdating(false);
       setRefetchFlag(!refetchFlag);
+      toast.success("Updated");
     } catch (err) {
       setIsUpdating(false);
     }
@@ -63,6 +64,7 @@ const CompanyView = () => {
       .catch((err) => navigate("/admin/invalid-company"));
     setIsLoading(false);
   }, [refetchFlag]);
+
   const nameWatch = watch("name");
   const rolesWatch = watch("roles");
   const isActiveWatch = watch("isActive");
@@ -143,7 +145,7 @@ const CompanyView = () => {
                   {!isUpdating ? (
                     "Update"
                   ) : (
-                    <ClipLoader color="white" size={22} />
+                    <ClipLoader color="blue" size={22} />
                   )}
                 </button>
                 <Link to={"/admin/companies/create-post"} state={getValues()}>

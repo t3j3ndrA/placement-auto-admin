@@ -1,5 +1,5 @@
 import React from "react";
-import loadImg from "./register2.jpg";
+import loadImg from "../../assets/register4.jpg";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";

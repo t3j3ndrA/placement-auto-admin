@@ -1,6 +1,7 @@
 import { ErrorMessage } from "@hookform/error-message";
 
 const FormInputField = ({ title, name, errors, register, type }) => {
+  console.log("for name - type :", name, type);
   return (
     <div className="flex  flex-col gap-1 w-full md:w-2/5">
       <span className="text-placeholder">{title}</span>
@@ -11,6 +12,7 @@ const FormInputField = ({ title, name, errors, register, type }) => {
       />
       <input
         type={type || "text"}
+        step={0.01}
         {...register(name, {
           minLength: 1,
           required: `${title} is required`,
