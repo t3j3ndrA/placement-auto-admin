@@ -1,6 +1,13 @@
 import { ErrorMessage } from "@hookform/error-message";
 
-const FormInputField = ({ title, name, errors, register, type }) => {
+const FormInputField = ({
+  title,
+  name,
+  errors,
+  register,
+  type,
+  isEditable,
+}) => {
   console.log("for name - type :", name, type);
   return (
     <div className="flex  flex-col gap-1 w-full md:w-2/5">
@@ -11,6 +18,7 @@ const FormInputField = ({ title, name, errors, register, type }) => {
         render={({ message }) => <span className="text-danger">{message}</span>}
       />
       <input
+        disabled={isEditable ? isEditable : true}
         type={type || "text"}
         step={0.01}
         {...register(name, {

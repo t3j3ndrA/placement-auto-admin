@@ -27,7 +27,7 @@ const FormInputField = ({
       />
       <input
         type={type || "text"}
-        defaultValue={getDefaultValue(type)}
+        defaultValue={type == "number" ? 0 : ""}
         {...register(
           name,
           isRequired === true

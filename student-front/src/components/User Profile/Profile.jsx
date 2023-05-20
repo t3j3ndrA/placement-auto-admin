@@ -32,7 +32,6 @@ const Profile = () => {
     formState: { errors, isDirty },
     getValues,
     setValue,
-
     watch,
   } = useForm({});
 
@@ -312,6 +311,48 @@ const Profile = () => {
                 register={register}
                 isRequired={true}
               />
+
+              <h2 className="mt-3 w-full font-semibold text-lg">
+                Academic Gap
+              </h2>
+
+              <FormInputField
+                name="result.academicGap"
+                title={"Academic Gap"}
+                type="number"
+                errors={errors}
+                register={register}
+                isRequired={true}
+              />
+
+              <FormInputField
+                name="result.academicGapReason"
+                title={"Reason for academic gap"}
+                errors={errors}
+                register={register}
+                isRequired={true}
+              />
+
+              <h2 className="mt-3 w-full font-semibold text-lg">Backlogs</h2>
+
+              <FormInputField
+                name="result.activeBacklogs"
+                title={"Active Backlogs"}
+                type="number"
+                errors={errors}
+                register={register}
+                isRequired={true}
+              />
+
+              <FormInputField
+                name="result.totalBacklogs"
+                title={"Total backlogs"}
+                errors={errors}
+                register={register}
+                isRequired={true}
+                type="number"
+              />
+
               <h2 className="mt-3 w-full font-semibold text-lg">HSC</h2>
 
               <FormInputField

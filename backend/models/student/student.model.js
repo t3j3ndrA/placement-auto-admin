@@ -53,6 +53,14 @@ const StudentSchema = mongoose.Schema({
       diplomaPerc: { type: Number, default: 0 },
       diplomaBoardType: { type: String, default: "" },
       diplomaBoardPassingYear: { type: Number, default: 0 },
+
+      // year gaps
+      academicGap: { type: Number, default: 0 },
+      academicGapReason: { type: String, default: 0 },
+
+      // backlogs
+      totalBacklogs: { type: Number, default: 0 },
+      activeBacklogs: { type: Number, default: 0 },
     }),
   },
 
