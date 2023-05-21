@@ -20,13 +20,13 @@ export const Navbar = () => {
       <div className="md:h-16 h-28 mx-auto md:px-4 container flex items-center justify-between flex-wrap md:flex-nowrap">
         {/* <!-- Logo --> */}
         <div className=" flex text-indigo-500">
-          <div>
+          {/* <div>
             <img
               src="https://flowbite.com/docs/images/logo.svg"
               className="h-6 mr-3 sm:h-9"
               alt="Flowbite Logo"
             />
-          </div>
+          </div> */}
           <div>
             <span className="self-center text-xl font-semibold whitespace-nowrap text-indigo-500">
               Dharmsinh Desai University

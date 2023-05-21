@@ -6,7 +6,7 @@ module.exports = {
     fontFamily: {
       lato: ["Lato", "sans-serif"],
     },
-    // to override colors
+    // // to override colors
     colors: {
       backg: "#14162B",
       section: "#1A1C33",
@@ -22,6 +22,7 @@ module.exports = {
       black: "black",
       alternate: "#54566A",
     },
+
     // to extend the default valaue set by tailwinds
     extend: {},
   },

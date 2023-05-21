@@ -24,7 +24,12 @@ const uploadResume = async (req, res) => {
 
   const form = formidable({ keepExtensions: true, uploadDir: __dirname });
   form.parse(req, (err, fields, files) => {
-    const { id } = fields;
+    if (err) {
+      return res.json({ success: false, msg: "parse error", err });
+    }
+
+    let { id } = fields;
+    id = JSON.parse(id);
 
     if (files.resume && mongoose.isValidObjectId(id)) {
       const fileName = files.resume.newFilename;

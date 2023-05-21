@@ -24,8 +24,12 @@ const uploadProfilePic = async (req, res) => {
 
   const form = formidable({ keepExtensions: true, uploadDir: __dirname });
   form.parse(req, (err, fields, files) => {
-    const { id } = fields;
-
+    if (err) {
+      return res.json({ success: false, msg: "parse error", err });
+    }
+    let { id } = fields;
+    id = JSON.parse(id);
+    console.log("id, files", fields, files);
     if (files.profilePic && mongoose.isValidObjectId(id)) {
       const fileName = files.profilePic.newFilename;
 

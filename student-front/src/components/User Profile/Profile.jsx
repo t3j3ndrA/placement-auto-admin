@@ -22,6 +22,8 @@ const Profile = () => {
   const { id } = useParams();
   const [company, setCompany] = useState({});
   const [isLoading, setIsLoading] = useState(true);
+  const [isUploadingProfilePic, setIsUploadingProfilePic] = useState(false);
+  const [isUploadingResume, setIsUploadingResume] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
   const [refetchFlag, setRefetchFlag] = useState(false);
   const navigate = useNavigate();
@@ -31,12 +33,14 @@ const Profile = () => {
     handleSubmit,
     formState: { errors, isDirty },
     getValues,
+
     setValue,
     watch,
   } = useForm({});
 
   const updateStudent = async (student) => {
     setIsUpdating(true);
+
     try {
       const { data } = await axios.put(`/api/student/update`, student, {
         withCredentials: true,
@@ -55,6 +59,57 @@ const Profile = () => {
     }
   };
 
+  const handleProfilePicUpload = async (profilePic) => {
+    let formData = new FormData();
+    formData.append("id", JSON.stringify(getStuId()));
+    formData.append("profilePic", profilePic);
+    setIsUploadingProfilePic(true);
+
+    try {
+      const { data } = await axios.post(`/api/student/profile-pic`, formData, {
+        withCredentials: true,
+      });
+      console.log("resp >> ", data);
+
+      if (data?.success === true) {
+        toast.success("Updated successfully");
+        setValue("profilePic", data.url);
+      } else if (data?.success === false) {
+        toast.error("Could not upload picture");
+      }
+    } catch (err) {
+      console.log("err >> ", err);
+      toast.error("📶 Low internet connection ");
+    } finally {
+      setIsUploadingProfilePic(false);
+    }
+  };
+  const handleResumeUpload = async (resume) => {
+    let formData = new FormData();
+    formData.append("id", JSON.stringify(getStuId()));
+    formData.append("resume", resume);
+    setIsUploadingResume(true);
+
+    try {
+      const { data } = await axios.post(`/api/student/resume`, formData, {
+        withCredentials: true,
+      });
+      console.log("resp >> ", data);
+
+      if (data?.success === true) {
+        toast.success("Uploaded Resume");
+        setValue("resume", data.url);
+      } else if (data?.success === false) {
+        toast.error("Could not upload resume");
+      }
+    } catch (err) {
+      console.log("err >> ", err);
+      toast.error("📶 Low internet connection ");
+    } finally {
+      setIsUploadingResume(false);
+    }
+  };
+
   useEffect(() => {
     setIsLoading(true);
     axios
@@ -69,13 +124,13 @@ const Profile = () => {
   }, [refetchFlag]);
 
   const nameWatch = watch("firstName");
+  const profilePic = watch("profilePic");
   const rolesWatch = watch("roles");
   const isActiveWatch = watch("isActive");
   const cpWatch = watch("competitiveCoding");
   const password = watch("password");
   const confirmPassword = watch("confirmPassword");
-
-  const handleDuplicate = () => {};
+  const resume = watch("resume");
 
   return (
     <div className="bg-[#0B0E2A] min-h-screen text-white">
@@ -89,13 +144,42 @@ const Profile = () => {
           </div>
         ) : (
           <div className="bg-[#1c1434] mx-auto px-4 py-4 lg:w-2/3">
-            <h1
-              className={`text-3xl font-bold ${
-                isActiveWatch ? "text-success" : "text-red"
-              }`}
-            >
-              {nameWatch}
-            </h1>
+            <div className="flex flex-row flex-wrap gap-4">
+              <img
+                src={profilePic}
+                className="w-24 h-24 rounded-full object-center"
+              />
+
+              <div className="flex flex-col gap-2">
+                <h1
+                  className={`text-3xl font-bold ${
+                    isActiveWatch ? "text-success" : "text-red"
+                  }`}
+                >
+                  {nameWatch}
+                </h1>
+                <div className="bg-blue-500 text-white w-32 h-8">
+                  <p className="text-center">
+                    {isUploadingProfilePic ? (
+                      <ClipLoader size={20} />
+                    ) : (
+                      "Change avatar"
+                    )}
+                  </p>
+                  <input
+                    type="file"
+                    disabled={isUploadingProfilePic}
+                    className="z-10 opacity-0 relative -top-4 left-0  w-full h-full"
+                    onChange={(e) => {
+                      console.log(e.target.files);
+                      if (e.target.files) {
+                        handleProfilePicUpload(e.target.files[0]);
+                      }
+                    }}
+                  />
+                </div>
+              </div>
+            </div>
 
             {/* update buttons */}
             <div className="flex flx-row justify-end mt-2 gap-2 ">
@@ -487,7 +571,7 @@ const Profile = () => {
                 />
               </div>
 
-              <h2 className="mt-3 w-full font-semibold text-2xl">Hobby</h2>
+              <h2 className="mt-3 w-full font-semibold text-2xl">Hobbies</h2>
               <div className="w-full">
                 <Info
                   msg={"Dancing, Cinemetography, etc. ( Comma seperated )"}
@@ -505,6 +589,44 @@ const Profile = () => {
                   {...register(`hobbies`)}
                   className=" outline-none px-4 py-1 rounded-md bg-gray-700"
                 />
+              </div>
+
+              <h2 className="mt-3 w-full font-semibold text-2xl">Resume</h2>
+              <div className="flex flex-row gap-2 flex-wrap items-center">
+                <div className="bg-blue-500 text-white w-44 h-10 px-4 py-2 rounded-md">
+                  <p className="text-center">
+                    {isUploadingResume ? (
+                      <ClipLoader size={20} />
+                    ) : (
+                      "Upload Resume"
+                    )}
+                  </p>
+                  <input
+                    type="file"
+                    disabled={isUploadingProfilePic}
+                    className="z-10 opacity-0 relative -top-4 left-0  w-full h-full"
+                    onChange={(e) => {
+                      console.log(e.target.files);
+                      if (e.target.files) {
+                        handleResumeUpload(e.target.files[0]);
+                      }
+                    }}
+                  />
+                </div>
+                {resume ? (
+                  <div>
+                    <Link to={resume}>
+                      <button
+                        type="button"
+                        className="text-section  bg-blue-500 rounded-md px-4 py-2 disabled:bg-section"
+                      >
+                        Download Resume
+                      </button>
+                    </Link>
+                  </div>
+                ) : (
+                  <p></p>
+                )}
               </div>
 
               {/* Competitive programming */}

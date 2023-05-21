@@ -1,12 +1,13 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { ClipLoader, HashLoader } from "react-spinners";
-import { useLocation, useParams, useNavigate } from "react-router-dom";
+import { useLocation, useParams, useNavigate, Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import companyViewValidator from "../form-validators/companyView.validator";
-
+import { toast } from "react-toastify";
 import {
   AiOutlineDelete,
+  AiOutlineDownload,
   AiOutlineUsergroupAdd,
   AiOutlineUsergroupDelete,
 } from "react-icons/ai";
@@ -55,12 +56,33 @@ const StudentView = () => {
           </div>
         ) : (
           <div className="bg-section mx-auto px-4 py-4 lg:w-2/3">
-            <div className="flex flx-row justify-between my-3 ">
-              <h1 className="text-3xl font-bold">
-                {stu.firstName + " " + stu.lastName}
-              </h1>
+            <div className="flex flx-row my-3 items-center gap-4 flex-wrap ">
+              <img
+                src={stu.profilePic}
+                alt=""
+                className="w-36 h-36 object-cover rounded-full"
+              />
+              <div>
+                <h1 className="text-3xl font-bold">
+                  {stu.firstName + " " + stu.lastName}
+                </h1>
+                <h1 className="text-lg font-bold uppercase">
+                  {stu.collegeEmail}
+                </h1>
+              </div>
             </div>
-            <div className="flex flx-row justify-end mt-2 ">
+            <div className="flex flx-row justify-end mt-2 gap-2 ">
+              <a
+                target="_blank"
+                onClick={() => {
+                  if (stu.resume) window.location = stu.resume;
+                  else toast.warning("No resume found");
+                }}
+              >
+                <button className="text-section flex flex-row gap-2 bg-placeholder rounded-full px-2 py-2 self-end">
+                  <AiOutlineDownload size={24} /> <span>Download Resume</span>
+                </button>
+              </a>
               <div className="flex flex-row gap-4">
                 <div className="flex flex-col">
                   <button

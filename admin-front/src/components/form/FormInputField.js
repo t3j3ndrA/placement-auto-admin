@@ -18,7 +18,7 @@ const FormInputField = ({
         render={({ message }) => <span className="text-danger">{message}</span>}
       />
       <input
-        disabled={isEditable ? isEditable : true}
+        disabled={isEditable ? isEditable : false}
         type={type || "text"}
         step={0.01}
         {...register(name, {

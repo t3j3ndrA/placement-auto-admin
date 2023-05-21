@@ -22,7 +22,7 @@ export const newCompanyStarter = {
       interviewDate: "",
       interviewMode: "",
       requirements: {
-        cpi: 7.2,
+        cpi: 0.0,
         twelfthPerc: 0.0,
         tenthPerc: 0.0,
         diplomaPerc: 0.0,
