@@ -33,12 +33,9 @@ export const Already_applied = () => {
 
   const renderItem1 = (item) => {
     return (
-      <div
-        className=" p-4 mx-10 my-8 text-white rounded-lg"
-        style={{ backgroundColor: "#1A1C33" }}
-      >
+      <div className=" p-4 mx-10 my-8 text-black bg-[#d8ecff] rounded-md  border-blue-500 ">
         <div>
-          <h3>
+          <h3 className="text-blue-600 text-xl">
             <b>{item.name}</b>
           </h3>
         </div>
@@ -64,43 +61,43 @@ export const Already_applied = () => {
 
         <br />
 
-        <div className=" mx-auto container bg-white dark:bg-gray-800 shadow rounded">
-          <table className="min-w-full bg-white dark:bg-gray-800">
+        <div className=" mx-auto container  rounded">
+          <table className="min-w-full">
             <thead>
-              <tr className="w-full  border-gray-300 border-b ">
+              <tr className="w-full h-16 dark:text-blue-600 border-gray-400 font-semibold border-b py-8">
                 <th
                   role="columnheader"
-                  className="px-5 py-3 text-gray-600 dark:text-gray-400 font-normal pr-6 text-left text-sm tracking-normal leading-4"
+                  className="px-5 py-3 font   pr-6 text-left text-sm tracking-normal leading-4"
                 >
                   Role
                 </th>
                 <th
                   role="columnheader"
-                  className="px-5 py-3 text-gray-600 dark:text-gray-400 font-normal pr-6 text-left text-sm tracking-normal leading-4"
+                  className="px-5 py-3   pr-6 text-left text-sm tracking-normal leading-4"
                 >
                   AVG. Package
                 </th>
                 <th
                   role="columnheader"
-                  className="px-5 py-3 text-gray-600 dark:text-gray-400 font-normal pr-6 text-left text-sm tracking-normal leading-4"
+                  className="px-5 py-3   pr-6 text-left text-sm tracking-normal leading-4"
                 >
                   TYPE
                 </th>
                 <th
                   role="columnheader"
-                  className="px-5 py-3 text-gray-600 dark:text-gray-400 font-normal pr-6 text-left text-sm tracking-normal leading-4"
+                  className="px-5 py-3   pr-6 text-left text-sm tracking-normal leading-4"
                 >
                   DEADLINE
                 </th>
                 <th
                   role="columnheader"
-                  className="px-5 py-3 text-gray-600 dark:text-gray-400 font-normal pr-6 text-left text-sm tracking-normal leading-4"
+                  className="px-5 py-3  pr-6 text-left text-sm tracking-normal leading-4"
                 >
                   INTERVIEW DATE
                 </th>
                 <th
                   role="columnheader"
-                  className="px-5 py-3 text-gray-600 dark:text-gray-400 font-normal pr-6 text-left text-sm tracking-normal leading-4"
+                  className="px-5 py-3  pr-6 text-left text-sm tracking-normal leading-4"
                 >
                   MODE
                 </th>
@@ -110,28 +107,28 @@ export const Already_applied = () => {
               {item.roles.map((item1) => {
                 return (
                   <React.Fragment>
-                    <tr className=" border-gray-300 border-b">
-                      <td className="px-5 py-3 text-sm pr-6 whitespace-no-wrap text-gray-800 dark:text-gray-100 tracking-normal leading-4">
+                    <tr className=" border-gray-400 border-b">
+                      <td className="px-5 py-3 text-sm pr-6 whitespace-no-wrap text-gray-800 dark:text-gray-900 tracking-normal leading-4">
                         {item1.name}
                       </td>
 
-                      <td className="px-5 py-3 text-sm pr-6 whitespace-no-wrap text-gray-800 dark:text-gray-100 tracking-normal leading-4">
+                      <td className="px-5 py-3 text-sm pr-6 whitespace-no-wrap text-gray-800 dark:text-gray-900 tracking-normal leading-4">
                         {item1.avgPackage} LPA
                       </td>
 
-                      <td className="px-5 py-3 text-sm pr-6 whitespace-no-wrap text-gray-800 dark:text-gray-100 tracking-normal leading-4">
+                      <td className="px-5 py-3 text-sm pr-6 whitespace-no-wrap text-gray-800 dark:text-gray-900 tracking-normal leading-4">
                         {item1.type}
                       </td>
 
-                      <td className="px-5 py-3 text-sm pr-6 whitespace-no-wrap text-gray-800 dark:text-gray-100 tracking-normal leading-4">
+                      <td className="px-5 py-3 text-sm pr-6 whitespace-no-wrap text-gray-800 dark:text-gray-900 tracking-normal leading-4">
                         {convertToDate(item1.deadline)}
                       </td>
 
-                      <td className="px-5 py-3 text-sm pr-6 whitespace-no-wrap text-gray-800 dark:text-gray-100 tracking-normal leading-4">
+                      <td className="px-5 py-3 text-sm pr-6 whitespace-no-wrap text-gray-800 dark:text-gray-900 tracking-normal leading-4">
                         {convertToDate(item1.interviewDate)}
                       </td>
 
-                      <td className="px-5 py-3 text-sm pr-6 whitespace-no-wrap text-gray-800 dark:text-gray-100 tracking-normal leading-4">
+                      <td className="px-5 py-3 text-sm pr-6 whitespace-no-wrap text-gray-800 dark:text-gray-900 tracking-normal leading-4">
                         {item1.mode}
                       </td>
                     </tr>
@@ -143,23 +140,23 @@ export const Already_applied = () => {
         </div>
 
         <br />
-        <div className="grid justify-items-center">
-          <div className="bg-white text-black w-1/4 rounded-lg grid justify-items-center">
-            <Link to={"/Company/" + encrypter(item._id)}>
-              <button>View More</button>
-            </Link>
-          </div>
+        <div className=" grid justify-items-center">
+          <Link to={"/Company/" + encrypter(item._id)}>
+            <div className="bg-blue-500 text-white  rounded-lg grid justify-items-center">
+              <button className="px-4 py-2">View More</button>
+            </div>
+          </Link>
         </div>
       </div>
     );
   };
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: "#0B0E2A" }}>
+    <div className="min-h-screen">
       <Navbar />
       {isLoading || isError ? (
         <div className="mt-5 text-center">
-          <ClipLoader color="white" size={45} />
+          <ClipLoader color="blue" size={45} />
         </div>
       ) : (
         _data.map(renderItem1)

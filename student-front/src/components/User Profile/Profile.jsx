@@ -133,21 +133,21 @@ const Profile = () => {
   const resume = watch("resume");
 
   return (
-    <div className="bg-[#0B0E2A] min-h-screen text-white">
+    <div className="bg-white min-h-screen text-black ">
       {/* Navbar */}
       <Navbar focusOn="companies" />
       {/* Wrapper div */}
-      <div className="px-2 py-5 flex flex-col gap-8 md:px-8 lg:px-12">
+      <div className=" px-2 py-5 flex flex-col gap-8 md:px-8 lg:px-12">
         {isLoading ? (
           <div className="flex flex-row justify-center mt-12">
             <HashLoader color="white" />
           </div>
         ) : (
-          <div className="bg-[#1c1434] mx-auto px-4 py-4 lg:w-2/3">
-            <div className="flex flex-row flex-wrap gap-4">
+          <div className="bg-[#d8ecff] rounded-md mx-auto px-4 py-4 lg:w-2/3">
+            <div className="flex flex-row flex-wrap gap-4 items-center">
               <img
                 src={profilePic}
-                className="w-24 h-24 rounded-full object-center"
+                className="w-36 h-36  object-cover rounded-full"
               />
 
               <div className="flex flex-col gap-2">
@@ -158,7 +158,7 @@ const Profile = () => {
                 >
                   {nameWatch}
                 </h1>
-                <div className="bg-blue-500 text-white w-32 h-8">
+                <div className="bg-blue-500 text-white w-32 h-8 rounded-xl">
                   <p className="text-center">
                     {isUploadingProfilePic ? (
                       <ClipLoader size={20} />
@@ -184,7 +184,7 @@ const Profile = () => {
             {/* update buttons */}
             <div className="flex flx-row justify-end mt-2 gap-2 ">
               <button
-                className="text-section mt-5 bg-blue-500 rounded-md px-4 py-2 disabled:bg-section"
+                className="text-section mt-5 text-white bg-blue-500 rounded-md px-4 py-2 disabled:bg-section"
                 onClick={handleSubmit(updateStudent)}
                 disabled={isUpdating}
               >
@@ -197,7 +197,7 @@ const Profile = () => {
                 )}
               </button>
               <Link to="/changepassword">
-                <button className="text-section mt-5 bg-blue-500 rounded-md px-4 py-2 disabled:bg-section">
+                <button className="text-section mt-5 text-white bg-blue-500 rounded-md px-4 py-2 disabled:bg-section">
                   Change Password
                 </button>
               </Link>
@@ -230,7 +230,7 @@ const Profile = () => {
 
               {/* Gender Remaining */}
               <div className="flex  flex-col gap-1 w-full md:w-2/5">
-                <span className="text-white">Gender *</span>
+                <span className="">Gender *</span>
                 <ErrorMessage
                   errors={errors}
                   name={`gender`}
@@ -243,7 +243,7 @@ const Profile = () => {
                     required: "Gender is required",
                     minLength: 1,
                   })}
-                  className="outline-none px-4 py-1 rounded-md bg-gray-700"
+                  className="outline-none px-4 py-1 rounded-md border-[1px] border-[1px] border-gray-600"
                 >
                   <option value="male"> Male</option>
                   <option value="female"> Female</option>
@@ -259,7 +259,7 @@ const Profile = () => {
                 isRequired={true}
               />
 
-              <h2 className="mt-3 w-full font-semibold text-2xl">
+              <h2 className="mt-3 w-full font-semibold text-3xl text-blue-500">
                 College Details
               </h2>
               <FormInputField
@@ -316,11 +316,15 @@ const Profile = () => {
                 register={register}
               />
 
-              <h2 className="mt-3 w-full font-semibold text-2xl">Result</h2>
+              <h2 className="mt-3 w-full font-semibold text-3xl text-blue-500 ">
+                Result
+              </h2>
               <div className="w-full">
                 <Info msg={"Put 0 if  not applicable."} />
               </div>
-              <h2 className="mt-3 w-full font-semibold text-lg">College</h2>
+              <h2 className="mt-3 w-full font-semibold text-3xl text-blue-500">
+                College
+              </h2>
 
               <FormInputField
                 name="result.sem1"
@@ -396,7 +400,7 @@ const Profile = () => {
                 isRequired={true}
               />
 
-              <h2 className="mt-3 w-full font-semibold text-lg">
+              <h2 className="mt-3 w-full font-semibold text-3xl text-blue-500">
                 Academic Gap
               </h2>
 
@@ -417,7 +421,9 @@ const Profile = () => {
                 isRequired={true}
               />
 
-              <h2 className="mt-3 w-full font-semibold text-lg">Backlogs</h2>
+              <h2 className="mt-3 w-full font-semibold  text-3xl text-blue-500">
+                Backlogs
+              </h2>
 
               <FormInputField
                 name="result.activeBacklogs"
@@ -437,7 +443,9 @@ const Profile = () => {
                 type="number"
               />
 
-              <h2 className="mt-3 w-full font-semibold text-lg">HSC</h2>
+              <h2 className="mt-3 w-full font-semibold text-3xl text-blue-500">
+                HSC
+              </h2>
 
               <FormInputField
                 name="result.twelfthPerc"
@@ -449,7 +457,7 @@ const Profile = () => {
               />
 
               <div className="flex  flex-col gap-1 w-full md:w-2/5">
-                <span className="text-white">12th Board Type</span>
+                <span className="">12th Board Type</span>
                 <ErrorMessage
                   errors={errors}
                   name={`result.twelfthBoardType`}
@@ -459,7 +467,7 @@ const Profile = () => {
                 />
                 <select
                   {...register(`result.twelfthBoardType`)}
-                  className="outline-none px-4 py-1 rounded-md bg-gray-700"
+                  className="outline-none px-4 py-1 rounded-md border-[1px] border-gray-600"
                 >
                   <option value="gseb"> GSEB</option>
                   <option value="cbse"> CBSE</option>
@@ -476,7 +484,9 @@ const Profile = () => {
                 type="number"
               />
 
-              <h2 className="mt-3 w-full font-semibold text-lg">SSC</h2>
+              <h2 className="mt-3 w-full font-semibold text-3xl text-blue-500">
+                SSC
+              </h2>
               <FormInputField
                 name="result.tenthPerc"
                 title={"10th %"}
@@ -487,7 +497,7 @@ const Profile = () => {
               />
 
               <div className="flex  flex-col gap-1 w-full md:w-2/5">
-                <span className="text-white">10th Board Type</span>
+                <span className="">10th Board Type</span>
                 <ErrorMessage
                   errors={errors}
                   name={`result.tenthBoardType`}
@@ -497,7 +507,7 @@ const Profile = () => {
                 />
                 <select
                   {...register(`result.tenthBoardType`)}
-                  className="outline-none px-4 py-1 rounded-md bg-gray-700"
+                  className="outline-none px-4 py-1 rounded-md border-[1px] border-[1px] border-gray-600"
                 >
                   <option value="gseb"> GSEB</option>
                   <option value="cbse"> CBSE</option>
@@ -512,7 +522,9 @@ const Profile = () => {
                 errors={errors}
                 register={register}
               />
-              <h2 className="mt-3 w-full font-semibold text-lg">Diploma</h2>
+              <h2 className="mt-3 w-full font-semibold text-3xl text-blue-500">
+                Diploma
+              </h2>
 
               <FormInputField
                 name="result.diplomaPerc"
@@ -524,7 +536,7 @@ const Profile = () => {
               />
 
               <div className="flex  flex-col gap-1 w-full md:w-2/5">
-                <span className="text-white">Diploma Board Type</span>
+                <span className="">Diploma Board Type</span>
                 <ErrorMessage
                   errors={errors}
                   name={`result.diplomaBoardType`}
@@ -534,7 +546,7 @@ const Profile = () => {
                 />
                 <select
                   {...register(`result.diplomaBoardType`)}
-                  className="outline-none px-4 py-1 rounded-md bg-gray-700"
+                  className="outline-none px-4 py-1 rounded-md border-[1px] border-gray-600"
                 >
                   <option value="gseb"> GSEB</option>
                   <option value="cbse"> CBSE</option>
@@ -551,7 +563,7 @@ const Profile = () => {
               />
 
               {/* Technical Skills */}
-              <h2 className="mt-3 w-full font-semibold text-2xl">
+              <h2 className="mt-3 w-full font-semibold text-3xl text-blue-500">
                 Technical Skills
               </h2>
               <div className="w-full">
@@ -567,11 +579,13 @@ const Profile = () => {
                 />
                 <textarea
                   {...register(`technicalSkills`)}
-                  className=" outline-none px-4 py-1 rounded-md bg-gray-700"
+                  className=" outline-none px-4 py-1 rounded-md border-[1px] border-gray-600"
                 />
               </div>
 
-              <h2 className="mt-3 w-full font-semibold text-2xl">Hobbies</h2>
+              <h2 className="mt-3 w-full font-semibold text-3xl text-blue-500">
+                Hobbies
+              </h2>
               <div className="w-full">
                 <Info
                   msg={"Dancing, Cinemetography, etc. ( Comma seperated )"}
@@ -587,13 +601,15 @@ const Profile = () => {
                 />
                 <textarea
                   {...register(`hobbies`)}
-                  className=" outline-none px-4 py-1 rounded-md bg-gray-700"
+                  className=" outline-none px-4 py-1 rounded-md border-[1px] border-gray-600"
                 />
               </div>
 
-              <h2 className="mt-3 w-full font-semibold text-2xl">Resume</h2>
-              <div className="flex flex-row gap-2 flex-wrap items-center">
-                <div className="bg-blue-500 text-white w-44 h-10 px-4 py-2 rounded-md">
+              <h2 className="mt-3 w-full font-semibold text-3xl text-blue-500">
+                Resume
+              </h2>
+              <div className="flex flex-row gap-2 mt-3 flex-wrap items-center">
+                <div className="border-blue-500 border-[1px] text-blue-500 w-44 h-10 px-4 py-2 rounded-md">
                   <p className="text-center">
                     {isUploadingResume ? (
                       <ClipLoader size={20} />
@@ -618,7 +634,7 @@ const Profile = () => {
                     <Link to={resume}>
                       <button
                         type="button"
-                        className="text-section  bg-blue-500 rounded-md px-4 py-2 disabled:bg-section"
+                        className="text-section border-blue-500 border-[1px] text-blue-500 rounded-md px-4 py-2 disabled:bg-section"
                       >
                         Download Resume
                       </button>
@@ -630,7 +646,7 @@ const Profile = () => {
               </div>
 
               {/* Competitive programming */}
-              <h2 className="mt-3 w-full font-semibold text-2xl">
+              <h2 className="mt-3 w-full font-semibold text-3xl text-blue-500">
                 Competitive Coding
               </h2>
 
@@ -673,7 +689,7 @@ const Profile = () => {
                       />
                       <div className="flex flex-col mt-3 justify-end gap-1 w-full md:w-2/5">
                         <button
-                          className="flex flex-row  gap-2 justify-center bg-[#a62f2f] px-2 py-1 rounded-md"
+                          className="flex flex-row  gap-2 justify-center text-red-700 border-[1px] border-red-500 px-2 py-1 rounded-md"
                           onClick={(e) =>
                             handleRemoveCP(e, cpIndex, cpWatch, setValue)
                           }
@@ -687,7 +703,7 @@ const Profile = () => {
                   );
                 })}
                 <button
-                  className="flex mt-3 flex-row gap-2 justify-center bg-[#3040D6] px-2 py-1 rounded-md"
+                  className="flex mt-3 flex-row gap-2 justify-center bg-[#3040D6] text-white px-2 py-1 rounded-md"
                   onClick={(e) => handleAddCP(e, cpWatch, setValue)}
                 >
                   <span className=""> Add Platform</span>
@@ -697,13 +713,13 @@ const Profile = () => {
                 <div className="h-[1px] w-full border-dashed border-b-[2px] border-placeholder opacity-60  my-2"></div>
               </div>
 
-              <h2 className="w-full font-semibold text-2xl mt-3">
+              <h2 className="w-full font-semibold text-3xl text-blue-500 mt-3">
                 Placement Status
               </h2>
 
               {/* Placement Status */}
               <div className="flex  flex-col gap-1 w-full md:w-2/5">
-                <span className="text-white">Selected ?</span>
+                <span className="">Selected ?</span>
                 {/* <ErrorMessage
                   errors={errors}
                   name={`roles.${roleIndex}.type`}
@@ -713,7 +729,7 @@ const Profile = () => {
                 /> */}
                 <select
                   {...register(`placementStatus.selected`)}
-                  className="outline-none px-4 py-1 rounded-md bg-gray-700"
+                  className="outline-none px-4 py-1 rounded-md border-[1px] border-gray-600"
                 >
                   <option value="yes"> Yes</option>
                   <option value="no"> No</option>
@@ -750,7 +766,7 @@ const Profile = () => {
 
               {/* Mode of job */}
               <div className="flex  flex-col gap-1 w-full md:w-2/5">
-                <span className="text-white">Mode</span>
+                <span className="">Mode</span>
                 {/* <ErrorMessage
                   errors={errors}
                   name={`roles.${roleIndex}.type`}
@@ -760,7 +776,7 @@ const Profile = () => {
                 /> */}
                 <select
                   {...register(`placementStatus.mode`)}
-                  className="outline-none px-4 py-1 rounded-md bg-gray-700"
+                  className="outline-none px-4 py-1 rounded-md border-[1px] border-gray-600"
                 >
                   <option value="remote"> Remote</option>
                   <option value="on-site"> On Site</option>
@@ -768,12 +784,12 @@ const Profile = () => {
                 </select>
               </div>
               {/* Internship Status*/}
-              <h2 className="w-full font-semibold text-2xl mt-3">
+              <h2 className="w-full font-semibold text-2xl mt-3 text-3xl text-blue-500">
                 Internship Status
               </h2>
               {/* Placement Status */}
               <div className="flex  flex-col gap-1 w-full md:w-2/5">
-                <span className="text-white">Selected ?</span>
+                <span className="">Selected ?</span>
                 {/* <ErrorMessage
                   errors={errors}
                   name={`roles.${roleIndex}.type`}
@@ -783,7 +799,7 @@ const Profile = () => {
                 /> */}
                 <select
                   {...register(`internshipStatus.selected`)}
-                  className="outline-none px-4 py-1 rounded-md bg-gray-700"
+                  className="outline-none px-4 py-1 rounded-md border-[1px] border-gray-600"
                 >
                   <option value="yes"> Yes</option>
                   <option value="no"> No</option>
@@ -820,7 +836,7 @@ const Profile = () => {
 
               {/* Mode of job */}
               <div className="flex  flex-col gap-1 w-full md:w-2/5">
-                <span className="text-white">Mode</span>
+                <span className="">Mode</span>
                 {/* <ErrorMessage
                   errors={errors}
                   name={`roles.${roleIndex}.type`}
@@ -830,7 +846,7 @@ const Profile = () => {
                 /> */}
                 <select
                   {...register(`internshipStatus.mode`)}
-                  className="outline-none px-4 py-1 rounded-md bg-gray-700"
+                  className="outline-none px-4 py-1 rounded-md border-[1px] border-gray-600"
                 >
                   <option value="remote"> Remote</option>
                   <option value="on-site"> On Site</option>
@@ -838,7 +854,9 @@ const Profile = () => {
                 </select>
               </div>
               {/* ADDRESS */}
-              <h2 className="mt-2 w-full font-semibold text-2xl">Address</h2>
+              <h2 className="mt-2 w-full font-semibold text-3xl text-blue-500">
+                Address
+              </h2>
               {/* address.city */}
               <FormInputField
                 name={`address.city`}
