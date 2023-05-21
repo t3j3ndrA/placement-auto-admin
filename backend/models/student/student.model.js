@@ -2,12 +2,20 @@ const mongoose = require("mongoose");
 
 const StudentSchema = mongoose.Schema({
   // personal information
+  profilePic: {
+    type: String,
+    default: "https://cdn.onlinewebfonts.com/svg/img_516635.png",
+  },
+  resume: {
+    type: String,
+  },
   firstName: { type: String, default: "" },
   middleName: { type: String, default: "" },
   lastName: { type: String, default: "" },
   gender: { type: String, enum: ["male", "female", "other", ""], default: "" },
   dateOfBirth: { type: String },
   isVerified: { type: Boolean, default: false },
+
   // college information
   collegeID: { type: String, default: "" },
   rollNumber: { type: String, default: "" },
@@ -40,10 +48,36 @@ const StudentSchema = mongoose.Schema({
       sem7: { type: Number, min: 0, max: 10, default: 0 },
       sem8: { type: Number, min: 0, max: 10, default: 0 },
       cpi: { type: Number, min: 0, max: 10, default: 0 },
+
       twelfthPerc: { type: Number, default: 0 },
+      twelfthBoardType: { type: String, default: "" },
+      twelfthBoardPassingYear: { type: Number, default: 0 },
+
       tenthPerc: { type: Number, default: 0 },
+      tenthBoardType: { type: String, default: "" },
+      tenthBoardPassingYear: { type: Number, default: 0 },
+
       diplomaPerc: { type: Number, default: 0 },
+      diplomaBoardType: { type: String, default: "" },
+      diplomaBoardPassingYear: { type: Number, default: 0 },
+
+      // year gaps
+      academicGap: { type: Number, default: 0 },
+      academicGapReason: { type: String, default: 0 },
+
+      // backlogs
+      totalBacklogs: { type: Number, default: 0 },
+      activeBacklogs: { type: Number, default: 0 },
     }),
+  },
+
+  // skills, hobby
+  technicalSkills: {
+    type: String,
+  },
+
+  hobbies: {
+    type: String,
   },
 
   // competitive coding

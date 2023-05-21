@@ -1,12 +1,13 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { ClipLoader, HashLoader } from "react-spinners";
-import { useLocation, useParams, useNavigate } from "react-router-dom";
+import { useLocation, useParams, useNavigate, Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import companyViewValidator from "../form-validators/companyView.validator";
-
+import { toast } from "react-toastify";
 import {
   AiOutlineDelete,
+  AiOutlineDownload,
   AiOutlineUsergroupAdd,
   AiOutlineUsergroupDelete,
 } from "react-icons/ai";
@@ -55,12 +56,33 @@ const StudentView = () => {
           </div>
         ) : (
           <div className="bg-section mx-auto px-4 py-4 lg:w-2/3">
-            <div className="flex flx-row justify-between my-3 ">
-              <h1 className="text-3xl font-bold">
-                {stu.firstName + " " + stu.lastName}
-              </h1>
+            <div className="flex flx-row my-3 items-center gap-4 flex-wrap ">
+              <img
+                src={stu.profilePic}
+                alt=""
+                className="w-36 h-36 object-cover rounded-full"
+              />
+              <div>
+                <h1 className="text-3xl font-bold">
+                  {stu.firstName + " " + stu.lastName}
+                </h1>
+                <h1 className="text-lg font-bold uppercase">
+                  {stu.collegeEmail}
+                </h1>
+              </div>
             </div>
-            <div className="flex flx-row justify-end mt-2 ">
+            <div className="flex flx-row justify-end mt-2 gap-2 ">
+              <a
+                target="_blank"
+                onClick={() => {
+                  if (stu.resume) window.location = stu.resume;
+                  else toast.warning("No resume found");
+                }}
+              >
+                <button className="text-section flex flex-row gap-2 bg-placeholder rounded-full px-2 py-2 self-end">
+                  <AiOutlineDownload size={24} /> <span>Download Resume</span>
+                </button>
+              </a>
               <div className="flex flex-row gap-4">
                 <div className="flex flex-col">
                   <button
@@ -231,6 +253,7 @@ const StudentView = () => {
               </div>
               {/* College  Details */}
               <h2 className="mt-3 w-full font-semibold text-2xl">Result</h2>
+              <h2 className="mt-3 w-full font-semibold text-lg">College</h2>
 
               {/* Sem1 */}
               <div className="flex  flex-col gap-1 w-full md:w-2/5">
@@ -324,19 +347,38 @@ const StudentView = () => {
                   className="outline-none px-4 py-1 rounded-md bg-subSection"
                 />
               </div>
+              <h2 className="mt-3 w-full font-semibold text-lg">HSC</h2>
+
               {/* Twelfth Perc */}
               <div className="flex  flex-col gap-1 w-full md:w-2/5">
                 <span className="text-placeholder">12th Percentage</span>
                 <input
                   disabled={true}
-                  name="twelfthPerc"
                   value={stu.result.twelfthPerc}
                   className="outline-none px-4 py-1 rounded-md bg-subSection"
                 />
               </div>
+              <div className="flex  flex-col gap-1 w-full md:w-2/5">
+                <span className="text-placeholder">12th Board type</span>
+                <input
+                  disabled={true}
+                  value={stu.result.twelfthBoardType}
+                  className="outline-none px-4 py-1 rounded-md bg-subSection uppercase"
+                />
+              </div>
+              <div className="flex  flex-col gap-1 w-full md:w-2/5">
+                <span className="text-placeholder">12th Passing Year</span>
+                <input
+                  disabled={true}
+                  value={stu.result.twelfthBoardPassingYear}
+                  className="outline-none px-4 py-1 rounded-md bg-subSection"
+                />
+              </div>
+              <h2 className="mt-3 w-full font-semibold text-lg">SSC</h2>
+
               {/* Tenth Perce */}
               <div className="flex  flex-col gap-1 w-full md:w-2/5">
-                <span className="text-placeholder">Tenth Perc</span>
+                <span className="text-placeholder">10th Perc</span>
                 <input
                   disabled={true}
                   name="tenthPerc"
@@ -344,6 +386,26 @@ const StudentView = () => {
                   className="outline-none px-4 py-1 rounded-md bg-subSection"
                 />
               </div>
+
+              <div className="flex  flex-col gap-1 w-full md:w-2/5">
+                <span className="text-placeholder">10th Board type</span>
+                <input
+                  disabled={true}
+                  value={stu.result.tenthBoardType}
+                  className="outline-none px-4 py-1 rounded-md bg-subSection uppercase"
+                />
+              </div>
+              <div className="flex  flex-col gap-1 w-full md:w-2/5">
+                <span className="text-placeholder">10th Passing Year</span>
+                <input
+                  disabled={true}
+                  value={stu.result.tenthBoardPassingYear}
+                  className="outline-none px-4 py-1 rounded-md bg-subSection"
+                />
+              </div>
+
+              <h2 className="mt-3 w-full font-semibold text-lg">Diploma</h2>
+
               {/* Diploma Perc */}
               <div className="flex  flex-col gap-1 w-full md:w-2/5">
                 <span className="text-placeholder">Diploma Percentage</span>
@@ -354,6 +416,90 @@ const StudentView = () => {
                   className="outline-none px-4 py-1 rounded-md bg-subSection"
                 />
               </div>
+
+              <div className="flex  flex-col gap-1 w-full md:w-2/5">
+                <span className="text-placeholder">Diploma Board type</span>
+                <input
+                  disabled={true}
+                  value={stu.result.diplomaBoardType}
+                  className="outline-none px-4 py-1 rounded-md bg-subSection uppercase"
+                />
+              </div>
+              <div className="flex  flex-col gap-1 w-full md:w-2/5">
+                <span className="text-placeholder">Diploma Passing Year</span>
+                <input
+                  disabled={true}
+                  value={stu.result.diplomaBoardPassingYear}
+                  className="outline-none px-4 py-1 rounded-md bg-subSection"
+                />
+              </div>
+
+              <h2 className="mt-3 w-full font-semibold text-lg">
+                Academic Gap
+              </h2>
+
+              {/* Academic gap */}
+              <div className="flex  flex-col gap-1 w-full md:w-2/5">
+                <span className="text-placeholder">Academic Gap</span>
+                <input
+                  disabled={true}
+                  value={stu.result.academicGap}
+                  className="outline-none px-4 py-1 rounded-md bg-subSection"
+                />
+              </div>
+              {/* Reason */}
+              <div className="flex  flex-col gap-1 w-full md:w-2/5">
+                <span className="text-placeholder">
+                  Reason for academic Gap{" "}
+                </span>
+                <input
+                  disabled={true}
+                  value={stu.result.academicGapReason}
+                  className="outline-none px-4 py-1 rounded-md bg-subSection"
+                />
+              </div>
+
+              <h2 className="mt-3 w-full font-semibold text-lg">Backlogs</h2>
+              {/* Academic gap */}
+              <div className="flex  flex-col gap-1 w-full md:w-2/5">
+                <span className="text-placeholder">Active backlogs</span>
+                <input
+                  disabled={true}
+                  value={stu.result.activeBacklogs}
+                  className="outline-none px-4 py-1 rounded-md bg-subSection"
+                />
+              </div>
+              {/* Reason */}
+              <div className="flex  flex-col gap-1 w-full md:w-2/5">
+                <span className="text-placeholder">Total backlogs</span>
+                <input
+                  disabled={true}
+                  value={stu.result.totalBacklogs}
+                  className="outline-none px-4 py-1 rounded-md bg-subSection"
+                />
+              </div>
+              {/* Technical Skills */}
+              <h2 className="mt-3 w-full font-semibold text-2xl">
+                Technical Skills
+              </h2>
+
+              <div className="flex  flex-col gap-1 w-full">
+                <textarea
+                  disabled={true}
+                  value={stu?.technicalSkills}
+                  className=" outline-none px-4 py-1 rounded-md bg-subSection"
+                />
+              </div>
+
+              <h2 className="mt-3 w-full font-semibold text-2xl">Hobbies</h2>
+              <div className="flex  flex-col gap-1 w-full">
+                <textarea
+                  disabled={true}
+                  value={stu?.hobbies}
+                  className=" outline-none px-4 py-1 rounded-md bg-subSection"
+                />
+              </div>
+
               {/* Competitive programming */}
               <h2 className="mt-3 w-full font-semibold text-2xl">
                 Competitive Coding

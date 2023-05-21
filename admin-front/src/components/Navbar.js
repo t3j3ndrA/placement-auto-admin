@@ -24,10 +24,10 @@ const Navbar = ({ focusOn }) => {
       {/* Top section */}
       <div className="flex flex-row justify-between items-center">
         <div className="flex flex-row gap-8 items-center">
-          <img
+          {/* <img
             src="https://wilcity.com/wp-content/uploads/2018/12/sample-logo-design-png-3-2.png"
             className="rounded-full w-10 h-10 bg-cover"
-          />
+          /> */}
 
           <span className="font-semibold text-2xl">DDU - Placement Portal</span>
         </div>

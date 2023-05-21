@@ -19,6 +19,8 @@ const registerNewStudentWithEmail = async (req, res) => {
 
   let students = [];
   let alreadyRegistered = [];
+  let incorrectEmails = [];
+  let successfullyRegistered = [];
 
   for (let i = 0; i < collegeEmails.length; ++i) {
     try {
@@ -44,8 +46,12 @@ const registerNewStudentWithEmail = async (req, res) => {
             internshipStatus: {},
           })
         );
-
-        sendVerificationEmail(collegeEmails[i], password);
+        try {
+          sendVerificationEmail(collegeEmails[i], password);
+          successfullyRegistered.push(collegeEmails[i]);
+        } catch (err) {
+          incorrectEmails.push(collegeEmails[i]);
+        }
       } else {
         alreadyRegistered.push(foundStudent.collegeEmail);
       }
@@ -59,7 +65,10 @@ const registerNewStudentWithEmail = async (req, res) => {
 
   try {
     const savedStudents = await Student.bulkSave(students);
-    return res.json({ success: true, data: alreadyRegistered });
+    return res.json({
+      success: true,
+      data: { alreadyRegistered, successfullyRegistered, incorrectEmails },
+    });
   } catch (err) {
     console.log("/new >> ", err);
     return res

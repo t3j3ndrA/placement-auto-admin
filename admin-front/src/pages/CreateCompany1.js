@@ -38,6 +38,12 @@ const CreateCompany1 = () => {
   const nameWatch = watch("name");
   const rolesWatch = watch("roles");
 
+  // useEffect(() => {
+  //   for (const [key, value] of Object.entries(location.state)) {
+  //     setValue(key, value);
+  //   }
+  // }, [location.state]);
+
   const createCompany = async (company) => {
     setIsCreating(true);
     try {
@@ -51,6 +57,7 @@ const CreateCompany1 = () => {
         toast.error("Invalid data");
       }
     } catch (err) {
+      console.log("err", err);
       toast.error("📶 Low internet connection ");
     } finally {
       setIsCreating(false);
@@ -97,6 +104,7 @@ const CreateCompany1 = () => {
               title={"For Batch"}
               errors={errors}
               register={register}
+              type={"number"}
             />
 
             {/* Description */}
@@ -405,12 +413,12 @@ const CreateCompany1 = () => {
                 className="text-section  bg-white rounded-md px-4 py-2 disabled:bg-section"
                 type="submit"
                 // onClick={() => createCompany()}
-                // disabled={isCreating}
+                disabled={isCreating}
               >
                 {!isCreating ? (
                   "Post Company"
                 ) : (
-                  <ClipLoader color="white" size={22} />
+                  <ClipLoader color="blue" size={22} />
                 )}
               </button>
               {/* </div> */}

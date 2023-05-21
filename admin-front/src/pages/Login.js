@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
-import loginImage from "../assets/register2.jpg";
+import loginImage from "../assets/register4.jpg";
 import { AiOutlineMail, AiOutlineLock } from "react-icons/ai";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";

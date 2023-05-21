@@ -6,6 +6,8 @@ import { Navbar } from "../Navbar/Navbar";
 
 import getStuId from "../../utils/getStuId";
 import { ToastContainer, toast } from "react-toastify";
+import { useForm } from "react-hook-form";
+import { ErrorMessage } from "@hookform/error-message";
 
 const ChangePassword = () => {
   const [password, setPassword] = useState({
@@ -40,9 +42,16 @@ const ChangePassword = () => {
     }
   };
 
-  const handleChange = (e) => {
-    // setPassword({ ...password, [e.target.name]: e.taget.value });
-  };
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isDirty },
+    getValues,
+    setValue,
+
+    watch,
+  } = useForm({});
+  console.log(errors);
   return (
     <div className="bg-[#0B0E2A] min-h-screen text-white">
       {/* Navbar */}
@@ -59,7 +68,12 @@ const ChangePassword = () => {
           {/* Student details */}
           <form className="flex flex-row justify-between gap-2 flex-wrap mt-5">
             <div className="flex  flex-col gap-1 w-full md:w-2/5">
-              <span className="">{"Password *"}</span>
+              <span className="">
+                {password.password.length < 8
+                  ? "Password should be 8 character long"
+                  : "Valid Password"}
+              </span>
+
               <input
                 type={"password"}
                 className="outline-none px-4 py-1 rounded-md bg-gray-700 focus:border-blue-500 focus:bg-gray-800"
@@ -102,7 +116,7 @@ const ChangePassword = () => {
                 disabled={
                   isUpdating ||
                   password.confirmPassword != password.password ||
-                  password.password.length == 0
+                  password.password.length < 8
                 }
               >
                 {/* <ClipLoader color="white" size={22} /> */}
@@ -110,7 +124,7 @@ const ChangePassword = () => {
                 {!isUpdating ? (
                   "Update Password"
                 ) : (
-                  <ClipLoader color="white" size={22} />
+                  <ClipLoader color="blue" size={22} />
                 )}
               </button>
               <Link to="/profile">

@@ -161,17 +161,6 @@ const CreateCompany = () => {
     setCompany({ ...company, roles });
   };
 
-  useEffect(() => {
-    // setIsLoading(true);
-    // axios
-    //   .get(`/api/company?id=${id}`, { withCredentials: true })
-    //   .then((result) => setCompany(result.data?.data))
-    //   .catch((err) => console.log(err));
-    // setIsLoading(false);
-  }, []);
-
-  const handleFormSubmit = () => {};
-
   return (
     <div className="bg-backg min-h-screen text-white">
       {/* Navbar */}

@@ -27,7 +27,7 @@ const FormInputField = ({
       />
       <input
         type={type || "text"}
-        defaultValue={getDefaultValue(type)}
+        defaultValue={type == "number" ? 0 : ""}
         {...register(
           name,
           isRequired === true
@@ -37,7 +37,7 @@ const FormInputField = ({
               }
             : {}
         )}
-        className="outline-none px-4 py-1 rounded-md bg-gray-700 focus:border-blue-500 focus:bg-gray-800"
+        className="outline-none px-4 py-1 rounded-md border-[1px] border-gray-600  "
       />
     </div>
   );

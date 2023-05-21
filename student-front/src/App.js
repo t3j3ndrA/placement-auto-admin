@@ -12,6 +12,7 @@ import crypto from "crypto-js";
 import { Already_applied } from "./components/Already applied/Already_applied";
 import ChangePassword from "./components/User Profile/ChangePassword";
 import PageNotFound from "./components/Error/PageNotFound";
+import { ForgotPassword } from "./components/Form/ForgotPassword";
 
 function Fetch_id() {
   var { id } = useParams();
@@ -33,6 +34,7 @@ function App() {
           <Route exact path="/Company/:id" element={<Fetch_id />} />
           <Route exact path="/AlreadyApplied" element={<Already_applied />} />
           <Route exact path="/changepassword" element={<ChangePassword />} />
+          <Route exact path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/*" element={<PageNotFound />} />
         </Routes>
       </BrowserRouter>

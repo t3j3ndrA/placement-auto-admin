@@ -50,21 +50,15 @@ export const Company_page = ({ fetched_url }) => {
   return (
     <>
       <div>
-        <div className="min-h-screen" style={{ backgroundColor: "#0B0E2A" }}>
+        <div className="min-h-screen">
           <Navbar />
           {isLoading || isError ? (
             <div className="mt-5 text-center">
-              <ClipLoader color="white" size={45} />
+              <ClipLoader color="blue" size={45} />
             </div>
           ) : (
-            <div
-              style={{ backgroundColor: "#0B0E2A" }}
-              className="text-white pt-28 "
-            >
-              <div
-                style={{ backgroundColor: "#1A1C33" }}
-                className="mx-72 grid "
-              >
+            <div className=" text-b;acl  pt-28 ">
+              <div className="mx-72 grid bg-[#d8ecff] rounded-e-md">
                 <br />
                 <div className="flex flex-row align-middle justify-center">
                   <div className="basis-1/3 mx-2">
@@ -73,7 +67,7 @@ export const Company_page = ({ fetched_url }) => {
                   <div className="mx-2 w-full">
                     <input
                       type="text"
-                      className=" px-3 py-2 flex rounded-lg pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none w-full"
+                      className="outline-none px-3 py-2 flex rounded-lg pt-2 border-[1px] border-gray-700  w-full"
                       value={_data.name}
                       autoComplete="false"
                       readOnly={true}
@@ -90,7 +84,7 @@ export const Company_page = ({ fetched_url }) => {
                   <div className="mx-2 w-full">
                     <input
                       type="text"
-                      className=" px-3 py-2 flex rounded-lg pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none w-full"
+                      className="outline-none px-3 py-2 flex rounded-lg pt-2 border-[1px] border-gray-700  w-full"
                       value={_data.website}
                       autoComplete="false"
                       readOnly={true}
@@ -107,7 +101,7 @@ export const Company_page = ({ fetched_url }) => {
                   <div className="mx-2 w-full">
                     <input
                       type="text"
-                      className=" px-3 py-2 flex rounded-lg pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none w-full"
+                      className="outline-none px-3 py-2 flex rounded-lg pt-2 border-[1px] border-gray-700  w-full"
                       value={_data.email}
                       autoComplete="false"
                       readOnly={true}
@@ -124,7 +118,7 @@ export const Company_page = ({ fetched_url }) => {
                   <div className="mx-2 w-full">
                     <input
                       type="text"
-                      className=" px-3 py-2 flex rounded-lg pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none w-full"
+                      className="outline-none px-3 py-2 flex rounded-lg pt-2 border-[1px] border-gray-700  w-full"
                       value={_data && _data.forBatch}
                       autoComplete="false"
                       readOnly={true}
@@ -141,7 +135,7 @@ export const Company_page = ({ fetched_url }) => {
                   <div className="mx-2 w-full">
                     <input
                       type="text"
-                      className=" px-3 py-2 flex rounded-lg pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none w-full"
+                      className="outline-none px-3 py-2 flex rounded-lg pt-2 border-[1px] border-gray-700  w-full"
                       value={_data && _data.description}
                       autoComplete="false"
                       readOnly={true}
@@ -169,7 +163,7 @@ export const Company_page = ({ fetched_url }) => {
                             <div className="mx-2 w-full">
                               <input
                                 type="text"
-                                className=" px-3 py-2 flex rounded-lg pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none w-full"
+                                className="outline-none px-3 py-2 flex rounded-lg pt-2 border-[1px] border-gray-700  w-full"
                                 value={item.name}
                                 autoComplete="false"
                                 readOnly={true}
@@ -191,7 +185,7 @@ export const Company_page = ({ fetched_url }) => {
                             <div className="mx-2 w-full">
                               <input
                                 type="text"
-                                className=" px-3 py-2 flex rounded-lg pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none w-full"
+                                className="outline-none px-3 py-2 flex rounded-lg pt-2 border-[1px] border-gray-700  w-full"
                                 value={item.avgPackage}
                                 autoComplete="false"
                                 readOnly={true}
@@ -213,7 +207,7 @@ export const Company_page = ({ fetched_url }) => {
                             <div className="mx-2 w-full">
                               <input
                                 type="text"
-                                className=" px-3 py-2 flex rounded-lg pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none w-full"
+                                className="outline-none px-3 py-2 flex rounded-lg pt-2 border-[1px] border-gray-700  w-full"
                                 value={item.type}
                                 autoComplete="false"
                                 readOnly={true}
@@ -235,7 +229,7 @@ export const Company_page = ({ fetched_url }) => {
                             <div className="mx-2 w-full">
                               <input
                                 type="text"
-                                className=" px-3 py-2 flex rounded-lg pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none w-full"
+                                className="outline-none px-3 py-2 flex rounded-lg pt-2 border-[1px] border-gray-700  w-full"
                                 value={item.mode}
                                 autoComplete="false"
                                 readOnly={true}
@@ -257,7 +251,7 @@ export const Company_page = ({ fetched_url }) => {
                             <div className="mx-2 w-full">
                               <input
                                 type="text"
-                                className=" px-3 py-2 flex rounded-lg pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none w-full"
+                                className="outline-none px-3 py-2 flex rounded-lg pt-2 border-[1px] border-gray-700  w-full"
                                 value={item.bonds}
                                 autoComplete="false"
                                 readOnly={true}
@@ -279,7 +273,7 @@ export const Company_page = ({ fetched_url }) => {
                             <div className="mx-2 w-full">
                               <input
                                 type="text"
-                                className=" px-3 py-2 flex rounded-lg pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none w-full"
+                                className="outline-none px-3 py-2 flex rounded-lg pt-2 border-[1px] border-gray-700  w-full"
                                 value={item.deadline}
                                 autoComplete="false"
                                 readOnly={true}
@@ -301,7 +295,7 @@ export const Company_page = ({ fetched_url }) => {
                             <div className="mx-2 w-full">
                               <input
                                 type="text"
-                                className=" px-3 py-2 flex rounded-lg pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none w-full"
+                                className="outline-none px-3 py-2 flex rounded-lg pt-2 border-[1px] border-gray-700  w-full"
                                 value={item.interviewMode}
                                 autoComplete="false"
                                 readOnly={true}
@@ -328,7 +322,7 @@ export const Company_page = ({ fetched_url }) => {
                                 <div className="mx-2 w-full">
                                   <input
                                     type="text"
-                                    className=" px-3 py-2 flex rounded-lg pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none w-full"
+                                    className="outline-none px-3 py-2 flex rounded-lg pt-2 border-[1px] border-gray-700  w-full"
                                     value={item.requirements.cpi}
                                     autoComplete="false"
                                     readOnly={true}
@@ -349,7 +343,7 @@ export const Company_page = ({ fetched_url }) => {
                                 <div className="mx-2 w-full">
                                   <input
                                     type="text"
-                                    className=" px-3 py-2 flex rounded-lg pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none w-full"
+                                    className="outline-none px-3 py-2 flex rounded-lg pt-2 border-[1px] border-gray-700  w-full"
                                     value={item.requirements.twelfthPerc}
                                     autoComplete="false"
                                     readOnly={true}
@@ -374,7 +368,7 @@ export const Company_page = ({ fetched_url }) => {
                                         <div className="mx-2 w-full">
                                           <input
                                             type="text"
-                                            className=" px-3 py-2 flex rounded-lg pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none w-full"
+                                            className="outline-none px-3 py-2 flex rounded-lg pt-2 border-[1px] border-gray-700  w-full"
                                             value={item1.platform}
                                             autoComplete="false"
                                             readOnly={true}
@@ -391,7 +385,7 @@ export const Company_page = ({ fetched_url }) => {
                                         <div className="mx-2 w-full">
                                           <input
                                             type="text"
-                                            className=" px-3 py-2 flex rounded-lg pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none w-full"
+                                            className="outline-none px-3 py-2 flex rounded-lg pt-2 border-[1px] border-gray-700  w-full"
                                             value={item1.stars}
                                             autoComplete="false"
                                             readOnly={true}
@@ -408,7 +402,7 @@ export const Company_page = ({ fetched_url }) => {
                                         <div className="mx-2 w-full">
                                           <input
                                             type="text"
-                                            className=" px-3 py-2 flex rounded-lg pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none w-full"
+                                            className="outline-none px-3 py-2 flex rounded-lg pt-2 border-[1px] border-gray-700  w-full"
                                             value={item1.ratings}
                                             autoComplete="false"
                                             readOnly={true}
@@ -437,9 +431,9 @@ export const Company_page = ({ fetched_url }) => {
 
                       <div className="flex justify-center">
                         {item.isElligible === true ? (
-                          <div className="w-2/12 grid justify-items-center m-2 p-2 hover:bg-blue-700 bg-indigo-900">
+                          <div className="w-2/12 grid justify-items-center m-2 p-2 bg-blue-500">
                             <button
-                              className="text-white"
+                              className="text-white "
                               key={index}
                               onClick={(e) =>
                                 handleApply(
@@ -456,9 +450,9 @@ export const Company_page = ({ fetched_url }) => {
                             </button>
                           </div>
                         ) : (
-                          <div className="w-2/12 grid justify-items-center m-2 p-2 bg-slate-500">
+                          <div className="w-2/12 grid justify-items-center m-2 p-2 bg-blue-500">
                             <button
-                              className="text-white disabled:bg-slate-500"
+                              className="text-white "
                               key={index}
                               disabled={true}
                             >
@@ -491,7 +485,7 @@ export const Company_page = ({ fetched_url }) => {
                           <div className="mx-2 w-full">
                             <input
                               type="text"
-                              className=" px-3 py-2 flex rounded-lg pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none w-full"
+                              className="outline-none px-3 py-2 flex rounded-lg pt-2 border-[1px] border-gray-700  w-full"
                               value={_data.address.city}
                               autoComplete="false"
                               readOnly={true}
@@ -513,7 +507,7 @@ export const Company_page = ({ fetched_url }) => {
                           <div className="mx-2 w-full">
                             <input
                               type="text"
-                              className=" px-3 py-2 flex rounded-lg pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none w-full"
+                              className="outline-none px-3 py-2 flex rounded-lg pt-2 border-[1px] border-gray-700  w-full"
                               value={_data.address.district}
                               autoComplete="false"
                               readOnly={true}
@@ -535,7 +529,7 @@ export const Company_page = ({ fetched_url }) => {
                           <div className="mx-2 w-full">
                             <input
                               type="text"
-                              className=" px-3 py-2 flex rounded-lg pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none w-full"
+                              className="outline-none px-3 py-2 flex rounded-lg pt-2 border-[1px] border-gray-700  w-full"
                               value={_data.address.state}
                               autoComplete="false"
                               readOnly={true}
@@ -557,7 +551,7 @@ export const Company_page = ({ fetched_url }) => {
                           <div className="mx-2 w-full">
                             <input
                               type="text"
-                              className=" px-3 py-2 flex rounded-lg pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none w-full"
+                              className="outline-none px-3 py-2 flex rounded-lg pt-2 border-[1px] border-gray-700  w-full"
                               value={_data.address.postalCode}
                               autoComplete="false"
                               readOnly={true}
@@ -579,7 +573,7 @@ export const Company_page = ({ fetched_url }) => {
                           <div className="mx-2 w-full">
                             <input
                               type="text"
-                              className=" px-3 py-2 flex rounded-lg pt-2 bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none w-full"
+                              className="outline-none px-3 py-2 flex rounded-lg pt-2 border-[1px] border-gray-700  w-full"
                               value={_data.address.completeAddress}
                               autoComplete="false"
                               readOnly={true}
@@ -633,7 +627,7 @@ export const Company_page = ({ fetched_url }) => {
         pauseOnHover={true}
         draggable={true}
         progress={undefined}
-        theme="dark"
+        theme="light"
       />
     </>
   );

@@ -22,6 +22,8 @@ const Profile = () => {
   const { id } = useParams();
   const [company, setCompany] = useState({});
   const [isLoading, setIsLoading] = useState(true);
+  const [isUploadingProfilePic, setIsUploadingProfilePic] = useState(false);
+  const [isUploadingResume, setIsUploadingResume] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
   const [refetchFlag, setRefetchFlag] = useState(false);
   const navigate = useNavigate();
@@ -31,13 +33,14 @@ const Profile = () => {
     handleSubmit,
     formState: { errors, isDirty },
     getValues,
-    setValue,
 
+    setValue,
     watch,
   } = useForm({});
 
   const updateStudent = async (student) => {
     setIsUpdating(true);
+
     try {
       const { data } = await axios.put(`/api/student/update`, student, {
         withCredentials: true,
@@ -56,6 +59,57 @@ const Profile = () => {
     }
   };
 
+  const handleProfilePicUpload = async (profilePic) => {
+    let formData = new FormData();
+    formData.append("id", JSON.stringify(getStuId()));
+    formData.append("profilePic", profilePic);
+    setIsUploadingProfilePic(true);
+
+    try {
+      const { data } = await axios.post(`/api/student/profile-pic`, formData, {
+        withCredentials: true,
+      });
+      console.log("resp >> ", data);
+
+      if (data?.success === true) {
+        toast.success("Updated successfully");
+        setValue("profilePic", data.url);
+      } else if (data?.success === false) {
+        toast.error("Could not upload picture");
+      }
+    } catch (err) {
+      console.log("err >> ", err);
+      toast.error("📶 Low internet connection ");
+    } finally {
+      setIsUploadingProfilePic(false);
+    }
+  };
+  const handleResumeUpload = async (resume) => {
+    let formData = new FormData();
+    formData.append("id", JSON.stringify(getStuId()));
+    formData.append("resume", resume);
+    setIsUploadingResume(true);
+
+    try {
+      const { data } = await axios.post(`/api/student/resume`, formData, {
+        withCredentials: true,
+      });
+      console.log("resp >> ", data);
+
+      if (data?.success === true) {
+        toast.success("Uploaded Resume");
+        setValue("resume", data.url);
+      } else if (data?.success === false) {
+        toast.error("Could not upload resume");
+      }
+    } catch (err) {
+      console.log("err >> ", err);
+      toast.error("📶 Low internet connection ");
+    } finally {
+      setIsUploadingResume(false);
+    }
+  };
+
   useEffect(() => {
     setIsLoading(true);
     axios
@@ -70,38 +124,67 @@ const Profile = () => {
   }, [refetchFlag]);
 
   const nameWatch = watch("firstName");
+  const profilePic = watch("profilePic");
   const rolesWatch = watch("roles");
   const isActiveWatch = watch("isActive");
   const cpWatch = watch("competitiveCoding");
   const password = watch("password");
   const confirmPassword = watch("confirmPassword");
-
-  const handleDuplicate = () => {};
+  const resume = watch("resume");
 
   return (
-    <div className="bg-[#0B0E2A] min-h-screen text-white">
+    <div className="bg-white min-h-screen text-black ">
       {/* Navbar */}
       <Navbar focusOn="companies" />
       {/* Wrapper div */}
-      <div className="px-2 py-5 flex flex-col gap-8 md:px-8 lg:px-12">
+      <div className=" px-2 py-5 flex flex-col gap-8 md:px-8 lg:px-12">
         {isLoading ? (
           <div className="flex flex-row justify-center mt-12">
             <HashLoader color="white" />
           </div>
         ) : (
-          <div className="bg-[#1c1434] mx-auto px-4 py-4 lg:w-2/3">
-            <h1
-              className={`text-3xl font-bold ${
-                isActiveWatch ? "text-success" : "text-red"
-              }`}
-            >
-              {nameWatch}
-            </h1>
+          <div className="bg-[#d8ecff] rounded-md mx-auto px-4 py-4 lg:w-2/3">
+            <div className="flex flex-row flex-wrap gap-4 items-center">
+              <img
+                src={profilePic}
+                className="w-36 h-36  object-cover rounded-full"
+              />
+
+              <div className="flex flex-col gap-2">
+                <h1
+                  className={`text-3xl font-bold ${
+                    isActiveWatch ? "text-success" : "text-red"
+                  }`}
+                >
+                  {nameWatch}
+                </h1>
+                <div className="bg-blue-500 text-white w-32 h-8 rounded-xl">
+                  <p className="text-center">
+                    {isUploadingProfilePic ? (
+                      <ClipLoader size={20} />
+                    ) : (
+                      "Change avatar"
+                    )}
+                  </p>
+                  <input
+                    type="file"
+                    disabled={isUploadingProfilePic}
+                    className="z-10 opacity-0 relative -top-4 left-0  w-full h-full"
+                    onChange={(e) => {
+                      console.log(e.target.files);
+                      if (e.target.files) {
+                        handleProfilePicUpload(e.target.files[0]);
+                      }
+                    }}
+                  />
+                </div>
+              </div>
+            </div>
 
             {/* update buttons */}
             <div className="flex flx-row justify-end mt-2 gap-2 ">
               <button
-                className="text-section mt-5 bg-blue-500 rounded-md px-4 py-2 disabled:bg-section"
+                className="text-section mt-5 text-white bg-blue-500 rounded-md px-4 py-2 disabled:bg-section"
                 onClick={handleSubmit(updateStudent)}
                 disabled={isUpdating}
               >
@@ -114,7 +197,7 @@ const Profile = () => {
                 )}
               </button>
               <Link to="/changepassword">
-                <button className="text-section mt-5 bg-blue-500 rounded-md px-4 py-2 disabled:bg-section">
+                <button className="text-section mt-5 text-white bg-blue-500 rounded-md px-4 py-2 disabled:bg-section">
                   Change Password
                 </button>
               </Link>
@@ -147,7 +230,7 @@ const Profile = () => {
 
               {/* Gender Remaining */}
               <div className="flex  flex-col gap-1 w-full md:w-2/5">
-                <span className="text-white">Gender *</span>
+                <span className="">Gender *</span>
                 <ErrorMessage
                   errors={errors}
                   name={`gender`}
@@ -160,7 +243,7 @@ const Profile = () => {
                     required: "Gender is required",
                     minLength: 1,
                   })}
-                  className="outline-none px-4 py-1 rounded-md bg-gray-700"
+                  className="outline-none px-4 py-1 rounded-md border-[1px] border-[1px] border-gray-600"
                 >
                   <option value="male"> Male</option>
                   <option value="female"> Female</option>
@@ -176,7 +259,7 @@ const Profile = () => {
                 isRequired={true}
               />
 
-              <h2 className="mt-3 w-full font-semibold text-2xl">
+              <h2 className="mt-3 w-full font-semibold text-3xl text-blue-500">
                 College Details
               </h2>
               <FormInputField
@@ -233,10 +316,16 @@ const Profile = () => {
                 register={register}
               />
 
-              <h2 className="mt-3 w-full font-semibold text-2xl">Result</h2>
+              <h2 className="mt-3 w-full font-semibold text-3xl text-blue-500 ">
+                Result
+              </h2>
               <div className="w-full">
                 <Info msg={"Put 0 if  not applicable."} />
               </div>
+              <h2 className="mt-3 w-full font-semibold text-3xl text-blue-500">
+                College
+              </h2>
+
               <FormInputField
                 name="result.sem1"
                 type="number"
@@ -310,6 +399,54 @@ const Profile = () => {
                 register={register}
                 isRequired={true}
               />
+
+              <h2 className="mt-3 w-full font-semibold text-3xl text-blue-500">
+                Academic Gap
+              </h2>
+
+              <FormInputField
+                name="result.academicGap"
+                title={"Academic Gap"}
+                type="number"
+                errors={errors}
+                register={register}
+                isRequired={true}
+              />
+
+              <FormInputField
+                name="result.academicGapReason"
+                title={"Reason for academic gap"}
+                errors={errors}
+                register={register}
+                isRequired={true}
+              />
+
+              <h2 className="mt-3 w-full font-semibold  text-3xl text-blue-500">
+                Backlogs
+              </h2>
+
+              <FormInputField
+                name="result.activeBacklogs"
+                title={"Active Backlogs"}
+                type="number"
+                errors={errors}
+                register={register}
+                isRequired={true}
+              />
+
+              <FormInputField
+                name="result.totalBacklogs"
+                title={"Total backlogs"}
+                errors={errors}
+                register={register}
+                isRequired={true}
+                type="number"
+              />
+
+              <h2 className="mt-3 w-full font-semibold text-3xl text-blue-500">
+                HSC
+              </h2>
+
               <FormInputField
                 name="result.twelfthPerc"
                 isRequired={true}
@@ -318,6 +455,38 @@ const Profile = () => {
                 errors={errors}
                 register={register}
               />
+
+              <div className="flex  flex-col gap-1 w-full md:w-2/5">
+                <span className="">12th Board Type</span>
+                <ErrorMessage
+                  errors={errors}
+                  name={`result.twelfthBoardType`}
+                  render={({ message }) => (
+                    <span className="text-red-700">{message}</span>
+                  )}
+                />
+                <select
+                  {...register(`result.twelfthBoardType`)}
+                  className="outline-none px-4 py-1 rounded-md border-[1px] border-gray-600"
+                >
+                  <option value="gseb"> GSEB</option>
+                  <option value="cbse"> CBSE</option>
+                  <option value="other"> Other</option>
+                </select>
+              </div>
+
+              <FormInputField
+                name="result.twelfthBoardPassingYear"
+                isRequired={true}
+                title={"12th Passing year"}
+                errors={errors}
+                register={register}
+                type="number"
+              />
+
+              <h2 className="mt-3 w-full font-semibold text-3xl text-blue-500">
+                SSC
+              </h2>
               <FormInputField
                 name="result.tenthPerc"
                 title={"10th %"}
@@ -326,6 +495,37 @@ const Profile = () => {
                 errors={errors}
                 register={register}
               />
+
+              <div className="flex  flex-col gap-1 w-full md:w-2/5">
+                <span className="">10th Board Type</span>
+                <ErrorMessage
+                  errors={errors}
+                  name={`result.tenthBoardType`}
+                  render={({ message }) => (
+                    <span className="text-red-700">{message}</span>
+                  )}
+                />
+                <select
+                  {...register(`result.tenthBoardType`)}
+                  className="outline-none px-4 py-1 rounded-md border-[1px] border-[1px] border-gray-600"
+                >
+                  <option value="gseb"> GSEB</option>
+                  <option value="cbse"> CBSE</option>
+                  <option value="other"> Other</option>
+                </select>
+              </div>
+              <FormInputField
+                name="result.tenthBoardPassingYear"
+                title={"10th Passing Year"}
+                isRequired={true}
+                type="number"
+                errors={errors}
+                register={register}
+              />
+              <h2 className="mt-3 w-full font-semibold text-3xl text-blue-500">
+                Diploma
+              </h2>
+
               <FormInputField
                 name="result.diplomaPerc"
                 title={"Diploma %"}
@@ -335,8 +535,118 @@ const Profile = () => {
                 register={register}
               />
 
+              <div className="flex  flex-col gap-1 w-full md:w-2/5">
+                <span className="">Diploma Board Type</span>
+                <ErrorMessage
+                  errors={errors}
+                  name={`result.diplomaBoardType`}
+                  render={({ message }) => (
+                    <span className="text-red-700">{message}</span>
+                  )}
+                />
+                <select
+                  {...register(`result.diplomaBoardType`)}
+                  className="outline-none px-4 py-1 rounded-md border-[1px] border-gray-600"
+                >
+                  <option value="gseb"> GSEB</option>
+                  <option value="cbse"> CBSE</option>
+                  <option value="other"> Other</option>
+                </select>
+              </div>
+              <FormInputField
+                name="result.diplomaBoardPassingYear"
+                title={"Diploma Passing Year"}
+                isRequired={true}
+                errors={errors}
+                register={register}
+                type="number"
+              />
+
+              {/* Technical Skills */}
+              <h2 className="mt-3 w-full font-semibold text-3xl text-blue-500">
+                Technical Skills
+              </h2>
+              <div className="w-full">
+                <Info msg={"AWS cloud, AI, etc. ( Comma seperated )"} />
+              </div>
+              <div className="flex  flex-col gap-1 w-full">
+                <ErrorMessage
+                  errors={errors}
+                  name={`technicalSkills`}
+                  render={({ message }) => (
+                    <span className="text-red-700">{message}</span>
+                  )}
+                />
+                <textarea
+                  {...register(`technicalSkills`)}
+                  className=" outline-none px-4 py-1 rounded-md border-[1px] border-gray-600"
+                />
+              </div>
+
+              <h2 className="mt-3 w-full font-semibold text-3xl text-blue-500">
+                Hobbies
+              </h2>
+              <div className="w-full">
+                <Info
+                  msg={"Dancing, Cinemetography, etc. ( Comma seperated )"}
+                />
+              </div>
+              <div className="flex  flex-col gap-1 w-full">
+                <ErrorMessage
+                  errors={errors}
+                  name={`hobbies`}
+                  render={({ message }) => (
+                    <span className="text-red-700">{message}</span>
+                  )}
+                />
+                <textarea
+                  {...register(`hobbies`)}
+                  className=" outline-none px-4 py-1 rounded-md border-[1px] border-gray-600"
+                />
+              </div>
+
+              <h2 className="mt-3 w-full font-semibold text-3xl text-blue-500">
+                Resume
+              </h2>
+              <div className="flex flex-row gap-2 mt-3 flex-wrap items-center">
+                <div className="border-blue-500 border-[1px] text-blue-500 w-44 h-10 px-4 py-2 rounded-md">
+                  <p className="text-center">
+                    {isUploadingResume ? (
+                      <ClipLoader size={20} />
+                    ) : (
+                      "Upload Resume"
+                    )}
+                  </p>
+                  <input
+                    type="file"
+                    disabled={isUploadingProfilePic}
+                    className="z-10 opacity-0 relative -top-4 left-0  w-full h-full"
+                    onChange={(e) => {
+                      console.log(e.target.files);
+                      if (e.target.files) {
+                        handleResumeUpload(e.target.files[0]);
+                      }
+                    }}
+                  />
+                </div>
+                {resume ? (
+                  <div>
+                    <Link to={resume}>
+                      <button
+                        type="button"
+                        className="text-section border-blue-500 border-[1px] text-blue-500 rounded-md px-4 py-2 disabled:bg-section"
+                      >
+                        Download Resume
+                      </button>
+                    </Link>
+                  </div>
+                ) : (
+                  <p></p>
+                )}
+              </div>
+
               {/* Competitive programming */}
-              <h2 className="mt-3 w-full font-semibold text-2xl">
+              <h2 className="mt-3 w-full font-semibold text-3xl text-blue-500">
                 Competitive Coding
               </h2>
 
@@ -379,7 +689,7 @@ const Profile = () => {
                       />
                       <div className="flex flex-col mt-3 justify-end gap-1 w-full md:w-2/5">
                         <button
-                          className="flex flex-row  gap-2 justify-center bg-[#a62f2f] px-2 py-1 rounded-md"
+                          className="flex flex-row  gap-2 justify-center text-red-700 border-[1px] border-red-500 px-2 py-1 rounded-md"
                           onClick={(e) =>
                             handleRemoveCP(e, cpIndex, cpWatch, setValue)
                           }
@@ -393,7 +703,7 @@ const Profile = () => {
                   );
                 })}
                 <button
-                  className="flex mt-3 flex-row gap-2 justify-center bg-[#3040D6] px-2 py-1 rounded-md"
+                  className="flex mt-3 flex-row gap-2 justify-center bg-[#3040D6] text-white px-2 py-1 rounded-md"
                   onClick={(e) => handleAddCP(e, cpWatch, setValue)}
                 >
                   <span className=""> Add Platform</span>
@@ -403,13 +713,13 @@ const Profile = () => {
                 <div className="h-[1px] w-full border-dashed border-b-[2px] border-placeholder opacity-60  my-2"></div>
               </div>
 
-              <h2 className="w-full font-semibold text-2xl mt-3">
+              <h2 className="w-full font-semibold text-3xl text-blue-500 mt-3">
                 Placement Status
               </h2>
 
               {/* Placement Status */}
               <div className="flex  flex-col gap-1 w-full md:w-2/5">
-                <span className="text-white">Selected ?</span>
+                <span className="">Selected ?</span>
                 {/* <ErrorMessage
                   errors={errors}
                   name={`roles.${roleIndex}.type`}
@@ -419,7 +729,7 @@ const Profile = () => {
                 /> */}
                 <select
                   {...register(`placementStatus.selected`)}
-                  className="outline-none px-4 py-1 rounded-md bg-gray-700"
+                  className="outline-none px-4 py-1 rounded-md border-[1px] border-gray-600"
                 >
                   <option value="yes"> Yes</option>
                   <option value="no"> No</option>
@@ -456,7 +766,7 @@ const Profile = () => {
 
               {/* Mode of job */}
               <div className="flex  flex-col gap-1 w-full md:w-2/5">
-                <span className="text-white">Mode</span>
+                <span className="">Mode</span>
                 {/* <ErrorMessage
                   errors={errors}
                   name={`roles.${roleIndex}.type`}
@@ -466,7 +776,7 @@ const Profile = () => {
                 /> */}
                 <select
                   {...register(`placementStatus.mode`)}
-                  className="outline-none px-4 py-1 rounded-md bg-gray-700"
+                  className="outline-none px-4 py-1 rounded-md border-[1px] border-gray-600"
                 >
                   <option value="remote"> Remote</option>
                   <option value="on-site"> On Site</option>
@@ -474,12 +784,12 @@ const Profile = () => {
                 </select>
               </div>
               {/* Internship Status*/}
-              <h2 className="w-full font-semibold text-2xl mt-3">
+              <h2 className="w-full font-semibold text-2xl mt-3 text-3xl text-blue-500">
                 Internship Status
               </h2>
               {/* Placement Status */}
               <div className="flex  flex-col gap-1 w-full md:w-2/5">
-                <span className="text-white">Selected ?</span>
+                <span className="">Selected ?</span>
                 {/* <ErrorMessage
                   errors={errors}
                   name={`roles.${roleIndex}.type`}
@@ -489,7 +799,7 @@ const Profile = () => {
                 /> */}
                 <select
                   {...register(`internshipStatus.selected`)}
-                  className="outline-none px-4 py-1 rounded-md bg-gray-700"
+                  className="outline-none px-4 py-1 rounded-md border-[1px] border-gray-600"
                 >
                   <option value="yes"> Yes</option>
                   <option value="no"> No</option>
@@ -526,7 +836,7 @@ const Profile = () => {
 
               {/* Mode of job */}
               <div className="flex  flex-col gap-1 w-full md:w-2/5">
-                <span className="text-white">Mode</span>
+                <span className="">Mode</span>
                 {/* <ErrorMessage
                   errors={errors}
                   name={`roles.${roleIndex}.type`}
@@ -536,7 +846,7 @@ const Profile = () => {
                 /> */}
                 <select
                   {...register(`internshipStatus.mode`)}
-                  className="outline-none px-4 py-1 rounded-md bg-gray-700"
+                  className="outline-none px-4 py-1 rounded-md border-[1px] border-gray-600"
                 >
                   <option value="remote"> Remote</option>
                   <option value="on-site"> On Site</option>
@@ -544,7 +854,9 @@ const Profile = () => {
                 </select>
               </div>
               {/* ADDRESS */}
-              <h2 className="mt-2 w-full font-semibold text-2xl">Address</h2>
+              <h2 className="mt-2 w-full font-semibold text-3xl text-blue-500">
+                Address
+              </h2>
               {/* address.city */}
               <FormInputField
                 name={`address.city`}
