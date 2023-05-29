@@ -19,6 +19,7 @@ import NotifyStudents from "./pages/NotifyStudents";
 import RegisterStudent from "./pages/RegisterStudent";
 import CreateCompany1 from "./pages/CreateCompany1";
 import { ToastContainer } from "react-toastify";
+import ManagePlaced from "./pages/ManagePlaced";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 const router = createBrowserRouter([
@@ -57,6 +58,10 @@ const router = createBrowserRouter([
   {
     path: "/admin/company/:cid/role/:rid/applications",
     element: <Applications />,
+  },
+  {
+    path: "/admin/company/:cid/role/:rid/placed",
+    element: <ManagePlaced/>,
   },
   {
     path: "/admin/company/:cid/role/:rid/elligibles",

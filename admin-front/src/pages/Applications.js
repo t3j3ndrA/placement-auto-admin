@@ -84,7 +84,7 @@ const Applications = () => {
 
         <h1 className="text-3xl "> Applications for {data?.name}</h1>
         <h1 className="text-2xl -mt-7 capitalize">
-          {data?.role.mode + " " + data?.role.name}
+          {data?.role.mode + " | " + data?.role.name}
         </h1>
 
         <div className="w-full flex flex-row flex-wrap justify-between gap-2">
@@ -138,6 +138,11 @@ const Applications = () => {
             <button className="text-section  bg-white rounded-md px-4 py-2">
               <Link to={`/admin/company/${cid}/role/${rid}/elligibles`}>
                 View Elligibles
+              </Link>
+            </button>
+            <button className="text-section  bg-white rounded-md px-4 py-2">
+              <Link to={`/admin/company/${cid}/role/${rid}/placed`}>
+                Manage Placed
               </Link>
             </button>
             <button className="text-section  bg-white rounded-md px-4 py-2 disabled:bg-section">

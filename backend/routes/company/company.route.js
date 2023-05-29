@@ -31,6 +31,8 @@ const {
 const {
   downloadApplications,
 } = require("../../controllers/company/downloadApplications");
+const { markPlacedForRoleByEmail } = require("../../controllers/company/markPlacedForRoleByEmail");
+const { getPlacedOfRole } = require("../../controllers/company/getPlacedForRole");
 
 router.get("/", getCompany);
 router.delete("/:cid", deleteCompanyById);
@@ -56,5 +58,11 @@ router.get("/:companyId/role/:roleId", getApplicationsAndElligibles);
 router.get("/:companyId/applications", downloadApplications);
 
 router.put("/notify", verifyAdmin, notifySpecifiedStudents);
+
+// mark placed for compamy, role by email
+router.put("/:companyId/role/:roleId/placed", markPlacedForRoleByEmail);
+router.get("/:companyId/role/:roleId/placed", getPlacedOfRole);
+
+
 
 module.exports = router;
