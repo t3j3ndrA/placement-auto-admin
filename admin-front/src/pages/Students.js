@@ -69,6 +69,7 @@ const Students = () => {
     fetchStudents,
     {
       keepPreviousData: true,
+      staleTime : Infinity
     }
   );
 

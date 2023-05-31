@@ -109,6 +109,7 @@ const StudentSchema = mongoose.Schema({
     type: mongoose.Schema({
       selected: { type: String, enum: ["yes", "no"], default: "no" },
       companyName: { type: String, default: "" },
+      role : {type : String, default : ""},
       duration: { type: Number, defualt: 0 },
       package: { type: Number, default: 0 },
       joiningDate: { type: String },
@@ -122,6 +123,7 @@ const StudentSchema = mongoose.Schema({
     type: mongoose.Schema({
       selected: { type: String, enum: ["yes", "no"], default: "no" },
       companyName: { type: String, default: "" },
+      role : {type : String, default : ""},
       duration: { type: Number, defualt: 0 },
       stipend: { type: Number, default: 0 },
       joiningDate: { type: String },

@@ -32,6 +32,7 @@ const StudentView = () => {
     isError,
   } = useQuery(["profile", id], fetchStudentProfile, {
     keepPreviousData: true,
+    staleTime : Infinity
   });
 
   if (isError) {

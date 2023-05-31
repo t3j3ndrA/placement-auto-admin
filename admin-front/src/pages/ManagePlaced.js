@@ -85,7 +85,7 @@ const ManagePlaced = () => {
   if (isError) {
     toast.error("📶 Low internet connection ");
   }
-
+  
   return (
     <div className="bg-backg min-h-screen text-white">
       {/* Navbar */}

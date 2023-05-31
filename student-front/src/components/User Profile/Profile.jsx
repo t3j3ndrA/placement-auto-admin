@@ -742,6 +742,13 @@ const Profile = () => {
                 errors={errors}
                 register={register}
               />
+              {/* Role in which placed */}
+              <FormInputField
+                name="placementStatus.role"
+                title={"Role"}
+                errors={errors}
+                register={register}
+              />
               <FormInputField
                 name="placementStatus.package"
                 title={"Package (in LPA)"}
@@ -809,6 +816,13 @@ const Profile = () => {
               <FormInputField
                 name="internshipStatus.companyName"
                 title={"Company"}
+                errors={errors}
+                register={register}
+              />
+              {/* role name in which interned*/}
+              <FormInputField
+                name="internshipStatus.role"
+                title={"Role"}
                 errors={errors}
                 register={register}
               />

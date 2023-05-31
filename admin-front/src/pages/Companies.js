@@ -65,6 +65,7 @@ const Companies = () => {
     fetchCompanies,
     {
       keepPreviousData: true,
+      staleTime : Infinity
     }
   );
 
