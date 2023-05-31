@@ -42,6 +42,7 @@ const CompanySchema = mongoose.Schema({
         },
         applications: [mongoose.Types.ObjectId],
         elligibles: [mongoose.Types.ObjectId],
+        placed : [mongoose.Types.ObjectId]
       }),
     ],
   },

@@ -53,12 +53,12 @@ const ChangePassword = () => {
   } = useForm({});
   console.log(errors);
   return (
-    <div className="bg-[#0B0E2A] min-h-screen text-white">
+    <div className="min-h-screen text-black">
       {/* Navbar */}
       <Navbar focusOn="companies" />
       {/* Wrapper div */}
       <div className="px-2 py-5 flex flex-col gap-8 md:px-8 lg:px-12">
-        <div className="bg-[#1c1434] mx-auto px-4 py-4 lg:w-2/3">
+        <div className="bg-[#d8ecff] mx-auto px-4 py-4 lg:w-2/3">
           <h1 className={`text-3xl font-bold `}>{"Change Passwrod"}</h1>
 
           <div className="flex flx-row justify-end mt-2 ">
@@ -76,7 +76,7 @@ const ChangePassword = () => {
 
               <input
                 type={"password"}
-                className="outline-none px-4 py-1 rounded-md bg-gray-700 focus:border-blue-500 focus:bg-gray-800"
+                className="outline-none px-4 py-1 rounded-md border-[1px] border-gray-600  "
                 value={password.password}
                 name="password"
                 onChange={(e) => {
@@ -101,7 +101,7 @@ const ChangePassword = () => {
               </span>
               <input
                 type={"password"}
-                className="outline-none px-4 py-1 rounded-md bg-gray-700 focus:border-blue-500 focus:bg-gray-800"
+                className="outline-none px-4 py-1 rounded-md border-[1px] border-gray-600  "
                 value={password.confirmPassword}
                 name="confirmPassword"
                 onChange={(e) => {
@@ -109,7 +109,7 @@ const ChangePassword = () => {
                 }}
               />
             </div>
-            <div className="w-full flex flex-row gap-4 mt-5">
+            <div className="w-full flex flex-row gap-4 mt-5 text-white">
               <button
                 className="text-section mt-5 bg-blue-500 rounded-md px-4 py-2 disabled:bg-section"
                 onClick={updatePassword}

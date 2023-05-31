@@ -87,13 +87,25 @@ const CompanyView = () => {
     download(data, `${nameWatch}-Applications.xls`);
   };
 
+  const handlePlacedStudentsReportDownload = async () => {
+    toast.success("Download will begin shortly...");
+    const { data, status } = await axios.get(
+      `/api/company/${id}/placed`,
+      {
+        withCredentials: true,
+        responseType: "blob",
+      }
+    );
+    download(data, `${nameWatch}-Placed.xls`);
+  };
+
   return (
     <div className="bg-backg min-h-screen text-white">
       {/* Navbar */}
       <Navbar focusOn="companies" />
 
       {/* Wrapper div */}
-
+      
       <div className="px-2 py-5 flex flex-col gap-8 md:px-8 lg:px-12">
         {isLoading ? (
           <div className="flex flex-row justify-center mt-12">
@@ -127,10 +139,18 @@ const CompanyView = () => {
               </label>
             </div>
 
-            <div className="flex flx-row justify-end my-2 ">
+            <div className="flex flx-row justify-end my-2  ">
               <div className="flex flex-row gap-4 ">
+                
+              <button
+                  className="text-section flex flex-row flex-wrap gap-3 self-start  bg-white rounded-md px-4 py-2"
+                  onClick={handlePlacedStudentsReportDownload}
+                >
+                  <AiOutlineDownload size={20} />
+                  <span>Placement report</span>
+                </button>
                 <button
-                  className="text-section flex flex-row flex-wrap gap-3  bg-white rounded-md px-4 py-2"
+                  className="text-section flex flex-row flex-wrap gap-3 self-start  bg-white rounded-md px-4 py-2"
                   onClick={handleApplicationsDownload}
                 >
                   <AiOutlineDownload size={20} />
@@ -246,13 +266,13 @@ const CompanyView = () => {
                   <>
                     {/* Remove this role */}
                     <div className="flex flex-row w-full justify-between">
-                      <button className="text-section  bg-white rounded-md px-4 py-2">
                         <Link
-                          to={`/admin/company/${id}/role/${role._id}/applications`}
+                          to={`/admin/company/${id}/role/${role._id}`}
                         >
-                          View Applications
-                        </Link>
+                      <button className="text-section  bg-white rounded-md px-4 py-2">
+                          View More
                       </button>
+                        </Link>
                       <button
                         className="flex flex-row  gap-2 justify-center bg-lightHover px-2 py-1 rounded-md"
                         onClick={(e) => handleRemoveRole(e, roleIndex)}
