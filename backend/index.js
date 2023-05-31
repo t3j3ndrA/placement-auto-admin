@@ -15,6 +15,7 @@ const mongoose = require("mongoose");
 const MongoStore = require("connect-mongo");
 const verifyStudent = require("./middleware/verifyStudent");
 const verifyAdmin = require("./middleware/verifyAdmin");
+const verifyLoggedIn = require("./middleware/verifyLoggedIn");
 
 // enviorment varibale configuration before using them in the code
 env.config();
@@ -36,7 +37,7 @@ app.use(
     cookie: {
       httpOnly: true,
       secure: false,
-      maxAge: 1000 * 60 * 60 * 5, // keeping cookies for 5 hours alive
+      maxAge: 1000 * 60 * 60 * 10, // keeping cookies for 10 hours alive
     },
   })
 );
@@ -49,10 +50,10 @@ app.get("/api", (req, res) => {
 
 app.use("/api/auth", AuthRoute);
 // app.use("/api/student", verifyStudent, StudentRoute);
-app.use("/api/student", StudentRoute);
-app.use("/api/admin", AdminRoute);
-app.use("/api/company", CompanyRoute);
-app.use("/api/reports", ReportsRoute);
+app.use("/api/student", verifyLoggedIn,StudentRoute);
+app.use("/api/admin" ,AdminRoute);
+app.use("/api/company", verifyLoggedIn,CompanyRoute);
+app.use("/api/reports", verifyAdmin,ReportsRoute);
 
 app.get("/get-session", (req, res) => {
   res.json(req.session.isAuth);
