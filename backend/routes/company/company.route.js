@@ -34,11 +34,12 @@ const {
 const { markPlacedForRoleByEmail } = require("../../controllers/company/markPlacedForRoleByEmail");
 const { getPlacedOfRole } = require("../../controllers/company/getPlacedForRole");
 const { downloadPlacedStudentReport } = require("../../controllers/company/downloadPlacedStudentReport");
+const verifyLoggedIn = require("../../middleware/verifyLoggedIn");
 
-router.get("/", getCompany);
-router.delete("/:cid", deleteCompanyById);
+router.get("/", verifyLoggedIn,getCompany);
+router.delete("/:cid", verifyAdmin,deleteCompanyById);
 
-router.get("/of/:studentId", getCompaniesForStudent);
+router.get("/of/:studentId", verifyLoggedIn,getCompaniesForStudent);
 
 // register new Company
 router.post("/new", verifyAdmin, registerNewCompany);
@@ -47,25 +48,25 @@ router.post("/new", verifyAdmin, registerNewCompany);
 router.put("/update", verifyAdmin, updateCompany);
 
 // apply to company via company id , student id if not already, role id
-router.put("/apply-to/:companyId/for/:roleId/:stuId", applyToCompany);
+router.put("/apply-to/:companyId/for/:roleId/:stuId", verifyLoggedIn,applyToCompany);
 
 // get company & role detail using rid & cid
-router.get("/:companyId/role/:roleId/basic", getRoleDetails);
+router.get("/:companyId/role/:roleId/basic", verifyLoggedIn,getRoleDetails);
 
 // get applications & elligibles students
-router.get("/:companyId/role/:roleId", getApplicationsAndElligibles);
+router.get("/:companyId/role/:roleId",verifyLoggedIn,getApplicationsAndElligibles);
 
 // download applications sheet
-router.get("/:companyId/applications", downloadApplications);
+router.get("/:companyId/applications",verifyAdmin,downloadApplications);
 
 router.put("/notify", verifyAdmin, notifySpecifiedStudents);
 
 // mark placed for compamy, role by email
-router.put("/:companyId/role/:roleId/placed", markPlacedForRoleByEmail);
-router.get("/:companyId/role/:roleId/placed", getPlacedOfRole);
+router.put("/:companyId/role/:roleId/placed", verifyAdmin, markPlacedForRoleByEmail);
+router.get("/:companyId/role/:roleId/placed", verifyAdmin, getPlacedOfRole);
 
 // download placed students sheet
-router.get("/:companyId/placed", downloadPlacedStudentReport);
+router.get("/:companyId/placed",verifyAdmin, downloadPlacedStudentReport);
 
 
 

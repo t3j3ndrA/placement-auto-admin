@@ -50,9 +50,9 @@ app.get("/api", (req, res) => {
 
 app.use("/api/auth", AuthRoute);
 // app.use("/api/student", verifyStudent, StudentRoute);
-app.use("/api/student", verifyLoggedIn,StudentRoute);
+app.use("/api/student",StudentRoute);
 app.use("/api/admin" ,AdminRoute);
-app.use("/api/company", verifyLoggedIn,CompanyRoute);
+app.use("/api/company",CompanyRoute);
 app.use("/api/reports", verifyAdmin,ReportsRoute);
 
 app.get("/get-session", (req, res) => {
